@@ -17,6 +17,7 @@ Whenever you are writing frontend code (React, Next.js, Tailwind), generating HT
 - **Persona-Driven Theme Defaulting:**
   - **Serene Oceanic Light Theme:** Store Managers, Executives, and standard desktop dashboard views operate in well-lit environments. Their interfaces default to the clean, clinical `Slate-50` (`#f8fafc`) canvas with a `Sky Blue` (`#0ea5e9`) accent.
   - **Midnight Sapphire Dark Theme:** Operations personnel (Drivers, Loaders, Night Dispatchers) operating at 03:00 AM require strict circadian protection. Their mobile and tablet interfaces MUST default to the deep `Slate-900` (`#0f172a`) dark theme to preserve dark-adapted vision and prevent ocular fatigue.
+  - **Manual Override (Always Available):** Regardless of the persona's default, an accessibility toggle MUST be present on every screen's header, allowing the user to instantly override the theme to Light, Dark, or High Contrast.
 - **Low-Noise Surfaces:** Surfaces must be matte and calm. Avoid distracting decorative drop shadows, glassmorphism blurs that hinder readability, or unnecessary visual ornamentation.
 
 ---
