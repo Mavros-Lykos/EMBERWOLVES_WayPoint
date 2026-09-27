@@ -106,3 +106,50 @@ CREATE TABLE demand_forecasts (
     UNIQUE(depot, brand, iso_year, iso_week)
 );
 
+-- 7. Hard Constraints via Functions & Triggers (Activity A2.3)
+
+-- Trigger: Ensure order brand and district match trip
+CREATE OR REPLACE FUNCTION check_trip_brand_district() RETURNS TRIGGER AS $$
+DECLARE
+    t_brand VARCHAR;
+    t_district VARCHAR;
+    o_brand VARCHAR;
+    o_district VARCHAR;
+BEGIN
+    IF NEW.trip_id IS NOT NULL THEN
+        SELECT brand, district INTO t_brand, t_district FROM trips WHERE trip_id = NEW.trip_id;
+        SELECT brand, district INTO o_brand, o_district FROM outlets WHERE outlet_id = NEW.outlet_id;
+        
+        IF t_brand != o_brand OR t_district != o_district THEN
+            RAISE EXCEPTION 'Order brand/district does not match trip brand/district';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_trip_grouping
+BEFORE INSERT OR UPDATE ON orders
+FOR EACH ROW EXECUTE FUNCTION check_trip_brand_district();
+
+-- Trigger: Ensure vehicle temperature capability
+CREATE OR REPLACE FUNCTION check_reefer_requirement() RETURNS TRIGGER AS $$
+DECLARE
+    v_temp temp_req;
+BEGIN
+    IF NEW.trip_id IS NOT NULL THEN
+        SELECT v.temp INTO v_temp 
+        FROM trips t JOIN vehicles v ON t.vehicle_id = v.vehicle_id 
+        WHERE t.trip_id = NEW.trip_id;
+        
+        IF NEW.temp_requirement = 'chilled' AND v_temp != 'reefer' THEN
+            RAISE EXCEPTION 'Chilled orders require a reefer vehicle';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER enforce_reefer_requirement
+BEFORE INSERT OR UPDATE ON orders
+FOR EACH ROW EXECUTE FUNCTION check_reefer_requirement();
