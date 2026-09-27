@@ -1,75 +1,47 @@
 ---
-name: Glassmorphic Minimalist
-description: Unique, minimalist, glassmorphic design system for Waypoint Dispatch
+name: Serene Oceanic Light Theme
+description: A clean, minimalistic, calming light mode design system for Waypoint Dispatch
 colors:
-  bg-canvas: "#050914"
-  glass-base: "rgba(255, 255, 255, 0.03)"
-  glass-border: "rgba(255, 255, 255, 0.08)"
-  glass-hover: "rgba(255, 255, 255, 0.06)"
-  primary-blue: "#3b82f6"
-  accent-ice: "#38bdf8"
-  text-primary: "#ffffff"
-  text-secondary: "#94a3b8"
+  canvas-base: "#f8fafc"
+  surface-dim: "#f1f5f9"
+  primary-teal: "#0ea5e9"
+  text-primary: "#0f172a"
+  text-secondary: "#334155"
   text-muted: "#64748b"
   status-live: "#10b981"
   status-amber: "#f59e0b"
+  status-error: "#ef4444"
+  glass-bg: "rgba(255, 255, 255, 0.7)"
+  glass-border: "rgba(0, 0, 0, 0.08)"
 typography:
-  display:
-    fontFamily: "Space Grotesk, sans-serif"
-    fontSize: "2.25rem"
-    fontWeight: 500
-    lineHeight: "2.5rem"
-    letterSpacing: "-0.02em"
-  heading:
-    fontFamily: "Space Grotesk, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 500
-    lineHeight: "1.75rem"
-  body:
-    fontFamily: "Geist, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 400
-    lineHeight: "1.25rem"
+  primary:
+    fontFamily: "Inter, sans-serif"
   mono:
     fontFamily: "JetBrains Mono, monospace"
-    fontSize: "0.75rem"
-    fontWeight: 400
-    lineHeight: "1rem"
-rounded:
-  sm: "6px"
-  md: "12px"
-  lg: "16px"
-  full: "9999px"
-spacing:
-  xs: "8px"
-  sm: "12px"
-  md: "24px"
-  lg: "32px"
-  xl: "48px"
 ---
 
 ## Overview
 
-The Glassmorphic Minimalist design system refines Waypoint Dispatch into an ultra-modern, uncluttered interface. Built on user feedback requesting a sleek, "unique" aesthetic with heavy "bluish nature," this system eliminates unnecessary text, borders, and cognitive noise.
+The Serene Oceanic Light Theme refines Waypoint Dispatch into an ultra-modern, uncluttered light interface. Built on user feedback requesting a sleek, calming, minimalistic aesthetic, this system eliminates harsh contrasting lines and utilizes soothing whites, slates, and ocean sky-blues.
 
-By leveraging blurred backdrops (`backdrop-blur`), semi-transparent surfaces, and ambient glowing orbs, the interface achieves a sense of deep spatial hierarchy without harsh contrasting lines.
+By leveraging semi-transparent white frosted glass panels (`backdrop-blur`) with extremely subtle dark drop shadows, the interface achieves a sense of deep spatial hierarchy on top of the calming Slate-50 canvas.
 
 ---
 
 ## Colors
 
-- **Canvas Base (`#050914`)**: A near-black, deep space navy. Serves as the negative space where ambient glows manifest.
-- **Glass Surfaces (`rgba(255, 255, 255, 0.02 - 0.08)`)**: Pure white with extremely low opacity. Provides structure without opaque blockage.
-- **Ambient Glows**: Large, heavily blurred (e.g., `blur-120px`) radial gradients positioned behind the glass elements, typically using blues and teals.
-- **Text Hierarchy**: White for primary data, Slate-400 (`#94a3b8`) for secondary labels, Slate-500 (`#64748b`) for tertiary/muted metadata.
+- **Canvas Base (`#f8fafc`)**: A very light, calming Slate 50. It acts as a serene backdrop that prevents eye strain.
+- **Glass Surfaces (`rgba(255, 255, 255, 0.7)`)**: Semi-transparent white frosted glass. Provides structural component boundaries without heavy borders.
+- **Primary Brand (`#0ea5e9`)**: A soothing, corporate Sky Blue used for main call-to-actions, active rings, and hover glows.
+- **Text Hierarchy**: Deep Slate-900 (`#0f172a`) for primary headers, Slate-700 (`#334155`) for secondary labels, Slate-500 (`#64748b`) for tertiary/muted metadata.
+- **Ambient Glows**: Extremely faint radial gradients (`rgba(14, 165, 233, 0.08)`) in the background to provide a sense of depth without clutter.
 
 ---
 
 ## Typography
 
-- **Headlines (Space Grotesk)**: Medium weight, slightly tracked tightly. Used sparsely for core page titles and major metric values.
-- **Body (Geist)**: Extremely light and readable.
-- **Data (JetBrains Mono)**: Used extensively for tabular data, labels, and metrics. Unstyled and unadorned.
+- **Headlines & Body (Inter)**: Clean, geometric, and exceptionally readable at all sizes.
+- **Data (JetBrains Mono)**: Used extensively for tabular data, labels, and metrics. Unstyled and unadorned for precision.
 
 ---
 
@@ -77,8 +49,8 @@ By leveraging blurred backdrops (`backdrop-blur`), semi-transparent surfaces, an
 
 Under the `/impeccable distill` rules, we aggressively strip:
 - **Explanatory Text**: Users in this domain don't need paragraphs telling them how to use the tool.
-- **Excess Borders**: Removed in favor of faint glass borders (`border-white/5` or `border-white/10`).
-- **Heavy Fills**: Replaced with frosted glass panels.
+- **Heavy Solid Backgrounds**: Avoid heavy navy or gray blocks. Use glass panels.
+- **Dense Text Blocks**: Cut word counts by 70%. Replace sentences with simple scannable KPIs.
 
 ---
 
@@ -87,9 +59,8 @@ Under the `/impeccable distill` rules, we aggressively strip:
 ### DO:
 - **Use Whitespace**: Let metrics breathe.
 - **Use Glass Panels**: `.glass-panel` class handles the heavy lifting for backdrop filters and box shadows.
-- **Keep it Bluish**: Emphasize blues, teals, and cyan tones in glows and text accents.
+- **Keep it Calming**: Rely on Sky Blue (`#0ea5e9`) and soft Slates to keep cognitive strain low.
 
 ### DON'T:
-- **NO Heavy Solid Cards**: Avoid opaque navy or gray blocks.
-- **NO Dense Text Blocks**: Cut word counts by 70%.
+- **NO Heavy Solid Cards**: Never use dark blocks that destroy the airy, lightweight aesthetic.
 - **NO Complex Layouts**: Stick to simple, scannable grids.
