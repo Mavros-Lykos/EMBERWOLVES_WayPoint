@@ -217,5 +217,17 @@
       </div>
     </div>
   </main>
+
+<script>
+document.querySelectorAll('.material-symbols-outlined').forEach(async (el) => {
+  const iconName = el.innerText.trim().replace(/_/g, '-');
+  const res = await fetch(`https://api.iconify.design/material-symbols/${iconName}-outline.svg`);
+  if (res.ok) {
+    let svg = await res.text();
+    el.innerHTML = svg.replace('<svg ', '<svg style="width:1em; height:1em; display:inline-block;" ');
+  }
+});
+</script>
 </body>
+
 </html>
