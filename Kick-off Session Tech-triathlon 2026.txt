@@ -1,0 +1,389 @@
+--- Slide 1: Building intelligence the world can trust ---
+rootcode.ai
+
+--- Slide 2: KICK-OFF SESSION ---
+
+Notes:
+  Alright, let's get started.
+  Welcome to the official kick-off session of Tech-Triathlon 2026. Thank you for making the time to be here today.
+  This session is organized to officially kick off proceedings for Tech-Triathlon 2026, and this is where you all will get the full picture of what the next few weeks look like. We will walk you through the theme, the three phases, the timeline, the rules and the prizes. Then each of our three challenge leads will take you through their phase in detail.
+  Please keep your questions coming in the chat as we go. We have a Q&A at the end and we will get through as many as we can.
+
+--- Slide 3: Hi there, I’m ---
+Channuka Jayatilaka.
+Associate - Branding & Marketing
+@ Rootcode
+
+Notes:
+  Quick introduction from my side. I'm Channuka Jayatilaka, Associate in Branding and Marketing at Rootcode, and I will be your host for today’s session.
+
+--- Slide 4 ---
+
+--- Slide 5: Building intelligence the world can trust ---
+
+Notes:
+  As I’m sure many of you all likely already know, Rootcode is an AI transformation company. We work with global enterprises and governments to help them reach their transformation objectives with AI.
+  And this year, we have made sure that Tech-Triathlon comes directly out of that work. This is our fourth consecutive year running it, and every year we try to make the challenge look a little more like the work we actually do.
+
+--- Slide 6: Combining three pillars of tech into a single competition. ---
+
+Notes:
+  Tech-Triathlon exists because real products are never built by one discipline alone.
+  Most competitions ask you to pick a lane. You either design, or you build, or you do the data science. We combine all three into a single competition, because that is how a product actually comes together. UX design, engineering, and artificial intelligence.
+  You will be tested on all three.
+
+--- Slide 7: Theme of the ---
+Tech-Triathlon 2026
+The Intelligent
+Enterprise
+
+Notes:
+  The theme for Tech-Triathlon 2026 is The Intelligent Enterprise.
+  Every business has information. The challenge is putting it to work. An intelligent enterprise connects its people, processes and systems so it can make better decisions, cut out unnecessary work, and respond faster when things change.
+  This answers questions like How does a business capture the right information? How does work move between teams? How quickly can it spot a problem and respond to it?
+  Becoming an intelligent enterprise means improving how those everyday things happen. Not one big transformation, but one solution at a time, each one part of a bigger journey toward a business that works better.
+  This year, your team takes on one part of that journey.
+
+--- Slide 8 ---
+
+--- Slide 9: Unfolding the Triathlon ---
+The Phases
+
+Notes:
+  Now, the part that has changed this year, and it is the biggest change we have made.
+  This year, there is one business challenge. It runs across all three phases. You get the brief and all the datasets together on day one, and you have five days for each phase.
+  Here is why. This is how an AI transformation project actually gets tackled. You start with product thinking and design the solution. Then you engineer the software. Then you add the AI components that transform it. It is one continuous piece of work, not three disconnected exercises.
+
+--- Slide 10: Timeline ---
+
+--- Slide 11 ---
+
+--- Slide 12: Competition Rules ---
+
+--- Slide 13: One business challenge runs across all three phases. The challenge brief and all datasets will be released together on the first day. ---
+Every submission must be original work that has not been published or exhibited before.
+Each deadline is final. If your team misses a phase, you may continue in the competition, but you will receive zero points for that phase.
+The Designathon, Hackathon, and Datathon contribute equally to your final score.
+You may use the programming languages, frameworks, IDEs, and AI tools of your choice, but they must be disclosed.
+All dates and times follow Sri Lanka Standard Time, UTC+05:30.
+
+--- Slide 14: Prizes ---
+
+--- Slide 15: DESIGNATHON KICK-OFF SESSION ---
+
+--- Slide 16: Hi there, I’m ---
+Dhanushka Liyanage.
+Associate Lead UX Designer
+@ Rootcode
+
+--- Slide 17: WHAT WE'RE ASKING ---
+One Operation. One system.
+Design the solution to the problem in Part One. This phase is as much about product thinking as it is about screens.
+The strongest submissions will show the team understood the operation, decided what matters most, and had the discipline to leave things out.
+grid_view
+CORE MANDATE
+You are not designing four separate apps. You are designing one solution with ‘x’ faces.
+auto_awesome
+What the solution does, and which screens exist, is your decision. We've given you the operation, the constraints, and the people — the product is yours.
+Designathon · Part Two
+
+Notes:
+  17
+
+--- Slide 18: SCOPE GUIDANCE ---
+Restraint is a judged criterion
+01
+You do not need to design every conceivable screen.
+02
+Design the screens that let each user do their job — including at least one for a day that goes wrong.
+03
+A tightly scoped solution with clear rationale will outscore a sprawling one.
+Designathon · Part Two
+JUDGED, NOT JUST CHECKED
+
+Notes:
+  18
+
+--- Slide 19: Designathon · Part Two ---
+DEGRADATION SCREENS
+Design for the day it breaks
+01
+Design a Degradation Screen
+Systems like this are tested when something goes wrong. Design at least one moment where the normal flow fails, designed in full detail.
+02
+Name & Justify the Scenario
+Which failure you design for is your decision. Justify it in a short paragraph: why this failure, and why it matters for Waypoint's operations.
+auto_awesome
+JUDGING FOCUS
+Depth is what earns the marks, not count.
+More than one scenario is welcome. Focus on operational relevance, detail, and thoroughness in your error recovery flows.
+
+Notes:
+  19
+
+--- Slide 20: PHASE DELIVERABLES ---
+Deliverables
+01
+User personas
+One per user role, grounded in Part One's conditions and pain points.
+02
+User screen flows
+The screens for each user, with a one-paragraph rationale per screen.
+03
+Degradation screen(s)
+At least one, each with its scenario named and justified.
+04
+Demo video
+A walk-through demo video exploring your design in detail.
+05
+High-fidelity prototype
+Built in a design tool of your choice, covering the flows designed.
+06
+Core trade off explanation · optional
+One page or a single diagram explaining the central tradeoff.
+07
+Style guide · optional
+Typography, color tokens, and design system specifications.
+08
+AI tool disclosure
+What was AI-assisted, what was not, and how AI was used.
+Designathon · Part Two
+
+Notes:
+  20
+
+--- Slide 21: SUBMISSION FORMAT ---
+What to submit, and by when
+folder_zip
+Design file
+Personas, flows, rationale and degradation screens — one file, distinct pages.
+TeamName_Designathon.zip
+link
+Prototype link
+Figma / Framer / Web
+A shareable link to your high-fidelity prototype.
+videocam
+Explainer video
+A short walkthrough of your design and the thinking behind it.
+Duration: 3–5 minutes
+event_available
+DEADLINE
+Day 5 ·Tue 8 Sep
+Strict Cutoff
+11:59 PM IST
+Submission form: [link to be shared] | Upload file, prototype link and video together | Judged as submitted on Day 5.
+Designathon · Part Two
+
+Notes:
+  21
+
+--- Slide 22: JUDGING CRITERIA ---
+How this phase is scored
+Criterion
+Weight
+Problem framing
+25%
+User-context fidelity
+20%
+Visual and interaction design (incl. cross-user coherence)
+15%
+Restraint and prioritisation
+15%
+Degradation screen quality
+15%
+Domain accuracy
+10%
+Designathon · Part Two
+
+Notes:
+  22
+
+--- Slide 23: RULES & RESTRICTIONS ---
+Play it straight
+01
+Your design is judged exactly as submitted on Day 5.
+02
+You may keep developing the solution in the Hackathon — but document any significant departures in your README.
+03
+AI tools are allowed — say so. Your disclosure should state plainly what was AI-assisted, what was not, and how AI was used.
+Designathon · Part Two
+
+Notes:
+  23
+
+--- Slide 24: HACKATHON KICK-OFF SESSION ---
+
+--- Slide 25: Hi there, I’m ---
+Krishan Samarawickrama.
+Senior Technical Lead
+@ Rootcode
+
+--- Slide 26: From design to implementation ---
+Making it functional
+Build the solution you designed in the Designathon, as a working, deployable, responsive web application.
+
+--- Slide 27: HOW TO BUILD IT ---
+Ground rules
+01
+Build your design
+Your Day-5 design is the specification. Build the flows, screens and capabilities you defined; fidelity to it is scored.
+02
+Operable end to end
+A judge must be able to run one complete cycle through your system, touching every user role you designed for.
+03
+Responsive web app
+The web version is mandatory and is assessed on a phone-sized screen for mobile users. Native apps are an optional extra only.
+Plans must be runnable.  Respect every operating constraint in the booklet. Departed from your design? Document it in the README.
+
+--- Slide 28: DELIVERABLES ---
+01
+Deployed working system
+A public URL, plus credentials for seeded accounts, one per user role.
+02
+Source repository
+GitHub monorepo TeamName_SolutionName. README: setup, configuration, seeded accounts, walkthrough, design departures.
+03
+Docker Compose at the repo root
+docker compose up runs the complete stack, including the database with seed data, plus .env.example.
+04
+Architecture diagram & data model
+How the system fits together and how the data is structured.
+05
+Demo video
+5 – 8 min unlisted YouTube video: every user role completing your walkthrough, plus a brief code and architecture walkthrough.
+06
+AI tool disclosure
+What was AI-assisted, what was not, and how AI was used.
+
+--- Slide 29: DAY 10 ---
+Submission
+DEADLINE
+Sunday 4 October
+11:59 PM IST
+Through the submission form
+✓  Repository link
+✓  Deployed URL
+✓  Seeded credentials
+✓  Demo video link
+No late code
+Code pushed after the deadline will not be considered.
+Stay live
+Keep your deployment running through the review period, and through the semi-final and Grand Finale if you advance.
+AI tools
+Use them freely, but you must understand, explain and own every line you submit.
+
+--- Slide 30: DATATHON KICK-OFF SESSION ---
+
+Notes:
+  Thank you Krishan! The final phase in the tech triathlon is the datathon and in today’s session I will be briefing you mainly on the deliverables, ground rules and judging criteria.
+
+--- Slide 31: Hi there, I’m ---
+Gajithira Puvanendran
+Senior Data Scientist
+@ Rootcode
+
+Notes:
+  Before that, let me introduce myself. I’m Gajithira and I have been working with Rootcode as a Senior Data Scientist
+
+--- Slide 32: From Data to Insight ---
+Guiding the Experience
+Turning Data into Actionable Insights
+
+Notes:
+  Datathon is focused on building the intelligence layer that can help the different personas in an enterprise. It is focused on testing the teams on how they approach solving a business use case using raw data by turning it into actionable insights and as a layer that provides intelligence for the enterprise.
+
+--- Slide 33: WHAT WE EXPECT ---
+A Data Scientist's or Machine Learning Engineer's role extends beyond model creation.
+01
+Data Expertise
+02
+Pipeline Dev
+03
+Architectural Design
+04
+End-to-End Solutions
+05
+Strategic Thinking
+CHALLENGE GOAL
+In this challenge, competitors are expected to showcase not just model creation, but their overall capabilities in these critical areas.
+
+Notes:
+  Turning data into intelligence that can be used by enterprises goes beyond model creation. As such, during this phase we expect the teams to demonstrate their capabilities across handling , analyzing and transforming data,  developing model training pipelines, end to end solution thinking and architecting and strategic thinking which includes aligning AI approaches with the business goals.
+
+--- Slide 34: DELIVERABLES ---
+01
+Architecture Diagrams
+Present sketches of model, preprocessing, and deployment architectures
+02
+Data Pre-Processing Document
+Document your data analysis approach, preprocessing methods, and rationale
+03
+Model
+Submit the final trained model in .h5 or .pkl format
+04
+Notebooks
+Provide all notebooks used for experimentation and preprocessing, with the best model marked as TeamName_FinalNotebook.ipynb
+05
+Demo Video
+3-5 minute YouTube video (unlisted) showcasing the model architecture, preprocessing steps, and challenges faced.
+06
+AI Tool Disclosure
+Tools used, What was AI-assisted, what was not, and how
+
+Notes:
+  The deliverables for the datathon challenge will be the following: Architecture diagram showing model sketches, preprocessing components, deployment plans; data preprocessing document showing your data analysis approach and results, preprocessing methods and why they were chosen, any data preparation work done and why; the trained model submitted as a .h5 or a .pkl format; all notebooks that was used for preprocessing and epxerimentation. The final notebook which contains the best model that you have used for inference is marked with TeamName_FinalNotebook and is a jupyter notebook with outputs printed for each cells; being able to communicate your solution and findings is a key skill for any AI engineer and therefore we expect a demo video explaining the challenges you faced, how you approached, the final model that worked, how you evaluated it; Finally we expect you to disclose the AI tools used, which of the parts (deliverables/ any work) was AI-assisted, what was not AI-assisted and a brief on AI driven development approach you followed.
+
+--- Slide 35: DAY 15 ---
+Submission
+DEADLINE
+Friday 9 October
+11:59 PM IST
+How to submit
+Add all deliverables into one folder, compress it a zip file named  TeamName_Datathon.zip, and upload it to the submission form
+
+Notes:
+  You will be making the submissions on the October 9 at 11:59 PM. The deliverables mentioned before should be shared into one folder and compressed. The compressed file should be named as TeamName_Datathon. The folder should then be uploaded to the submission form provided to you.
+  Q: Can submit once per team. If we see multiple submissions from the same team, then we consider the latest submission for evaluation.
+
+--- Slide 36: Rules & Regulations ---
+01
+Deadline
+The submission form will close after the deadline.
+02
+Model Restrictions
+You are restricted from using any pre-trained models, except for any data generation or pre-processing.
+03
+API Usage
+Proprietary API-based services for data preprocessing are prohibited and will affect scoring.
+04
+No-Code & AI Tools
+Usage of Low-code/No-code AI tools or fully automated end-to-end modelling tools are restricted.
+
+Notes:
+  The main ground rules are that submissions forms will close after the deadline. You are restricted from using any pre-trained models except for any data generation or pre-processing in which case you need to include the reason behind it and how chose that model.
+  Proprietary API based service for data preprocessing are prohibited and will affect scoring.
+  The focus of datathon is to enable participants to build and train their models using code. This provides insights into their thinking pattern and shows understanding behind the model architectures. Therefore, usage of low-code or no code AI tools or fully automated end-to-end modelling tools are restricted.
+
+--- Slide 37: Judging Criteria ---
+01
+Data Wrangling
+02
+Model & Architecture Implementation
+03
+Performance Score
+04
+Out of the Box Thinking
+05
+Demo Video
+
+Notes:
+  You will be judged with different weightage on each of these criterias. Data wrangling outlines the data preparation and analysis steps. Model and architecture implementation is evaluated by looking at the model used, it’s applicability, the architecture design, and the reasoning behind the model choice, performance score evaluates the goodness of the model, out of box thinking is where we assess the creativity of the solution and finally the demo video where you explain the solution and the challenges you faced.
+
+--- Slide 38: Good Luck! ---
+
+Notes:
+  So with that, I wish you all the best for the competition! Over to you Channuka
+
+--- Slide 39 ---
+
+--- Slide 40: THANK YOU ---
