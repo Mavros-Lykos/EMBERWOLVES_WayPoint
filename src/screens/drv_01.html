@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRV-01: PTI Gate - Waypoint Dispatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0ea5e9',
+            'primary-hover': '#0284c7',
+            success: '#10b981',
+            warning: '#f59e0b',
+            critical: '#ef4444',
+            canvas: '#0f172a',
+            surface: '#1e293b',
+            'surface-glass': 'rgba(30, 41, 59, 0.8)',
+            muted: '#94a3b8',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+        .fatigue-btn { min-height: 64px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.125rem; border-radius: 0.75rem; }
+        .glass-panel { background: var(--tw-colors-surface-glass); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col antialiased">
+    
+    <!-- Global Header -->
+    <header class="bg-slate-800 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+            <div>
+                <h1 class="font-semibold text-lg leading-tight tracking-tight">Waypoint Dispatch</h1>
+                <span class="text-xs font-mono text-muted uppercase">driver Portal</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-500">
+                <span class="material-symbols-outlined text-[16px]">wifi</span> Online (WebSocket)
+            </div>
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                <span class="material-symbols-outlined">contrast</span>
+            </button>
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-x-hidden">
+        
+        <div class="p-4 max-w-md mx-auto h-[calc(100vh-70px)] flex flex-col bg-[#0f172a]">
+            
+            <div class="text-center mb-6 pt-4">
+                <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">PRE-TRIP INSPECTION</h2>
+                <div class="inline-flex items-center gap-2 bg-slate-800 px-4 py-2 rounded-full border border-slate-700">
+                    <span class="material-symbols-outlined text-primary text-xl">local_shipping</span>
+                    <span class="font-mono font-bold text-slate-200">VEH-003</span>
+                </div>
+            </div>
+            
+            <div class="bg-blue-900/20 border border-blue-900/50 p-4 rounded-xl mb-6 text-center">
+                <span class="material-symbols-outlined text-blue-400 text-3xl mb-2">ac_unit</span>
+                <div class="text-slate-300 text-sm">Target Chilled Setpoint: <strong class="text-white">0°C to 4°C</strong></div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto space-y-3 pb-6">
+                <!-- Checklist Item 1 -->
+                <div class="bg-[#1e293b] border border-slate-700 rounded-xl p-4 flex gap-4 items-center">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-emerald-400 font-bold">check</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white">Tires & Brakes</h4>
+                        <p class="text-xs text-slate-400">Visual inspection completed.</p>
+                    </div>
+                </div>
+                
+                <!-- Checklist Item 2 -->
+                <div class="bg-[#1e293b] border border-slate-700 rounded-xl p-4 flex gap-4 items-center">
+                    <div class="w-12 h-12 rounded-full bg-emerald-500/20 border-2 border-emerald-500 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-emerald-400 font-bold">check</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white">Engine Oil & Fluids</h4>
+                        <p class="text-xs text-slate-400">Levels verified normal.</p>
+                    </div>
+                </div>
+                
+                <!-- Checklist Item 3 (Active) -->
+                <div class="bg-slate-800 border-2 border-primary rounded-xl p-4 flex gap-4 items-center shadow-[0_0_15px_rgba(14,165,233,0.15)] relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                    <div class="w-12 h-12 rounded-full bg-slate-900 border-2 border-slate-600 flex items-center justify-center shrink-0">
+                        <span class="text-slate-400 font-bold">3</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-white mb-1">Reefer Temperature Check</h4>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" class="w-20 bg-slate-900 border border-slate-600 rounded p-2 text-center text-white font-bold font-mono focus:border-primary focus:outline-none" placeholder="°C">
+                            <span class="text-sm text-slate-400">Enter current reading</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Checklist Item 4 -->
+                <div class="bg-[#1e293b] border border-slate-700 rounded-xl p-4 flex gap-4 items-center opacity-60">
+                    <div class="w-12 h-12 rounded-full bg-slate-900 border-2 border-slate-700 flex items-center justify-center shrink-0">
+                        <span class="text-slate-500 font-bold">4</span>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-slate-300">Seal Integrity</h4>
+                        <p class="text-xs text-slate-500">Verify dock seal intact.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-auto pt-4 bg-[#0f172a]">
+                <button class="w-full fatigue-btn bg-slate-700 text-slate-400 cursor-not-allowed">
+                    COMPLETE PTI & UNLOCK ROUTE
+                </button>
+            </div>
+        </div>
+        
+    </main>
+
+
+<script>
+document.querySelectorAll('.material-symbols-outlined').forEach(async (el) => {
+  const iconName = el.innerText.trim().replace(/_/g, '-');
+  const res = await fetch(`https://api.iconify.design/material-symbols/${iconName}-outline.svg`);
+  if (res.ok) {
+    let svg = await res.text();
+    el.innerHTML = svg.replace('<svg ', '<svg style="width:1em; height:1em; display:inline-block;" ');
+  }
+});
+</script>
+</body>
+
+</html>
