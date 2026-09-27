@@ -1,170 +1,146 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Waypoint Dispatch</title>
+  <title>Waypoint Dispatch - Authentication</title>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
-      darkMode: "class",
       theme: {
         extend: {
           colors: {
-            "canvas-base": "#050914",
-            "primary-blue": "#3b82f6",
-            "accent-ice": "#38bdf8",
-            "text-primary": "#ffffff",
-            "text-secondary": "#94a3b8",
+            "canvas-base": "#f8fafc",
+            "surface-dim": "#f1f5f9",
+            "primary-teal": "#0ea5e9",
+            "text-primary": "#0f172a",
+            "text-secondary": "#334155",
             "text-muted": "#64748b",
             "status-live": "#10b981",
-            "status-amber": "#f59e0b",
-            "glass-bg": "rgba(255, 255, 255, 0.03)",
-            "glass-border": "rgba(255, 255, 255, 0.08)",
-            "glass-hover": "rgba(255, 255, 255, 0.06)"
+            "status-amber": "#f59e0b"
           },
           fontFamily: {
-            headline: ["Space Grotesk", "sans-serif"],
-            body: ["Geist", "sans-serif"],
+            sans: ["Inter", "sans-serif"],
             mono: ["JetBrains Mono", "monospace"]
           }
         }
       }
     };
   </script>
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-    }
-    .glass-panel {
-      background: var(--tw-colors-glass-bg);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--tw-colors-glass-border);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    }
-    .glass-panel:hover {
-      background: var(--tw-colors-glass-hover);
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-    .ambient-glow {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      z-index: 0;
-      pointer-events: none;
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
-<body class="bg-canvas-base text-text-primary font-body antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-primary-blue/30">
-  
-  <!-- Ambient background glows -->
-  <div class="ambient-glow bg-blue-600/15 w-[50vw] h-[50vw] top-[-20%] left-[-10%]"></div>
-  <div class="ambient-glow bg-cyan-500/10 w-[40vw] h-[40vw] bottom-[-10%] right-[-10%]"></div>
+<body class="bg-canvas-base text-text-primary font-sans antialiased min-h-screen flex items-center justify-center relative overflow-hidden" style="background-image: radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 30%), radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 30%);">
 
-  <!-- Minimal Header -->
-  <header class="w-full z-50 relative">
-    <div class="max-w-[1440px] mx-auto px-8 py-6 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full glass-panel flex items-center justify-center relative">
-          <span class="w-2 h-2 rounded-full bg-accent-ice animate-pulse shadow-[0_0_10px_rgba(56,189,248,0.8)]"></span>
-        </div>
-        <span class="text-sm font-headline font-semibold tracking-widest uppercase text-white/90">Waypoint</span>
-      </div>
-      
-      <div class="flex items-center gap-4">
-        <a href="./sys_01.html" class="glass-panel px-4 py-2 rounded-full flex items-center gap-2 cursor-pointer transition-all">
-          <span class="w-1.5 h-1.5 rounded-full bg-status-live shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-          <span class="font-mono text-xs text-text-secondary">System</span>
-        </a>
-      </div>
-    </div>
-  </header>
+  <!-- Background decorative lines -->
+  <div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 64px 64px;"></div>
 
-  <!-- Main Content -->
-  <main class="max-w-[1440px] w-full mx-auto px-8 py-12 flex-1 flex flex-col justify-center gap-12 z-10 relative">
+  <div class="w-full max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-10 relative">
     
-    <div class="text-center max-w-xl mx-auto mb-4">
-      <h1 class="text-3xl font-headline font-medium tracking-tight text-white/90">Select Authorization</h1>
-      <p class="text-sm text-text-muted mt-2 font-mono">Authenticate to access operational domain</p>
-    </div>
-
-    <!-- Glassmorphic Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Left Column: Branding & Tech Info -->
+    <div class="hidden lg:flex flex-col gap-8">
+      <div>
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-teal/10 border border-primary-teal/20 mb-6">
+          <span class="w-3 h-3 rounded-full bg-primary-teal shadow-[0_0_12px_rgba(14,165,233,0.5)]"></span>
+        </div>
+        <h1 class="text-5xl font-semibold tracking-tight text-text-primary mb-4">Waypoint <br/><span class="text-text-secondary">Operations</span></h1>
+        <p class="text-text-secondary leading-relaxed max-w-md">Enterprise logistics and dispatch platform. Secure authentication required for network access. All telemetry is monitored.</p>
+      </div>
       
-      <!-- Card 1 -->
-      <a href="/dispatch/fleet" class="group glass-panel rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary group-hover:text-white transition-colors mb-6">
-            <span class="material-symbols-outlined text-[24px]">cell_tower</span>
-          </div>
-          <h2 class="text-lg font-headline font-medium text-white/90">Central Dispatch</h2>
-          <p class="font-mono text-xs text-text-muted mt-1">Kamal Gunaratne</p>
+      <div class="flex flex-col gap-3 mt-8 border-l border-black/10 pl-6">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[16px] text-status-live">check_circle</span>
+          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Core Network: Online</span>
         </div>
-        <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-4">
-          <span class="font-mono text-xs text-text-secondary">HQ Access</span>
-          <span class="material-symbols-outlined text-text-muted group-hover:text-white transition-colors text-[18px]">arrow_forward</span>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[16px] text-status-live">check_circle</span>
+          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Telemetry Gateway: Active</span>
         </div>
-      </a>
-
-      <!-- Card 2 -->
-      <a href="/depot/bays" class="group glass-panel rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary group-hover:text-white transition-colors mb-6">
-            <span class="material-symbols-outlined text-[24px]">warehouse</span>
-          </div>
-          <h2 class="text-lg font-headline font-medium text-white/90">Dock Supervisor</h2>
-          <p class="font-mono text-xs text-text-muted mt-1">Nuwan Perera</p>
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[16px] text-status-amber">warning</span>
+          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Degradation Node: Standby</span>
         </div>
-        <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-4">
-          <span class="font-mono text-xs text-text-secondary">Bay 04</span>
-          <span class="material-symbols-outlined text-text-muted group-hover:text-white transition-colors text-[18px]">arrow_forward</span>
-        </div>
-      </a>
-
-      <!-- Card 3 -->
-      <a href="/field/manifest" class="group glass-panel rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary group-hover:text-white transition-colors mb-6">
-            <span class="material-symbols-outlined text-[24px]">local_shipping</span>
-          </div>
-          <h2 class="text-lg font-headline font-medium text-white/90">Field Driver</h2>
-          <p class="font-mono text-xs text-text-muted mt-1">Saman Kumara</p>
-        </div>
-        <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-4">
-          <span class="font-mono text-xs text-text-secondary">Route KDY</span>
-          <span class="material-symbols-outlined text-text-muted group-hover:text-white transition-colors text-[18px]">arrow_forward</span>
-        </div>
-      </a>
-
-      <!-- Card 4 -->
-      <a href="/store/receiving" class="group glass-panel rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary group-hover:text-white transition-colors mb-6">
-            <span class="material-symbols-outlined text-[24px]">storefront</span>
-          </div>
-          <h2 class="text-lg font-headline font-medium text-white/90">Store Manager</h2>
-          <p class="font-mono text-xs text-text-muted mt-1">Priya Kulatunga</p>
-        </div>
-        <div class="mt-8 flex items-center justify-between border-t border-white/5 pt-4">
-          <span class="font-mono text-xs text-text-secondary">OUT-007</span>
-          <span class="material-symbols-outlined text-text-muted group-hover:text-white transition-colors text-[18px]">arrow_forward</span>
-        </div>
-      </a>
-
+      </div>
     </div>
 
-    <!-- SSO Form -->
-    <div class="glass-panel rounded-2xl p-2 mx-auto inline-flex items-center gap-2 mt-8">
-       <input type="text" placeholder="SSO Token" class="bg-transparent border-none text-sm text-white focus:ring-0 placeholder:text-text-muted px-4 w-48 font-mono outline-none" />
-       <button class="bg-white/10 hover:bg-white/20 border border-white/5 text-white rounded-xl px-6 py-2 text-sm font-medium transition-colors">Authenticate</button>
-    </div>
+    <!-- Right Column: Login Modal -->
+    <div class="w-full max-w-md mx-auto relative">
+      <!-- Glow behind modal -->
+      <div class="absolute -inset-1 bg-gradient-to-b from-primary-teal/20 to-transparent rounded-3xl blur-xl opacity-40"></div>
+      
+      <div class="glass-panel rounded-3xl p-8 lg:p-10 relative">
+        <h2 class="text-2xl font-semibold mb-2">Sign In</h2>
+        <p class="text-sm text-text-secondary mb-8">Enter your corporate credentials</p>
 
-  </main>
+        <form class="flex flex-col gap-5">
+          <div class="flex flex-col gap-2">
+            <label class="font-mono text-xs text-text-secondary uppercase tracking-wider">Employee ID / Email</label>
+            <input type="text" class="input-field w-full rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted" placeholder="e.g. kamal.g@waypoint.lk" />
+          </div>
+          
+          <div class="flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+              <label class="font-mono text-xs text-text-secondary uppercase tracking-wider">Password</label>
+              <a href="#" class="font-mono text-[10px] text-primary-teal hover:underline">Forgot?</a>
+            </div>
+            <input type="password" class="input-field w-full rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted" placeholder="••••••••" />
+          </div>
+
+          <button type="button" class="btn-primary w-full rounded-xl py-3 font-semibold mt-2 text-sm">Authenticate</button>
+        </form>
+
+        <div class="mt-10 pt-8 border-t border-black/5">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-mono text-[10px] text-text-muted uppercase tracking-widest">Hackathon Judge / Demo Bypass</span>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <a href="/dispatch/fleet" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">cell_tower</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">HQ Dispatch</span>
+                <span class="text-[10px] text-text-muted font-mono">Kamal</span>
+              </div>
+            </a>
+            
+            <a href="/depot/bays" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">warehouse</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Dock Sup.</span>
+                <span class="text-[10px] text-text-muted font-mono">Nuwan</span>
+              </div>
+            </a>
+            
+            <a href="/field/manifest" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">local_shipping</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Driver</span>
+                <span class="text-[10px] text-text-muted font-mono">Saman</span>
+              </div>
+            </a>
+            
+            <a href="/store/receiving" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
+              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">storefront</span>
+              <div class="flex flex-col">
+                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Store Mgr.</span>
+                <span class="text-[10px] text-text-muted font-mono">Priya</span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="mt-4 pt-4 border-t border-black/5 flex justify-center">
+              <a href="./sys_01.html" class="font-mono text-[10px] text-text-muted hover:text-text-primary transition-colors flex items-center gap-1">
+                 <span class="material-symbols-outlined text-[12px]">terminal</span> View System Telemetry
+              </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
