@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Waypoint Dispatch — SYS-01 Health Diagnostics &amp; Telemetry</title>
+  <title>Waypoint System</title>
   <link href="https://fonts.googleapis.com" rel="preconnect"/>
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script>
     tailwind.config = {
@@ -15,22 +15,17 @@
       theme: {
         extend: {
           colors: {
-            "canvas-base": "#080d1a",
-            "surface-low": "#0d1527",
-            "surface-card": "#111d38",
-            "surface-elevated": "#162344",
-            "surface-highest": "#1c2b4e",
-            "border-subtle": "#1e325c",
-            "border-hover": "#2e4880",
-            "primary-blue": "#2563eb",
-            "primary-hover": "#1d4ed8",
+            "canvas-base": "#050914",
+            "primary-blue": "#3b82f6",
             "accent-ice": "#38bdf8",
-            "accent-soft": "#7bd0ff",
-            "text-primary": "#f8fafc",
-            "text-secondary": "#cbd5e1",
-            "text-muted": "#8da2c0",
+            "text-primary": "#ffffff",
+            "text-secondary": "#94a3b8",
+            "text-muted": "#64748b",
             "status-live": "#10b981",
-            "status-amber": "#f59e0b"
+            "status-amber": "#f59e0b",
+            "glass-bg": "rgba(255, 255, 255, 0.02)",
+            "glass-border": "rgba(255, 255, 255, 0.06)",
+            "glass-hover": "rgba(255, 255, 255, 0.04)"
           },
           fontFamily: {
             headline: ["Space Grotesk", "sans-serif"],
@@ -43,494 +38,133 @@
   </script>
   <style>
     .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
-      font-size: 18px;
-      line-height: 1;
-      display: inline-block;
-      vertical-align: middle;
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
     }
-    .custom-mesh-bg {
-      background-color: #080d1a;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 60%),
-        radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.04) 0%, transparent 40%);
+    .glass-panel {
+      background: var(--tw-colors-glass-bg);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid var(--tw-colors-glass-border);
+      box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+    }
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
-<body class="custom-mesh-bg text-text-primary min-h-screen flex flex-col font-body antialiased selection:bg-primary-blue selection:text-white">
+<body class="bg-canvas-base text-text-primary font-body antialiased min-h-screen flex flex-col relative overflow-x-hidden selection:bg-primary-blue/30">
   
-  <!-- 1. TOP NAVIGATION BAR -->
-  <header class="bg-surface-low/90 backdrop-blur-md border-b border-border-subtle w-full sticky top-0 z-50">
-    <div class="flex justify-between items-center w-full px-6 py-3 max-w-[1600px] mx-auto">
-      
-      <!-- Brand & Left Controls -->
-      <div class="flex items-center gap-4">
-        <div class="flex items-center gap-2">
-          <span class="relative flex h-3 w-3 items-center justify-center">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-ice opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-status-live"></span>
-          </span>
-          <span class="text-base font-headline font-bold uppercase tracking-wider text-text-primary">Waypoint Dispatch</span>
+  <div class="ambient-glow bg-blue-600/10 w-[60vw] h-[60vw] top-[-30%] left-[-20%]"></div>
+  <div class="ambient-glow bg-emerald-500/5 w-[50vw] h-[50vw] bottom-[-20%] right-[-10%]"></div>
+
+  <header class="w-full z-50 relative border-b border-white/5">
+    <div class="max-w-[1440px] mx-auto px-8 py-5 flex justify-between items-center">
+      <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3">
+          <div class="w-2 h-2 rounded-full bg-status-live shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+          <span class="text-sm font-headline font-semibold tracking-widest uppercase text-white/90">Waypoint Sys</span>
         </div>
-        <span class="bg-surface-card text-accent-ice border border-border-subtle px-2 py-0.5 rounded font-mono text-[11px] tracking-wider">
-          SYS-01
-        </span>
-        <div class="hidden lg:flex items-center gap-1 border-l border-border-subtle pl-4">
-          <a class="flex items-center gap-1.5 text-text-muted hover:text-accent-ice text-xs font-mono transition-colors" href="./auth_01.html">
-            <span class="material-symbols-outlined text-[15px]">arrow_back</span>
-            <span>Role Portal</span>
-          </a>
-        </div>
+        <div class="h-4 w-px bg-white/10"></div>
+        <a href="./auth_01.html" class="text-xs font-mono text-text-muted hover:text-white transition-colors flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span> Return
+        </a>
       </div>
-
-      <!-- Right Utility Cluster -->
-      <div class="flex items-center gap-3">
-        <!-- Global Operational Mesh Status -->
-        <div class="hidden sm:flex items-center gap-2 bg-surface-card border border-border-subtle px-2.5 py-1 rounded font-mono text-xs text-accent-ice">
-          <span class="inline-block w-1.5 h-1.5 rounded-full bg-status-live"></span>
-          <span>Mesh: Operational • 99.98%</span>
-        </div>
-
-        <!-- Trilingual Language Pill -->
-        <div class="flex items-center bg-surface-card border border-border-subtle rounded px-2 py-1 font-mono text-xs text-text-muted">
-          <span class="text-accent-ice font-semibold">EN</span>
-          <span class="mx-1 text-border-subtle">|</span>
-          <span class="hover:text-text-primary cursor-pointer">සිං</span>
-          <span class="mx-1 text-border-subtle">|</span>
-          <span class="hover:text-text-primary cursor-pointer">த</span>
-        </div>
-
-        <!-- Contrast Mode Toggle -->
-        <button class="flex items-center gap-1.5 bg-surface-card border border-border-subtle px-2.5 py-1 rounded font-mono text-xs text-text-muted hover:text-accent-ice hover:border-accent-ice/40 transition-colors" title="Toggle High Contrast Mode">
-          <span class="material-symbols-outlined text-[15px]">contrast</span>
-          <span class="hidden md:inline">A11y</span>
-        </button>
+      
+      <div class="flex items-center gap-4 text-xs font-mono text-text-secondary">
+        <span class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-status-live"></span> Mesh: 99.9%</span>
       </div>
     </div>
   </header>
 
-  <!-- MAIN OPERATIONAL WORKSPACE -->
-  <main class="flex-1 w-full max-w-[1600px] mx-auto px-6 py-6 flex flex-col gap-6">
+  <main class="max-w-[1440px] w-full mx-auto px-8 py-10 flex-1 flex flex-col gap-10 z-10 relative">
     
-    <!-- 2. SCREEN HEADER: Minimal Copy -->
-    <section class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-2 border-b border-border-subtle/50">
+    <div class="flex justify-between items-end">
       <div>
-        <div class="flex items-center gap-3">
-          <h1 class="text-2xl font-headline font-bold text-text-primary tracking-tight">System Health Diagnostics</h1>
-          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-mono text-xs bg-surface-card border border-border-subtle text-accent-soft">
-            <span class="material-symbols-outlined text-[13px]">verified</span> Realtime Mesh
-          </span>
-        </div>
-        <p class="text-xs font-body text-text-muted mt-0.5">Multi-tier telemetry &amp; offline mesh</p>
+        <h1 class="text-3xl font-headline font-medium text-white/90 tracking-tight">Telemetry</h1>
       </div>
-
-      <div class="flex items-center gap-2.5 self-end sm:self-auto">
-        <button class="bg-surface-card hover:bg-surface-elevated border border-border-subtle text-text-primary px-3 py-1.5 rounded font-mono text-xs transition-colors flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[16px]">alt_route</span>
-          <span>Simulate Failover</span>
-        </button>
-        <button class="bg-primary-blue hover:bg-primary-hover text-white border border-accent-ice/30 shadow-[0_0_12px_rgba(37,99,235,0.4)] px-3.5 py-1.5 rounded font-mono text-xs transition-colors flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[16px]">ios_share</span>
-          <span>Export Diagnostics</span>
-        </button>
+      <div class="glass-panel px-4 py-2 rounded-lg font-mono text-xs flex items-center gap-2 text-text-secondary">
+        <span class="material-symbols-outlined text-[16px]">sync</span> Live Sync
       </div>
-    </section>
+    </div>
 
-    <!-- 3. TOP KPI METRIC TICKER ROW (4 Columns Grid) -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
-      <!-- Metric 1: Gateway Latency -->
-      <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between shadow-[0_4px_20px_-2px_rgba(8,13,26,0.7)] hover:border-accent-ice/50 transition-colors">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs text-text-muted">Average Gateway Latency</span>
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-status-live/15 border border-status-live/30 text-status-live font-mono text-[11px]">
-            <span class="w-1.5 h-1.5 rounded-full bg-status-live"></span> Nominal
-          </span>
-        </div>
-        <div class="mt-3 flex items-baseline justify-between">
-          <div class="flex items-baseline gap-1">
-            <span class="text-3xl font-headline font-bold text-white tracking-tight">14</span>
-            <span class="font-mono text-xs text-accent-ice">ms</span>
-          </div>
-          <span class="font-mono text-xs text-text-muted">Jitter: ±1.2ms</span>
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+        <span class="font-mono text-xs text-text-muted">Latency</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-4xl font-headline font-medium text-white">14</span>
+          <span class="text-sm font-mono text-text-secondary">ms</span>
         </div>
       </div>
-
-      <!-- Metric 2: Vehicles Connected -->
-      <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between shadow-[0_4px_20px_-2px_rgba(8,13,26,0.7)] hover:border-accent-ice/50 transition-colors">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs text-text-muted">Vehicles Connected</span>
-          <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-primary-blue/20 border border-primary-blue/40 text-accent-soft font-mono text-[11px]">
-            <span class="w-1.5 h-1.5 rounded-full bg-accent-ice"></span> 100% Fleet
-          </span>
-        </div>
-        <div class="mt-3 flex items-baseline justify-between">
-          <div class="flex items-baseline gap-1">
-            <span class="text-3xl font-headline font-bold text-white tracking-tight">60</span>
-            <span class="font-mono text-xs text-text-muted">/ 60 Active</span>
-          </div>
-          <span class="font-mono text-xs text-status-live">0 Stale</span>
+      <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+        <span class="font-mono text-xs text-text-muted">Active Fleet</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-4xl font-headline font-medium text-white">60</span>
+          <span class="text-sm font-mono text-text-secondary">/ 60</span>
         </div>
       </div>
-
-      <!-- Metric 3: Local PWA Cache -->
-      <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between shadow-[0_4px_20px_-2px_rgba(8,13,26,0.7)] hover:border-accent-ice/50 transition-colors">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs text-text-muted">Local PWA Cache</span>
-          <span class="font-mono text-xs text-accent-ice">3.6% used</span>
-        </div>
-        <div class="mt-3">
-          <div class="flex items-baseline justify-between mb-1.5">
-            <div class="flex items-baseline gap-1">
-              <span class="text-3xl font-headline font-bold text-white tracking-tight">18.4</span>
-              <span class="font-mono text-xs text-accent-soft">MB</span>
-            </div>
-            <span class="font-mono text-xs text-text-muted">Cap: 500 MB</span>
-          </div>
-          <div class="w-full bg-surface-highest rounded-full h-1.5 overflow-hidden">
-            <div class="bg-accent-ice h-1.5 rounded-full" style="width: 3.68%"></div>
-          </div>
+      <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+        <span class="font-mono text-xs text-text-muted">Cache</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-4xl font-headline font-medium text-white">18</span>
+          <span class="text-sm font-mono text-text-secondary">mb</span>
         </div>
       </div>
-
-      <!-- Metric 4: Active Connectivity Mode -->
-      <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between shadow-[0_4px_20px_-2px_rgba(8,13,26,0.7)] hover:border-accent-ice/50 transition-colors">
-        <div class="flex items-center justify-between">
-          <span class="font-mono text-xs text-text-muted">Active Connectivity Mode</span>
-          <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-accent-ice/15 border border-accent-ice/30 text-accent-ice font-mono text-[11px]">
-            <span class="w-1.5 h-1.5 rounded-full bg-accent-ice animate-pulse"></span> WebSocket Live
-          </span>
-        </div>
-        <div class="mt-3 flex items-baseline justify-between">
-          <div class="flex items-baseline gap-1">
-            <span class="text-3xl font-headline font-bold text-white tracking-tight">Tier 1</span>
-          </div>
-          <span class="font-mono text-xs text-status-live">Zero Degradation</span>
+      <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+        <span class="font-mono text-xs text-text-muted">Mode</span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-2xl font-headline font-medium text-accent-ice mt-1">WebSocket</span>
         </div>
       </div>
+    </div>
 
-    </section>
-
-    <!-- 4. MULTI-TIER DEGRADATION MESH GRID (3 Cards) -->
-    <section>
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <h2 class="text-base font-headline font-semibold text-text-primary">Tri-Tier Degradation Mesh</h2>
-          <span class="font-mono text-xs text-text-muted border border-border-subtle px-2 py-0.5 rounded">Adaptive Failover</span>
-        </div>
-        <span class="font-mono text-xs text-accent-ice hidden sm:inline">Engine: Quic / WSS Relay</span>
+    <!-- Mesh Nodes -->
+    <div class="glass-panel rounded-2xl overflow-hidden mt-2">
+      <div class="px-6 py-5 border-b border-white/5 flex items-center justify-between">
+        <span class="font-mono text-xs text-text-muted uppercase tracking-wider">Edge Nodes</span>
       </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        
-        <!-- Tier 1 Card: Primary Gateway -->
-        <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-accent-ice/50 transition-colors">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-status-live"></div>
-          <div>
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <div>
-                <span class="font-mono text-[11px] text-status-live">Primary Channel</span>
-                <h3 class="text-base font-headline font-semibold text-white">WebSocket (Primary)</h3>
-              </div>
-              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-status-live/15 border border-status-live/30 text-status-live font-mono text-[11px] font-bold whitespace-nowrap">
-                <span class="w-2 h-2 rounded-full bg-status-live animate-ping"></span>
-                ACTIVE • ONLINE
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 mb-3 bg-surface-low p-2.5 rounded border border-border-subtle">
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Latency</span>
-                <span class="font-mono text-xs text-white font-semibold">14ms Latency</span>
-              </div>
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Cloud Hub</span>
-                <span class="font-mono text-xs text-accent-soft">Peliyagoda HQ</span>
-              </div>
-              <div class="col-span-2 pt-1 border-t border-border-subtle/50 flex justify-between items-center">
-                <span class="font-mono text-[10px] text-text-muted">Transport Socket</span>
-                <span class="font-mono text-[10px] text-white bg-surface-card px-1.5 py-0.5 rounded border border-border-subtle">Port 443 WSS</span>
-              </div>
-            </div>
-
-            <!-- Waveform Pulse SVG -->
-            <div>
-              <div class="flex justify-between items-center font-mono text-[11px] text-text-muted mb-1">
-                <span>Realtime Waveform</span>
-                <span class="text-status-live">Steady 60Hz</span>
-              </div>
-              <div class="h-12 w-full bg-surface-low rounded border border-border-subtle p-1 flex items-center">
-                <svg class="w-full h-full text-status-live" fill="none" preserveAspectRatio="none" viewBox="0 0 300 40">
-                  <path d="M0,20 L30,20 L40,8 L48,32 L56,20 L90,20 L100,5 L110,35 L120,20 L170,20 L180,12 L190,28 L200,20 L240,20 L250,7 L260,33 L270,20 L300,20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-3 pt-2.5 border-t border-border-subtle/50 flex items-center justify-between font-mono text-[11px]">
-            <span class="text-text-muted">Keep-Alive Heartbeat</span>
-            <span class="text-white">Every 3.0s</span>
-          </div>
-        </div>
-
-        <!-- Tier 2 Card: Secondary Fallback -->
-        <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-accent-ice/50 transition-colors">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-accent-ice"></div>
-          <div>
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <div>
-                <span class="font-mono text-[11px] text-accent-ice">Adaptive Polling</span>
-                <h3 class="text-base font-headline font-semibold text-white">HTTP Long-Poll (Tier 2)</h3>
-              </div>
-              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-accent-ice/15 border border-accent-ice/30 text-accent-ice font-mono text-[11px] whitespace-nowrap">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent-ice"></span>
-                STANDBY • READY
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 mb-3 bg-surface-low p-2.5 rounded border border-border-subtle">
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Interval</span>
-                <span class="font-mono text-xs text-white font-semibold">15s Polling</span>
-              </div>
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Edge Hub</span>
-                <span class="font-mono text-xs text-accent-soft">Kandy Depot</span>
-              </div>
-              <div class="col-span-2 pt-1 border-t border-border-subtle/50 flex justify-between items-center">
-                <span class="font-mono text-[10px] text-text-muted">Circuit Breaker</span>
-                <span class="font-mono text-[10px] text-white bg-surface-card px-1.5 py-0.5 rounded border border-border-subtle">Auto-Trip on 3 drops</span>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between items-center font-mono text-[11px] text-text-muted mb-1">
-                <span>Buffer Margin</span>
-                <span class="text-accent-ice">Pre-warmed</span>
-              </div>
-              <div class="h-12 w-full bg-surface-low rounded border border-border-subtle p-2 flex flex-col justify-center gap-1">
-                <div class="flex justify-between font-mono text-[10px] text-text-muted">
-                  <span>Simulated Handshake</span>
-                  <span class="text-white">42ms Ready</span>
-                </div>
-                <div class="w-full bg-surface-highest rounded-full h-1.5 overflow-hidden">
-                  <div class="bg-accent-ice h-1.5 rounded-full" style="width: 28%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-3 pt-2.5 border-t border-border-subtle/50 flex items-center justify-between font-mono text-[11px]">
-            <span class="text-text-muted">Health Ping Response</span>
-            <span class="text-accent-ice">200 OK (0s ago)</span>
-          </div>
-        </div>
-
-        <!-- Tier 3 Card: SMS Telemetry -->
-        <div class="bg-surface-card border border-border-subtle rounded-xl p-4 flex flex-col justify-between relative overflow-hidden group hover:border-accent-ice/50 transition-colors">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-accent-soft"></div>
-          <div>
-            <div class="flex items-start justify-between gap-2 mb-3">
-              <div>
-                <span class="font-mono text-[11px] text-accent-soft">Mountain Corridor Mesh</span>
-                <h3 class="text-base font-headline font-semibold text-white">SMS Telemetry (Tier 3)</h3>
-              </div>
-              <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-primary-blue/20 border border-primary-blue/30 text-accent-soft font-mono text-[11px] whitespace-nowrap">
-                <span class="w-1.5 h-1.5 rounded-full bg-accent-soft"></span>
-                STANDBY • TESTED
-              </span>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 mb-3 bg-surface-low p-2.5 rounded border border-border-subtle">
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Protocol</span>
-                <span class="font-mono text-xs text-white font-semibold">GSM / 2G Modem</span>
-              </div>
-              <div>
-                <span class="font-mono text-[10px] text-text-muted block">Coverage</span>
-                <span class="font-mono text-xs text-accent-soft">Kadugannawa / N.Eliya</span>
-              </div>
-              <div class="col-span-2 pt-1 border-t border-border-subtle/50 flex justify-between items-center">
-                <span class="font-mono text-[10px] text-text-muted">Payload Format</span>
-                <span class="font-mono text-[10px] text-white bg-surface-card px-1.5 py-0.5 rounded border border-border-subtle">140 Byte Compact Binary</span>
-              </div>
-            </div>
-
-            <div>
-              <div class="flex justify-between items-center font-mono text-[11px] text-text-muted mb-1">
-                <span>Carrier Gateway Status</span>
-                <span class="text-status-live">SMPP Linked</span>
-              </div>
-              <div class="h-12 w-full bg-surface-low rounded border border-border-subtle p-2 flex items-center justify-between gap-2">
-                <div class="flex-1 bg-surface-card border border-border-subtle rounded px-2 py-1 flex items-center justify-between">
-                  <span class="font-mono text-xs text-white">Dialog</span>
-                  <span class="w-2 h-2 rounded-full bg-status-live"></span>
-                </div>
-                <div class="flex-1 bg-surface-card border border-border-subtle rounded px-2 py-1 flex items-center justify-between">
-                  <span class="font-mono text-xs text-white">Mobitel</span>
-                  <span class="w-2 h-2 rounded-full bg-status-live"></span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-3 pt-2.5 border-t border-border-subtle/50 flex items-center justify-between font-mono text-[11px]">
-            <span class="text-text-muted">Automated Handshake</span>
-            <span class="text-white">12 mins ago</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 5. CLIENT STORAGE & EDGE NODES TABLE -->
-    <section class="bg-surface-card border border-border-subtle rounded-xl overflow-hidden flex flex-col shadow-[0_4px_20px_-2px_rgba(8,13,26,0.7)]">
-      <div class="px-4 py-3 bg-surface-low border-b border-border-subtle flex flex-wrap justify-between items-center gap-2">
-        <div class="flex items-center gap-2.5">
-          <h2 class="text-base font-headline font-semibold text-text-primary">Active Edge Nodes &amp; Cache Queues</h2>
-          <span class="bg-surface-card border border-border-subtle text-accent-ice font-mono text-[11px] px-2 py-0.5 rounded">
-            4 Nodes Monitored
-          </span>
-        </div>
-        <button class="text-text-muted hover:text-white bg-surface-card border border-border-subtle hover:border-accent-ice px-2.5 py-1 rounded font-mono text-xs flex items-center gap-1 transition-colors">
-          <span class="material-symbols-outlined text-[14px]">refresh</span>
-          <span>Trigger Poll</span>
-        </button>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse min-w-[760px]">
-          <thead>
-            <tr class="border-b border-border-subtle bg-surface-low/50 font-mono text-xs text-text-muted">
-              <th class="py-2.5 px-4 font-medium">Node Identifier</th>
-              <th class="py-2.5 px-4 font-medium">Protocol</th>
-              <th class="py-2.5 px-4 font-medium">Latency</th>
-              <th class="py-2.5 px-4 font-medium">Buffer Queue</th>
-              <th class="py-2.5 px-4 font-medium">Operational Status</th>
-              <th class="py-2.5 px-4 font-medium text-right">Action</th>
+      <div class="overflow-x-auto hide-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[700px]">
+          <tbody class="divide-y divide-white/5 font-mono text-sm">
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-5 px-6 text-white/90">Peliyagoda Hub</td>
+              <td class="py-5 px-6 text-text-secondary">WSS</td>
+              <td class="py-5 px-6 text-status-live">12ms</td>
+              <td class="py-5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-live inline-block"></span></td>
             </tr>
-          </thead>
-          <tbody class="divide-y divide-border-subtle font-mono text-xs">
-            
-            <!-- Row 1: Peliyagoda Dispatch Hub -->
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="py-2.5 px-4 text-white font-medium">Peliyagoda Dispatch Hub</td>
-              <td class="py-2.5 px-4 text-text-muted">WSS (Secure Socket)</td>
-              <td class="py-2.5 px-4 text-status-live font-semibold">12ms</td>
-              <td class="py-2.5 px-4 text-text-muted">0 pending</td>
-              <td class="py-2.5 px-4">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-status-live/15 border border-status-live/30 text-status-live text-[11px]">
-                  <span class="w-1.5 h-1.5 rounded-full bg-status-live"></span> Nominal
-                </span>
-              </td>
-              <td class="py-2.5 px-4 text-right">
-                <button class="bg-surface-elevated border border-border-subtle hover:border-accent-ice hover:text-accent-ice text-text-muted px-2.5 py-0.5 rounded text-[11px] transition-colors">
-                  Ping
-                </button>
-              </td>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-5 px-6 text-white/90">Kandy Bay 02</td>
+              <td class="py-5 px-6 text-text-secondary">WSS</td>
+              <td class="py-5 px-6 text-status-live">24ms</td>
+              <td class="py-5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-live inline-block"></span></td>
             </tr>
-
-            <!-- Row 2: Kandy Depot Bay 02 -->
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="py-2.5 px-4 text-white font-medium">Kandy Depot Bay 02</td>
-              <td class="py-2.5 px-4 text-text-muted">WSS (Secure Socket)</td>
-              <td class="py-2.5 px-4 text-status-live font-semibold">24ms</td>
-              <td class="py-2.5 px-4 text-text-muted">0 pending</td>
-              <td class="py-2.5 px-4">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-status-live/15 border border-status-live/30 text-status-live text-[11px]">
-                  <span class="w-1.5 h-1.5 rounded-full bg-status-live"></span> Nominal
-                </span>
-              </td>
-              <td class="py-2.5 px-4 text-right">
-                <button class="bg-surface-elevated border border-border-subtle hover:border-accent-ice hover:text-accent-ice text-text-muted px-2.5 py-0.5 rounded text-[11px] transition-colors">
-                  Ping
-                </button>
-              </td>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-5 px-6 text-white/90">Van 02 (N.Eliya)</td>
+              <td class="py-5 px-6 text-text-secondary">HTTP</td>
+              <td class="py-5 px-6 text-status-amber">88ms</td>
+              <td class="py-5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-amber inline-block"></span></td>
             </tr>
-
-            <!-- Row 3: Nuwara Eliya Van 02 -->
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="py-2.5 px-4 text-white font-medium">Nuwara Eliya Van 02</td>
-              <td class="py-2.5 px-4 text-text-muted">HTTP Long-Poll</td>
-              <td class="py-2.5 px-4 text-status-amber font-semibold">88ms</td>
-              <td class="py-2.5 px-4 text-status-amber font-semibold">3 pending</td>
-              <td class="py-2.5 px-4">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-status-amber/15 border border-status-amber/30 text-status-amber text-[11px]">
-                  <span class="w-1.5 h-1.5 rounded-full bg-status-amber"></span> Degraded
-                </span>
-              </td>
-              <td class="py-2.5 px-4 text-right">
-                <button class="bg-surface-elevated border border-border-subtle hover:border-status-amber hover:text-status-amber text-text-muted px-2.5 py-0.5 rounded text-[11px] transition-colors">
-                  Inspect
-                </button>
-              </td>
+            <tr class="hover:bg-white/[0.02] transition-colors">
+              <td class="py-5 px-6 text-white/90">Truck 12 (Kadugannawa)</td>
+              <td class="py-5 px-6 text-text-secondary">SMS</td>
+              <td class="py-5 px-6 text-text-muted">320ms</td>
+              <td class="py-5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-text-muted inline-block"></span></td>
             </tr>
-
-            <!-- Row 4: Kadugannawa Truck 12 -->
-            <tr class="hover:bg-surface-elevated transition-colors">
-              <td class="py-2.5 px-4 text-white font-medium">Kadugannawa Truck 12</td>
-              <td class="py-2.5 px-4 text-text-muted">SMS Gateway</td>
-              <td class="py-2.5 px-4 text-accent-soft font-semibold">320ms</td>
-              <td class="py-2.5 px-4 text-accent-soft font-semibold">1 pending</td>
-              <td class="py-2.5 px-4">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-accent-soft/15 border border-accent-soft/30 text-accent-soft text-[11px]">
-                  <span class="w-1.5 h-1.5 rounded-full bg-accent-soft"></span> Standby
-                </span>
-              </td>
-              <td class="py-2.5 px-4 text-right">
-                <button class="bg-surface-elevated border border-border-subtle hover:border-accent-ice hover:text-accent-ice text-text-muted px-2.5 py-0.5 rounded text-[11px] transition-colors">
-                  Inspect
-                </button>
-              </td>
-            </tr>
-
           </tbody>
         </table>
       </div>
-    </section>
-
+    </div>
   </main>
-
-  <!-- 6. BOTTOM TELEMETRY FOOTER -->
-  <footer class="bg-surface-low border-t border-border-subtle w-full mt-auto">
-    <div class="w-full px-6 py-2 border-b border-border-subtle/40 flex flex-wrap items-center justify-between font-mono text-xs gap-2 text-text-muted">
-      <div class="flex items-center gap-2 overflow-x-auto whitespace-nowrap">
-        <span class="text-white">Kernel: v4.8.2-prod</span>
-        <span>•</span>
-        <span>Crypto: AES-256 GCM</span>
-        <span>•</span>
-        <span class="text-accent-soft">Host: LK-CMB-PEL-01</span>
-        <span>•</span>
-        <span class="text-status-live">Sync: Reconciled</span>
-      </div>
-      <div class="text-white flex items-center gap-1.5">
-        <span class="w-1.5 h-1.5 rounded-full bg-status-live"></span>
-        <span id="live-tick">Tick: 14:26:08 UTC+5:30</span>
-      </div>
-    </div>
-
-    <div class="flex flex-col md:flex-row justify-between items-center w-full px-6 py-3 max-w-[1600px] mx-auto gap-2 font-mono text-xs text-text-muted">
-      <span>© 2026 Waypoint Dispatch • Tech-Triathlon 2026 System Core</span>
-      <div class="flex items-center gap-4">
-        <span>Latency: 14ms</span>
-        <span>Uptime: 99.98%</span>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const el = document.getElementById('live-tick');
-      if (el) {
-        el.textContent = `Tick: ${hours}:${minutes}:${seconds} UTC+5:30`;
-      }
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
 </body>
 </html>
