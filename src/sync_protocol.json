@@ -1,0 +1,38 @@
+{
+  "protocol": "WaypointSync_v1",
+  "description": "Offline-first mutation sync protocol for Driver App",
+  "data_structures": {
+    "RouteLegMutation": {
+      "type": "object",
+      "properties": {
+        "leg_id": { "type": "string", "format": "uuid" },
+        "mutation_type": { "enum": ["ARRIVAL", "DEPARTURE", "DELIVERY_CONFIRM", "EXCEPTION"] },
+        "timestamp_local": { "type": "string", "format": "date-time" },
+        "payload": {
+          "type": "object",
+          "description": "Dynamic payload based on mutation_type (e.g., actual_arrival_time, proof_of_delivery_signature, exception_reason)"
+        },
+        "sync_status": { "enum": ["PENDING", "SYNCED", "CONFLICT"] }
+      }
+    }
+  },
+  "endpoints": {
+    "POST /api/v1/sync/driver/mutations": {
+      "description": "Batch endpoint for the driver app to push local mutations when back online.",
+      "request": {
+        "type": "array",
+        "items": { "$ref": "#/data_structures/RouteLegMutation" }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "accepted_count": { "type": "integer" },
+          "conflicts": {
+            "type": "array",
+            "description": "List of mutations rejected because a newer timestamp already exists on the server."
+          }
+        }
+      }
+    }
+  }
+}
