@@ -14,8 +14,9 @@ Whenever you are writing frontend code (React, Next.js, Tailwind), generating HT
 
 ## Law 1: Psychological Safety & Circadian Protection (Calm UI)
 - **Zero Aggressive Pure Reds:** Never use pure red (`#FF0000`). It triggers acute biological stress, elevated heart rates, and panic in fatigued frontline workers. Always use muted terracottas (`#ef4444`) for errors and warm ambers (`#f59e0b`) for operational warnings.
-- **Serene Oceanic Light Theme Default:**
-  - The entire system utilizes the **Serene Oceanic Light Theme**. It defaults to a calming, ultra-minimalist `Slate-50` (`#f8fafc`) canvas with translucent white glass panels. It uses a primary `Sky Blue` (`#0ea5e9`) accent to maintain a pristine, clinical, and stress-free visual environment for all personas.
+- **Persona-Driven Theme Defaulting:**
+  - **Serene Oceanic Light Theme:** Store Managers, Executives, and standard desktop dashboard views operate in well-lit environments. Their interfaces default to the clean, clinical `Slate-50` (`#f8fafc`) canvas with a `Sky Blue` (`#0ea5e9`) accent.
+  - **Midnight Sapphire Dark Theme:** Operations personnel (Drivers, Loaders, Night Dispatchers) operating at 03:00 AM require strict circadian protection. Their mobile and tablet interfaces MUST default to the deep `Slate-900` (`#0f172a`) dark theme to preserve dark-adapted vision and prevent ocular fatigue.
 - **Low-Noise Surfaces:** Surfaces must be matte and calm. Avoid distracting decorative drop shadows, glassmorphism blurs that hinder readability, or unnecessary visual ornamentation.
 
 ---
