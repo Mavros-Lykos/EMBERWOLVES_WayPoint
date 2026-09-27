@@ -970,3 +970,36 @@ To satisfy the **Restraint and Prioritization** judging criteria, the following 
 | **Driver Payroll & Salary Management** | Replaced with labor-law driving fatigue break timers. | Driver compensation belongs in Waypoint's enterprise HRMS/payroll. Coupling payroll into a logistics dispatch tool violates clean microservice boundaries. |
 | **Multi-Tier Warehouse Inventory Ledger** | Replaced with read-only WMS stock integration and dock shortfall flags. | Waypoint already maintains warehouse inventory in its central WMS. Re-implementing a warehouse ledger creates dangerous data duplication and race conditions. |
 | **Customer-Facing Public Parcel Tracking** | Scoped strictly to internal B2B Store Managers and Logistics Actors. | Waypoint Group operates internal B2B retail logistics (Fresh, Style, Tech stores), not D2C courier deliveries. Public parcel tracking adds security risks without business utility. |
+
+---
+
+## 11. StitchMCP UI Generation Prompt Guide
+
+To ensure consistency with our new **Glassmorphic Minimalist** aesthetic across all remaining screens, use the following standardized prompts when calling the `StitchMCP` `generate_screen_from_text` tool. 
+Always ensure the `designSystem` ID corresponds to the active Glassmorphic DESIGN.md asset.
+
+### Global Aesthetic Rules (Inject into every prompt):
+> "Use a minimalist, glassmorphic aesthetic with deep slate/navy backgrounds, ambient glows (deep blue, cyan, and emerald), and frosted glass panels (backdrop-blur) for UI elements. Eliminate heavy opaque cards. Use thin glowing borders (white/10). Keep text extremely minimal—no explanatory paragraphs. Ensure sleek hover states."
+
+### Screen-Specific Generation Prompts:
+
+#### STORE-01: Store Operations Hub
+> "Create a Store Operations Hub & Arrival Tracker for a retail manager. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Include: A main banner showing 'OUT007' and 'Cutoff: 02h 14m'. Below it, a 'Today's Delivery Status' glass card showing ETA 07:15 AM, Driver Saman K., and a 'Track Live Map' button. A 'Quick Reorder Basket' glass card. A list of 'Active Orders Summary' showing ORD-8891 and ORD-8890. Keep it extremely minimal with thin glowing borders and sleek hover states."
+
+#### STORE-02: Order Placement Canvas
+> "Create an Order Placement Canvas for a retail manager. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Include: A top glass bar with 'Delivery for Tuesday, Oct 06' and a cutoff countdown. A category selector (Fresh Ambient, Chilled Reefer, Style, Tech) as glowing glass pills. A 2-column layout: Left column is an 'Item Catalog' with search bar and +/- buttons for SKUs. Right column is an 'Order Manifest Summary' showing Total Items, Weight, Volume, and a 'Submit Order' button. Minimal text, high contrast data."
+
+#### STORE-05: Live Receiving & Seal Verification Gate
+> "Create a Tablet PWA screen for 'Dock Receiving & Seal Verification'. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Ensure large 64px touch targets. Include: A header for Trip #TRIP-104. Step 1: A glass panel for 'Tamper-Evident Seal Verification' with a numpad/input for a 4-digit seal. Step 2: 'Temperature Check' glass panel showing 3.2°C. Step 3: 'Manifest Crate Audit' checklist with large checkboxes. A massive 'CONFIRM & SIGN RECEIPT' button at the bottom. Minimal text, high contrast."
+
+#### DISP-01: Fleet Capacity & Demand Intelligence Hub
+> "Create a Fleet Capacity Control Tower Dashboard for a central dispatcher. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Include: A top global metrics row (Total Orders, Total Weight, Total Volume). Three main glass columns: 1) Peliyagoda DC metrics (Active Orders, Capacity Used), 2) Kandy Hub metrics, 3) Fleet Status (60 Units, Reefer vs Dry). A bottom wide glass panel showing a 'Datathon ML Demand Surge Forecast' chart. Minimal text, high-density data, sleek hover states."
+
+#### DISP-02: Master Multi-Compartment Allocation Canvas
+> "Create a Master Allocation Canvas for a logistics dispatcher. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Split screen layout: Left side is 'Unallocated Orders' showing draggable glass cards for orders (showing volume, weight, constraints). Right side is 'Vehicle Trip Matrix' showing vehicle capacity glass blocks (e.g. VEH-003 Reefer) with horizontal progress bars for Volume and Weight usage. Sleek hover states, thin borders, highly technical but visually uncluttered."
+
+#### DRV-01: Pre-Trip Inspection (PTI) & Reefer Gate
+> "Create a Mobile Smartphone PWA screen for 'Pre-Trip Inspection'. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Optimize for nighttime glare with high contrast. Include: A header for 'VEH-003'. A vertical list of large 64px checklist items (e.g., Tires, Brakes, Reefer Temp, Seal Intact) inside frosted glass cards. Each item should have a prominent toggle or check button. A massive glowing 'UNLOCK ROUTE & DEPART' button fixed at the bottom. No extra paragraphs, strict minimalism."
+
+#### LOAD-03: Reverse-Sequence LIFO Loading Checklist
+> "Create a Tablet PWA screen for warehouse 'LIFO Loading'. Use a minimalist glassmorphic aesthetic with deep slate backgrounds, ambient glows, and frosted glass panels. Large 64px tap targets. Include: A visual 2D cross-section diagram of a truck cab (Front Cab, Chilled Zone, Ambient Zone, Rear Door) in a glass panel. Below, a 'Load Order' list strictly showing reverse sequence (Last Stop loaded first). Each item is a glass card with a 'LOADED' checkbox and barcode scan button. Minimal text, focus on clear sequencing."
