@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOAD-05: Release & Seal - Waypoint Dispatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0ea5e9',
+            'primary-hover': '#0284c7',
+            success: '#10b981',
+            warning: '#f59e0b',
+            critical: '#ef4444',
+            canvas: '#0f172a',
+            surface: '#1e293b',
+            'surface-glass': 'rgba(30, 41, 59, 0.8)',
+            muted: '#94a3b8',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+        .fatigue-btn { min-height: 64px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.125rem; border-radius: 0.75rem; }
+        .glass-panel { background: var(--tw-colors-surface-glass); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col antialiased">
+    
+    <!-- Global Header -->
+    <header class="bg-slate-800 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
+            <div>
+                <h1 class="font-semibold text-lg leading-tight tracking-tight">Waypoint Dispatch</h1>
+                <span class="text-xs font-mono text-muted uppercase">loader Portal</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-500">
+                <span class="material-symbols-outlined text-[16px]">wifi</span> Online (WebSocket)
+            </div>
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                <span class="material-symbols-outlined">contrast</span>
+            </button>
+            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-x-hidden">
+        
+        <div class="p-4 md:p-6 max-w-3xl mx-auto h-[calc(100vh-70px)] flex flex-col bg-[#0f172a]">
+            
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 mb-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white mb-1">DOCK RELEASE: TRIP-104</h2>
+                    <div class="text-slate-400 font-mono text-sm">VEH-003 | Driver: Saman K.</div>
+                </div>
+                <div class="bg-emerald-900/30 text-emerald-400 border border-emerald-900 px-3 py-1.5 rounded-lg font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined">verified</span> 100% LOADED
+                </div>
+            </div>
+            
+            <div class="flex-1 flex flex-col gap-6">
+                
+                <!-- Step 1 -->
+                <div class="bg-[#1e293b] rounded-2xl border border-slate-700 p-5 md:p-6 shadow-lg">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-primary flex items-center justify-center font-bold text-primary">1</div>
+                        <h3 class="text-lg font-bold text-white">TAMPER-EVIDENT SEAL REGISTRATION</h3>
+                    </div>
+                    
+                    <p class="text-slate-400 mb-6 text-sm">Secure the rear cargo door with a plastic bolt seal. Enter the unique serial number stamped on the seal below.</p>
+                    
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 mb-6">
+                        <div class="text-center font-mono text-sm text-slate-500 mb-2">ENTER SEAL NUMBER (e.g. SL-9942)</div>
+                        <div class="flex gap-2 justify-center">
+                            <input type="text" class="w-16 h-20 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-600 rounded-lg text-white focus:border-primary focus:outline-none" maxlength="1" value="9">
+                            <input type="text" class="w-16 h-20 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-600 rounded-lg text-white focus:border-primary focus:outline-none" maxlength="1" value="9">
+                            <input type="text" class="w-16 h-20 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-600 rounded-lg text-white focus:border-primary focus:outline-none" maxlength="1" value="4">
+                            <input type="text" class="w-16 h-20 text-center text-3xl font-bold bg-slate-800 border-2 border-slate-600 rounded-lg text-white focus:border-primary focus:outline-none" maxlength="1" value="2">
+                        </div>
+                    </div>
+                    
+                    <button class="w-full fatigue-btn bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 font-bold transition">
+                        <span class="material-symbols-outlined mr-2">qr_code_scanner</span> SCAN BARCODE INSTEAD
+                    </button>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="bg-[#1e293b] rounded-2xl border border-slate-700 p-5 md:p-6 shadow-lg mt-auto opacity-50">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center font-bold text-slate-500">2</div>
+                        <h3 class="text-lg font-bold text-slate-400">ISSUE DIGITAL GATE PASS</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm ml-13">Enter seal number to unlock final dispatch.</p>
+                </div>
+                
+                <!-- Primary Action -->
+                <button class="w-full fatigue-btn bg-primary hover:bg-primary-hover text-white text-xl tracking-wider shadow-[0_0_20px_rgba(14,165,233,0.4)] mt-4">
+                    VERIFY SEAL & RELEASE VEHICLE
+                </button>
+                
+            </div>
+        </div>
+        
+    </main>
+
+
+<script>
+document.querySelectorAll('.material-symbols-outlined').forEach(async (el) => {
+  const iconName = el.innerText.trim().replace(/_/g, '-');
+  const res = await fetch(`https://api.iconify.design/material-symbols/${iconName}-outline.svg`);
+  if (res.ok) {
+    let svg = await res.text();
+    el.innerHTML = svg.replace('<svg ', '<svg style="width:1em; height:1em; display:inline-block;" ');
+  }
+});
+</script>
+</body>
+
+</html>
