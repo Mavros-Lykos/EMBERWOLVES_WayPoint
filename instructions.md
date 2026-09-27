@@ -17,6 +17,8 @@ To satisfy the diverse physical environments of our 4 personas, the design syste
 | **Midnight Sapphire Dark** | Dispatcher, Loader, Driver | Low-light control rooms, night highway, 03:00 AM dark cab | Prevent ocular fatigue, preserve dark-adapted vision | `#0f172a` (Slate 900) |
 | **Industrial Utility** *(A11y)* | All (User-toggled) | Direct tropical sun glare, visual impairment | Stark contrast, zero ambiguous shading | `#000000` (Pure Black) |
 
+**CRITICAL ACCESSIBILITY RULE:** While the themes default based on the persona, **every single screen must feature a prominent accessibility toggle in the global header.** Users must be able to manually override the default at any time to switch between Light, Dark, or Industrial Utility High-Contrast mode.
+
 ---
 
 ### Serene Oceanic Light Palette (Default / Retail Ops)
