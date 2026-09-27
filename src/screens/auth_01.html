@@ -1,146 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Waypoint Dispatch - Authentication</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTH-01: Login - Waypoint Dispatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            "canvas-base": "#f8fafc",
-            "surface-dim": "#f1f5f9",
-            "primary-teal": "#0ea5e9",
-            "text-primary": "#0f172a",
-            "text-secondary": "#334155",
-            "text-muted": "#64748b",
-            "status-live": "#10b981",
-            "status-amber": "#f59e0b"
+            primary: '#0ea5e9',
+            'primary-hover': '#0284c7',
+            canvas: '#f4f7f9',
+            surface: '#ffffff',
+            muted: '#64748b',
           },
           fontFamily: {
-            sans: ["Inter", "sans-serif"],
-            mono: ["JetBrains Mono", "monospace"]
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
-    };
-  </script>
-  <link rel="stylesheet" href="./styles.css" />
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%); min-height: 100vh; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
+        .bg-glass { background: rgba(255, 255, 255, 0.95); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+    </style>
 </head>
-<body class="bg-canvas-base text-text-primary font-sans antialiased min-h-screen flex items-center justify-center relative overflow-hidden" style="background-image: radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.08), transparent 30%), radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 30%);">
-
-  <!-- Background decorative lines -->
-  <div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 64px 64px;"></div>
-
-  <div class="w-full max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center z-10 relative">
+<body class="flex items-center justify-center p-6 text-slate-800">
     
-    <!-- Left Column: Branding & Tech Info -->
-    <div class="hidden lg:flex flex-col gap-8">
-      <div>
-        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-teal/10 border border-primary-teal/20 mb-6">
-          <span class="w-3 h-3 rounded-full bg-primary-teal shadow-[0_0_12px_rgba(14,165,233,0.5)]"></span>
-        </div>
-        <h1 class="text-5xl font-semibold tracking-tight text-text-primary mb-4">Waypoint <br/><span class="text-text-secondary">Operations</span></h1>
-        <p class="text-text-secondary leading-relaxed max-w-md">Enterprise logistics and dispatch platform. Secure authentication required for network access. All telemetry is monitored.</p>
-      </div>
-      
-      <div class="flex flex-col gap-3 mt-8 border-l border-black/10 pl-6">
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-[16px] text-status-live">check_circle</span>
-          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Core Network: Online</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-[16px] text-status-live">check_circle</span>
-          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Telemetry Gateway: Active</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-[16px] text-status-amber">warning</span>
-          <span class="font-mono text-xs text-text-secondary tracking-wide uppercase">Degradation Node: Standby</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column: Login Modal -->
-    <div class="w-full max-w-md mx-auto relative">
-      <!-- Glow behind modal -->
-      <div class="absolute -inset-1 bg-gradient-to-b from-primary-teal/20 to-transparent rounded-3xl blur-xl opacity-40"></div>
-      
-      <div class="glass-panel rounded-3xl p-8 lg:p-10 relative">
-        <h2 class="text-2xl font-semibold mb-2">Sign In</h2>
-        <p class="text-sm text-text-secondary mb-8">Enter your corporate credentials</p>
-
-        <form class="flex flex-col gap-5">
-          <div class="flex flex-col gap-2">
-            <label class="font-mono text-xs text-text-secondary uppercase tracking-wider">Employee ID / Email</label>
-            <input type="text" class="input-field w-full rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted" placeholder="e.g. kamal.g@waypoint.lk" />
-          </div>
-          
-          <div class="flex flex-col gap-2">
-            <div class="flex justify-between items-center">
-              <label class="font-mono text-xs text-text-secondary uppercase tracking-wider">Password</label>
-              <a href="#" class="font-mono text-[10px] text-primary-teal hover:underline">Forgot?</a>
+    <div class="max-w-5xl w-full grid md:grid-cols-2 gap-12 lg:gap-24 items-center">
+        
+        <!-- Left Side: Branding & Status -->
+        <div class="space-y-8">
+            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center shadow-sm">
+                <div class="w-4 h-4 bg-primary rounded-full"></div>
             </div>
-            <input type="password" class="input-field w-full rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-text-muted" placeholder="••••••••" />
-          </div>
-
-          <button type="button" class="btn-primary w-full rounded-xl py-3 font-semibold mt-2 text-sm">Authenticate</button>
-        </form>
-
-        <div class="mt-10 pt-8 border-t border-black/5">
-          <div class="flex items-center justify-between mb-4">
-            <span class="font-mono text-[10px] text-text-muted uppercase tracking-widest">Hackathon Judge / Demo Bypass</span>
-          </div>
-          
-          <div class="grid grid-cols-2 gap-3">
-            <a href="/dispatch/fleet" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
-              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">cell_tower</span>
-              <div class="flex flex-col">
-                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">HQ Dispatch</span>
-                <span class="text-[10px] text-text-muted font-mono">Kamal</span>
-              </div>
-            </a>
             
-            <a href="/depot/bays" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
-              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">warehouse</span>
-              <div class="flex flex-col">
-                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Dock Sup.</span>
-                <span class="text-[10px] text-text-muted font-mono">Nuwan</span>
-              </div>
-            </a>
+            <div>
+                <h1 class="text-4xl lg:text-5xl font-bold text-slate-900 leading-tight tracking-tight mb-4">Waypoint<br>Operations</h1>
+                <p class="text-slate-600 leading-relaxed max-w-sm">Enterprise logistics and dispatch platform. Secure authentication required for network access. All telemetry is monitored.</p>
+            </div>
             
-            <a href="/field/manifest" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
-              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">local_shipping</span>
-              <div class="flex flex-col">
-                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Driver</span>
-                <span class="text-[10px] text-text-muted font-mono">Saman</span>
-              </div>
-            </a>
-            
-            <a href="/store/receiving" class="demo-chip rounded-lg p-3 flex items-center gap-3 group cursor-pointer">
-              <span class="material-symbols-outlined text-[18px] text-text-muted group-hover:text-primary-teal">storefront</span>
-              <div class="flex flex-col">
-                <span class="text-xs font-medium text-text-primary group-hover:text-primary-teal">Store Mgr.</span>
-                <span class="text-[10px] text-text-muted font-mono">Priya</span>
-              </div>
-            </a>
-          </div>
-          
-          <div class="mt-4 pt-4 border-t border-black/5 flex justify-center">
-              <a href="./sys_01.html" class="font-mono text-[10px] text-text-muted hover:text-text-primary transition-colors flex items-center gap-1">
-                 <span class="material-symbols-outlined text-[12px]">terminal</span> View System Telemetry
-              </a>
-          </div>
+            <div class="space-y-3 font-mono text-xs font-semibold text-slate-600 mt-12">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
+                    <span class="tracking-wider">CORE NETWORK: ONLINE</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-emerald-500 text-[18px]">check_circle</span>
+                    <span class="tracking-wider">TELEMETRY GATEWAY: ACTIVE</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-amber-500 text-[18px]">warning</span>
+                    <span class="tracking-wider">DEGRADATION NODE: STANDBY</span>
+                </div>
+            </div>
         </div>
-
-      </div>
+        
+        <!-- Right Side: Login Card -->
+        <div class="bg-glass rounded-3xl p-8 lg:p-10 border border-white/50">
+            <h2 class="text-2xl font-bold text-slate-900 mb-1">Sign In</h2>
+            <p class="text-slate-500 text-sm mb-8">Enter your corporate credentials</p>
+            
+            <form class="space-y-5">
+                <div>
+                    <label class="block text-xs font-mono font-semibold tracking-wider text-slate-500 mb-2">EMPLOYEE ID / EMAIL</label>
+                    <input type="text" placeholder="e.g. kamal.g@waypoint.lk" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
+                </div>
+                
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="block text-xs font-mono font-semibold tracking-wider text-slate-500">PASSWORD</label>
+                        <a href="#" class="text-xs font-semibold text-primary hover:underline">Forgot?</a>
+                    </div>
+                    <input type="password" placeholder="••••••••" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition">
+                </div>
+                
+                <button type="button" class="w-full bg-primary hover:bg-primary-hover text-white font-semibold py-3.5 rounded-xl transition shadow-md shadow-primary/20 mt-2">
+                    Authenticate
+                </button>
+            </form>
+            
+            <div class="mt-10">
+                <div class="text-xs font-mono font-semibold tracking-wider text-slate-400 mb-4 uppercase">Hackathon Judge / Demo Bypass</div>
+                
+                <div class="grid grid-cols-2 gap-3">
+                    <!-- Dispatcher -->
+                    <button class="flex items-center gap-3 border border-slate-200 hover:border-primary/50 hover:bg-slate-50 p-3 rounded-xl transition text-left group">
+                        <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition">monitor_heart</span>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 leading-tight">HQ Dispatch</div>
+                            <div class="text-xs text-slate-500 font-mono">Kamal</div>
+                        </div>
+                    </button>
+                    <!-- Loader -->
+                    <button class="flex items-center gap-3 border border-slate-200 hover:border-primary/50 hover:bg-slate-50 p-3 rounded-xl transition text-left group">
+                        <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition">warehouse</span>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 leading-tight">Dock Sup.</div>
+                            <div class="text-xs text-slate-500 font-mono">Nuwan</div>
+                        </div>
+                    </button>
+                    <!-- Driver -->
+                    <button class="flex items-center gap-3 border border-slate-200 hover:border-primary/50 hover:bg-slate-50 p-3 rounded-xl transition text-left group">
+                        <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition">local_shipping</span>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 leading-tight">Driver</div>
+                            <div class="text-xs text-slate-500 font-mono">Saman</div>
+                        </div>
+                    </button>
+                    <!-- Store Mgr -->
+                    <button class="flex items-center gap-3 border border-slate-200 hover:border-primary/50 hover:bg-slate-50 p-3 rounded-xl transition text-left group">
+                        <span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition">storefront</span>
+                        <div>
+                            <div class="text-sm font-bold text-slate-800 leading-tight">Store Mgr.</div>
+                            <div class="text-xs text-slate-500 font-mono">Priya</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <a href="#" class="text-xs font-mono font-semibold text-slate-400 hover:text-slate-600 flex items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">terminal</span> View System Telemetry
+                </a>
+            </div>
+            
+        </div>
     </div>
-  </div>
-
+    
+<script>
+document.querySelectorAll('.material-symbols-outlined').forEach(async (el) => {
+  const iconName = el.innerText.trim().replace(/_/g, '-');
+  const res = await fetch(`https://api.iconify.design/material-symbols/${iconName}-outline.svg`);
+  if (res.ok) {
+    let svg = await res.text();
+    el.innerHTML = svg.replace('<svg ', '<svg style="width:1em; height:1em; display:inline-block;" ');
+  }
+});
+</script>
 </body>
 </html>
