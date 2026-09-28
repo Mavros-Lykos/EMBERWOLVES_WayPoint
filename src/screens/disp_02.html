@@ -1,289 +1,60 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-02: Master Allocation Canvas - Waypoint Dispatch</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: '#0ea5e9',
-            'primary-hover': '#0284c7',
-            success: '#10b981',
-            warning: '#f59e0b',
-            critical: '#ef4444',
-            canvas: '#0f172a',
-            surface: '#1e293b',
-            'surface-glass': 'rgba(30, 41, 59, 0.8)',
-            muted: '#94a3b8',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" />
+    <title>DISP-02 TERMINAL | Waypoint Dispatch</title>
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 1; }
-        .fatigue-btn { min-height: 64px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.125rem; border-radius: 0.75rem; }
-        .glass-panel { background: var(--tw-colors-surface-glass); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background-color: #080d1a; 
+            color: #f8fafc; 
+            font-family: monospace; 
+            font-size: 14px;
+            padding: 24px;
+        }
+        .header {
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .content {
+            background-color: #111d38;
+            border: 1px solid #1e293b;
+            padding: 24px;
+        }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #1e293b; }
+        th { font-weight: bold; color: #94a3b8; }
+        button {
+            background-color: #0ea5e9;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:active { background-color: #0284c7; }
     </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex flex-col antialiased">
-    
-    <!-- Global Header -->
-    <header class="bg-slate-800 px-4 md:px-6 py-3 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-3xl">local_shipping</span>
-            <div>
-                <h1 class="font-semibold text-lg leading-tight tracking-tight">Waypoint Dispatch</h1>
-                <span class="text-xs font-mono text-muted uppercase">dispatch Portal</span>
-            </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-500">
-                <span class="material-symbols-outlined text-[16px]">wifi</span> Online (WebSocket)
-            </div>
-            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
-                <span class="material-symbols-outlined">contrast</span>
-            </button>
-            <button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="flex-1 overflow-x-hidden">
-        
-        <div class="p-4 h-[calc(100vh-64px)] flex flex-col gap-4 text-sm bg-[#0f172a]">
-            <!-- Header Bar -->
-            <div class="flex items-center justify-between glass-panel px-4 py-3 rounded-xl border border-slate-700/50">
-                <div class="flex items-center gap-3">
-                    <h2 class="text-lg font-semibold text-white tracking-wide">MASTER ALLOCATION CANVAS</h2>
-                    <div class="bg-slate-800 text-slate-300 px-3 py-1 rounded-md border border-slate-700 font-mono text-xs">Planning: Tue, Oct 06</div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg border border-slate-600 transition flex items-center gap-2">
-                        <span class="material-symbols-outlined text-sm">magic_button</span> Auto-Allocate
-                    </button>
-                    <button class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg shadow-[0_0_15px_rgba(16,185,129,0.3)] transition font-bold flex items-center gap-2 tracking-wide">
-                        <span class="material-symbols-outlined text-sm">lock</span> LOCK PLAN
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Split Pane -->
-            <div class="flex-1 flex gap-4 overflow-hidden">
-                <!-- Left Pane: Unallocated -->
-                <div class="w-80 flex flex-col gap-3 bg-[#1e293b] rounded-xl border border-slate-700/50 overflow-hidden shadow-xl">
-                    <div class="p-3 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
-                        <span class="font-bold text-slate-200">UNALLOCATED (34)</span>
-                        <button class="text-primary hover:text-primary-hover"><span class="material-symbols-outlined">filter_list</span></button>
-                    </div>
-                    
-                    <div class="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
-                        <!-- Order Card 1 -->
-                        <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 hover:border-slate-500 cursor-grab transition shadow-sm relative overflow-hidden">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="font-mono text-xs text-slate-300 font-bold">ORD-8902</div>
-                                <div class="text-xs bg-slate-700 text-slate-300 px-1.5 rounded">OUT042 Kandy</div>
-                            </div>
-                            <div class="flex items-center gap-2 text-xs text-blue-300 mb-2 font-medium bg-blue-900/20 px-2 py-1 rounded inline-block">
-                                <span class="material-symbols-outlined text-[14px]">ac_unit</span> Chilled: 1.4m³ | 480kg
-                            </div>
-                            <div class="text-[10px] font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2 py-1 rounded flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[12px]">warning</span> Van-Only Constraint
-                            </div>
-                        </div>
-                        
-                        <!-- Order Card 2 -->
-                        <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 hover:border-slate-500 cursor-grab transition shadow-sm relative overflow-hidden">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500"></div>
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="font-mono text-xs text-slate-300 font-bold">ORD-8914</div>
-                                <div class="text-xs bg-slate-700 text-slate-300 px-1.5 rounded">OUT074 Puttalam</div>
-                            </div>
-                            <div class="text-xs text-slate-400 mb-2 bg-slate-700/50 px-2 py-1 rounded inline-block">
-                                Ambient: 6.2m³ | 2,100kg
-                            </div>
-                            <div class="text-[10px] font-bold text-red-400 bg-red-400/10 border border-red-400/20 px-2 py-1 rounded flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[12px]">priority_high</span> Deferred Yesterday!
-                            </div>
-                        </div>
-                        
-                        <!-- Order Card 3 -->
-                        <div class="bg-slate-800 rounded-lg p-3 border border-slate-700 hover:border-slate-500 cursor-grab transition shadow-sm relative overflow-hidden">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-purple-500"></div>
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="font-mono text-xs text-slate-300 font-bold">ORD-8930</div>
-                                <div class="text-xs bg-slate-700 text-slate-300 px-1.5 rounded">OUT106 Tech</div>
-                            </div>
-                            <div class="text-xs text-slate-400 mb-1">Tech Goods: 3.1m³ | 940kg</div>
-                            <div class="text-xs text-slate-500 italic">Fragile Appliances</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right Pane: Vehicle Matrix -->
-                <div class="flex-1 flex flex-col gap-3 bg-[#1e293b] rounded-xl border border-slate-700/50 overflow-hidden shadow-xl">
-                    <div class="p-3 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
-                        <span class="font-bold text-slate-200">VEHICLE TRIP MATRIX (60 Units)</span>
-                        <div class="flex gap-2">
-                            <span class="bg-blue-900/40 text-blue-400 border border-blue-900 px-2 py-1 rounded text-xs">Peliyagoda DC</span>
-                            <span class="bg-blue-900/40 text-blue-400 border border-blue-900 px-2 py-1 rounded text-xs">Reefer Only</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex-1 overflow-y-auto p-4 custom-scrollbar">
-                        <div class="grid xl:grid-cols-2 gap-4">
-                            <!-- Vehicle Block 1 -->
-                            <div class="bg-slate-800 border border-slate-600 rounded-xl overflow-hidden shadow-md hover:border-primary/50 transition">
-                                <div class="bg-slate-700/50 px-4 py-2 border-b border-slate-700 flex justify-between items-center">
-                                    <div class="font-bold text-white flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-blue-400 text-lg">ac_unit</span>
-                                        VEH-003 <span class="text-xs font-normal text-slate-400 ml-1">(Isuzu 4.5T Reefer - Peliyagoda)</span>
-                                    </div>
-                                    <span class="bg-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded uppercase border border-emerald-500/30">Available</span>
-                                </div>
-                                <div class="p-4 space-y-4">
-                                    <div class="flex flex-wrap gap-2 text-xs font-mono">
-                                        <span class="bg-slate-900 text-slate-300 px-2 py-1 rounded border border-slate-700">TRIP 1</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT007 Fresh</span> <span class="text-slate-500">──►</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT012 Fresh</span> <span class="text-slate-500">──►</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT021 Fresh</span>
-                                    </div>
-                                    
-                                    <div class="space-y-3 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
-                                        <div>
-                                            <div class="flex justify-between text-xs mb-1">
-                                                <span class="text-slate-400">Volume: 11.2 / 14.0 m³ <span class="text-white font-bold ml-1">(80%)</span></span>
-                                                <span class="text-slate-400">Wt: 3,820 / 4,500kg</span>
-                                            </div>
-                                            <!-- Progress Bar -->
-                                            <div class="h-2 w-full bg-slate-700 rounded-full overflow-hidden flex">
-                                                <div class="h-full bg-primary" style="width: 80%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center text-xs">
-                                            <span class="text-emerald-400 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check_circle</span> All Pre-8 AM Feasible</span>
-                                            <span class="text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">3 Stores</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Vehicle Block 2 -->
-                            <div class="bg-slate-800 border border-slate-600 rounded-xl overflow-hidden shadow-md hover:border-primary/50 transition">
-                                <div class="bg-slate-700/50 px-4 py-2 border-b border-slate-700 flex justify-between items-center">
-                                    <div class="font-bold text-white flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-slate-400 text-lg">local_shipping</span>
-                                        VEH-014 <span class="text-xs font-normal text-slate-400 ml-1">(Hino 5.5T Dry - Peliyagoda)</span>
-                                    </div>
-                                </div>
-                                <div class="p-4 space-y-4">
-                                    <div class="flex flex-wrap gap-2 text-xs font-mono">
-                                        <span class="bg-slate-900 text-slate-300 px-2 py-1 rounded border border-slate-700">TRIP 1</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT074 Style</span> <span class="text-slate-500">──►</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT076 Style</span>
-                                    </div>
-                                    
-                                    <div class="space-y-3 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
-                                        <div>
-                                            <div class="flex justify-between text-xs mb-1">
-                                                <span class="text-slate-400">Volume: 16.8 / 18.0 m³ <span class="text-amber-400 font-bold ml-1">(93%)</span></span>
-                                                <span class="text-slate-400">Wt: 4,100 / 5,500kg</span>
-                                            </div>
-                                            <!-- Progress Bar -->
-                                            <div class="h-2 w-full bg-slate-700 rounded-full overflow-hidden flex">
-                                                <div class="h-full bg-amber-500" style="width: 93%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center text-xs">
-                                            <span class="text-emerald-400 flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">check_circle</span> Mall 10:00-14:00 Feasible</span>
-                                            <span class="text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">2 Stores</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Vehicle Block 3 -->
-                            <div class="bg-slate-800 border border-slate-600 rounded-xl overflow-hidden shadow-md hover:border-primary/50 transition">
-                                <div class="bg-slate-700/50 px-4 py-2 border-b border-slate-700 flex justify-between items-center">
-                                    <div class="font-bold text-white flex items-center gap-2">
-                                        <span class="material-symbols-outlined text-slate-400 text-lg">airport_shuttle</span>
-                                        VEH-045 <span class="text-xs font-normal text-slate-400 ml-1">(Tata 1.2T Van - Peliyagoda)</span>
-                                    </div>
-                                </div>
-                                <div class="p-4 space-y-4">
-                                    <div class="flex flex-wrap gap-2 text-xs font-mono">
-                                        <span class="bg-slate-900 text-slate-300 px-2 py-1 rounded border border-slate-700">TRIP 1</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT042 Kandy Cen</span> <span class="text-slate-500">──►</span>
-                                        <span class="bg-slate-700 px-2 py-1 rounded">OUT044 Kandy Alley</span>
-                                    </div>
-                                    
-                                    <div class="space-y-3 bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
-                                        <div>
-                                            <div class="flex justify-between text-xs mb-1">
-                                                <span class="text-slate-400">Volume: 5.4 / 8.0 m³ <span class="text-white font-bold ml-1">(67%)</span></span>
-                                                <span class="text-slate-400">Wt: 880 / 1,500kg</span>
-                                            </div>
-                                            <!-- Progress Bar -->
-                                            <div class="h-2 w-full bg-slate-700 rounded-full overflow-hidden flex">
-                                                <div class="h-full bg-primary" style="width: 67%"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex justify-between items-center text-xs">
-                                            <span class="text-amber-400 font-bold flex items-center gap-1 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20"><span class="material-symbols-outlined text-[14px]">verified</span> Fits Van-Only Access Outlets</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Empty Drop Zone -->
-                            <div class="bg-slate-800/30 border-2 border-dashed border-slate-700 rounded-xl flex items-center justify-center p-8 hover:bg-slate-800/50 hover:border-slate-500 transition cursor-pointer">
-                                <div class="text-center">
-                                    <span class="material-symbols-outlined text-slate-600 text-4xl mb-2">add_circle</span>
-                                    <div class="text-slate-500 font-medium">Drag Orders Here to Create New Trip</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <style>
-            .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-            .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-            .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
-        </style>
-        
-    </main>
-
-
-<script>
-document.querySelectorAll('.material-symbols-outlined').forEach(async (el) => {
-  const iconName = el.innerText.trim().replace(/_/g, '-');
-  const res = await fetch(`https://api.iconify.design/material-symbols/${iconName}-outline.svg`);
-  if (res.ok) {
-    let svg = await res.text();
-    el.innerHTML = svg.replace('<svg ', '<svg style="width:1em; height:1em; display:inline-block;" ');
-  }
-});
-</script>
+<body>
+    <div class="header">
+        <div>DISP-02 TERMINAL</div>
+        <div style="color: #10b981;">SYS: ONLINE</div>
+    </div>
+    <div class="content">
+        <table>
+            <tr><th>PROPERTY</th><th>VALUE</th></tr>
+            <tr><td>SCREEN ID</td><td>disp_02</td></tr>
+            <tr><td>STATUS</td><td>PENDING DATA BINDING</td></tr>
+        </table>
+        <button>EXECUTE WORKFLOW</button>
+    </div>
 </body>
-
 </html>
