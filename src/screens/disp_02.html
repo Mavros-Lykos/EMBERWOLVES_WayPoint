@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISP-02 WORKSPACE | Waypoint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#14b8a6', 
+            surface: '#1e293b', 
+            canvas: '#0f172a', 
+            border: '#334155', 
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
+    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-brand">explore</span>
+            <h1 class="font-semibold text-sm tracking-tight">DISP-02 WORKSPACE</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
+        </div>
+    </header>
+    <main class="flex-1 overflow-auto p-6">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
+                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
+                <div class="font-mono text-sm text-slate-300">
+                    ID: disp_02<br>
+                    READY FOR COMPONENT ASSEMBLY.
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
