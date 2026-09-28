@@ -1,58 +1,105 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOAD-06 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depot History — Waypoint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; max-width: 1024px; margin: 0 auto; background: var(--md-sys-color-surface); }
+    .top-bar { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+    .page-title { font: var(--md-sys-typescale-title-large); }
+    
+    .nav-tabs { display: flex; gap: 24px; height: 100%; align-items: center; }
+    .nav-tab { font: var(--md-sys-typescale-label-large); color: var(--md-sys-color-on-surface-variant); cursor: pointer; height: 100%; display: flex; align-items: center; position: relative; }
+    .nav-tab.active { color: var(--md-sys-color-primary); }
+    .nav-tab.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--md-sys-color-primary); border-radius: 3px 3px 0 0; }
+
+    .page-body { flex: 1; overflow-y: auto; padding: 24px; }
+    
+    .filter-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .filter-chips { display: flex; gap: 8px; }
+    .search-box { display: flex; align-items: center; background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-sm); padding: 0 12px; height: 40px; }
+    .search-box input { border: none; background: none; font: var(--md-sys-typescale-body-medium); outline: none; padding-left: 8px; }
+
+    .history-table { width: 100%; border-collapse: collapse; font: var(--md-sys-typescale-body-medium); }
+    .history-table th { text-align: left; font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.06em; padding: 12px 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+    .history-table td { padding: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface); }
+    .history-table tr:hover td { background: var(--md-sys-color-surface-container-lowest); }
+    
+    .seal-badge { font: var(--md-sys-typescale-label-large); font-family: monospace; background: var(--md-sys-color-surface-container-high); padding: 4px 8px; border-radius: 4px; }
+    
+    .status-cell { display: flex; align-items: center; gap: 6px; }
+    .status-icon { font-size: 18px; }
+    .status-icon.ok { color: var(--md-sys-color-success); }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">LOAD-06 WORKSPACE</h1>
-        </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
-        </div>
-    </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: load_06<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
-            </div>
-        </div>
-    </main>
+<body>
+
+  <header class="top-bar">
+    <div class="page-title">Peliyagoda History</div>
+    <div class="nav-tabs">
+      <div class="nav-tab">Queue</div>
+      <div class="nav-tab active">History</div>
+    </div>
+  </header>
+
+  <div class="page-body">
+    
+    <div class="filter-bar">
+      <div class="filter-chips">
+        <button class="md-filter-chip selected">Today</button>
+        <button class="md-filter-chip">Yesterday</button>
+        <button class="md-filter-chip">Last 7 Days</button>
+      </div>
+      <div class="search-box">
+        <span class="material-symbols-outlined" style="color:var(--md-sys-color-on-surface-variant)">search</span>
+        <input type="text" placeholder="Search VEH or Seal">
+      </div>
+    </div>
+    
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Vehicle</th>
+          <th>Departure Time</th>
+          <th>Route</th>
+          <th>Seal #</th>
+          <th>Dock Supervisor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>VEH-014</strong></td>
+          <td>06:42 AM</td>
+          <td>Style Malls Route</td>
+          <td><span class="seal-badge">SL-8812</span></td>
+          <td>Nuwan S. (Bay 02)</td>
+          <td><div class="status-cell"><span class="material-symbols-outlined status-icon ok">check_circle</span> Dispatched</div></td>
+        </tr>
+        <tr>
+          <td><strong>VEH-008</strong></td>
+          <td>06:15 AM</td>
+          <td>Negombo Fresh</td>
+          <td><span class="seal-badge">SL-8809</span></td>
+          <td>Nuwan S. (Bay 04)</td>
+          <td><div class="status-cell"><span class="material-symbols-outlined status-icon ok">check_circle</span> Dispatched</div></td>
+        </tr>
+        <tr>
+          <td><strong>VEH-021</strong></td>
+          <td>05:50 AM</td>
+          <td>Kandy Transfer</td>
+          <td><span class="seal-badge">SL-8794</span></td>
+          <td>Kasun M. (Bay 01)</td>
+          <td><div class="status-cell"><span class="material-symbols-outlined status-icon ok">check_circle</span> Dispatched</div></td>
+        </tr>
+      </tbody>
+    </table>
+    
+  </div>
+  
 </body>
 </html>

@@ -1,58 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOAD-04 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Load Revision Alert — Waypoint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: rgba(0,0,0,0.5); padding: 24px; margin: 0; }
+    
+    .modal-surface { width: 100%; max-width: 600px; background: var(--md-sys-color-surface-container-lowest); border-radius: var(--md-sys-shape-corner-xl); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--md-sys-elevation-3); }
+    
+    .modal-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center; justify-content: space-between; background: var(--md-sys-color-error-container); color: var(--md-sys-color-on-error-container); }
+    .modal-title { font: var(--md-sys-typescale-headline-medium); display: flex; align-items: center; gap: 12px; }
+    
+    .modal-body { padding: 32px 24px; overflow-y: auto; max-height: 70vh; display: flex; flex-direction: column; gap: 24px; }
+    
+    .alert-msg { font: var(--md-sys-typescale-body-large); color: var(--md-sys-color-on-surface); }
+    .alert-msg strong { font-weight: 600; }
+    
+    .delta-card { background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); display: flex; flex-direction: column; overflow: hidden; }
+    .delta-header { padding: 12px 16px; background: var(--md-sys-color-surface-container); font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; display: flex; justify-content: space-between; }
+    
+    .delta-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+    .delta-row:last-child { border-bottom: none; }
+    
+    .delta-item { display: flex; flex-direction: column; gap: 4px; }
+    .delta-name { font: var(--md-sys-typescale-title-medium); }
+    .delta-sub { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+    
+    .delta-val { display: flex; align-items: center; gap: 16px; font: var(--md-sys-typescale-body-large); }
+    .old-val { color: var(--md-sys-color-on-surface-variant); text-decoration: line-through; }
+    .new-val { color: var(--md-sys-color-on-surface); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .new-val.add { color: var(--md-sys-color-error); } /* More work */
+    .new-val.rem { color: var(--md-sys-color-success); }
+    
+    .modal-footer { padding: 16px 24px 24px; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; justify-content: flex-end; }
+    .modal-footer .md-filled-button { height: 56px; font: var(--md-sys-typescale-title-medium); padding: 0 32px; width: 100%; }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">LOAD-04 WORKSPACE</h1>
+<body>
+  
+  <div class="modal-surface" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-header">
+      <h2 id="modal-title" class="modal-title">
+        <span class="material-symbols-outlined" style="font-size:32px">warning</span>
+        Mid-Load Revision Alert
+      </h2>
+    </div>
+    
+    <div class="modal-body">
+      
+      <div class="alert-msg">
+        Dispatch has modified the payload for <strong>VEH-003</strong>. Please review and acknowledge the changes before continuing to load.
+      </div>
+      
+      <div class="delta-card">
+        <div class="delta-header"><span>Stop</span><span>Change</span></div>
+        
+        <div class="delta-row">
+          <div class="delta-item">
+            <span class="delta-name">OUT-012 · Moratuwa</span>
+            <span class="delta-sub">ORD-8894</span>
+          </div>
+          <div class="delta-val">
+            <span class="old-val">1 Pallet</span>
+            <span class="material-symbols-outlined" style="color:var(--md-sys-color-outline)">arrow_forward</span>
+            <span class="new-val add">2 Pallets <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span></span>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
+        
+        <div class="delta-row">
+          <div class="delta-item">
+            <span class="delta-name">OUT-021 · Panadura</span>
+            <span class="delta-sub">ORD-8898</span>
+          </div>
+          <div class="delta-val">
+            <span class="old-val">3 Pallets</span>
+            <span class="material-symbols-outlined" style="color:var(--md-sys-color-outline)">arrow_forward</span>
+            <span class="new-val rem">2 Pallets <span class="material-symbols-outlined" style="font-size:18px">arrow_downward</span></span>
+          </div>
         </div>
-    </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: load_04<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
-            </div>
-        </div>
-    </main>
+        
+      </div>
+      
+    </div>
+    
+    <div class="modal-footer">
+      <button class="md-filled-button">Acknowledge & Update Checklist</button>
+    </div>
+  </div>
+  
 </body>
 </html>
