@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waypoint Dispatch</title>
+    <title>Waypoint | Platform Access</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
     tailwind.config = {
@@ -11,11 +11,11 @@
       theme: {
         extend: {
           colors: {
-            brand: '#14b8a6', // muted teal
+            brand: '#14b8a6', 
             'brand-hover': '#0d9488',
-            surface: '#1e293b', // slate-800
-            canvas: '#0f172a', // slate-900 (Midnight Oceanic)
-            border: '#334155', // slate-700
+            surface: '#1e293b', 
+            canvas: '#0f172a', 
+            border: '#334155', 
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -28,83 +28,166 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; overflow: hidden; }
-        .fatigue-btn { min-height: 56px; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-        .input-ring:focus-within { outline: none; box-shadow: 0 0 0 2px #14b8a6; border-color: transparent; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0f172a; 
+            color: #f8fafc; 
+            overflow: hidden; 
+        }
+        
+        /* Subtle enterprise grid background */
+        .bg-grid {
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .interactive { transition: all 0.1s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.99); }
+        .input-ring:focus-within { outline: none; box-shadow: 0 0 0 1px #14b8a6 inset; border-color: #14b8a6; }
+        
+        /* Strict sharp panels, no blurs */
+        .panel { 
+            background: #1e293b; 
+            border: 1px solid #334155; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3); 
+        }
+        
+        /* Custom scrollbar for debug panel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     </style>
 </head>
-<body class="h-screen w-screen flex items-center justify-center p-6 antialiased selection:bg-brand selection:text-white">
+<body class="h-screen w-screen flex antialiased bg-canvas bg-grid selection:bg-brand selection:text-white">
 
-    <!-- Atmospheric Background Geometry -->
-    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-20">
-        <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-brand blur-[120px]"></div>
-        <div class="absolute bottom-[10%] right-[5%] w-[30%] h-[40%] rounded-full bg-blue-600 blur-[150px]"></div>
-    </div>
-
-    <!-- Main Auth Surface -->
-    <main class="z-10 w-full max-w-sm glass-panel rounded-xl overflow-hidden flex flex-col">
+    <!-- Left: Brand / System Context (60%) -->
+    <main class="hidden lg:flex w-[60%] flex-col justify-between p-12 border-r border-border bg-canvas/80 backdrop-blur-sm">
         
-        <header class="p-6 border-b border-white/10 flex items-center gap-4 bg-surface/50">
-            <div class="w-10 h-10 bg-brand/10 border border-brand/20 rounded-lg flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-brand text-xl">account_tree</span>
+        <header class="flex items-center gap-4">
+            <div class="w-8 h-8 bg-brand flex items-center justify-center text-canvas font-bold rounded-sm">
+                <span class="material-symbols-outlined text-[18px]">adjust</span>
             </div>
             <div>
-                <h1 class="text-lg font-semibold tracking-tight text-white leading-tight">Waypoint Dispatch</h1>
-                <div class="text-[11px] font-mono text-brand tracking-widest uppercase mt-0.5">Secure Gateway</div>
+                <h1 class="text-sm font-semibold tracking-wide text-white uppercase">Waypoint Dispatch</h1>
+                <div class="text-[10px] font-mono text-slate-400 tracking-widest uppercase mt-0.5">Enterprise Logistics Engine</div>
             </div>
         </header>
 
-        <section class="p-6 lg:p-8 space-y-6 bg-surface/30">
-            <form class="space-y-5" onsubmit="event.preventDefault();">
-                <div class="space-y-1.5">
-                    <label for="operatorId" class="block text-[11px] font-mono font-medium tracking-widest text-slate-400 uppercase">Operator ID</label>
-                    <div class="relative input-ring rounded-lg border border-border bg-canvas/80 overflow-hidden group">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 group-focus-within:text-brand transition-colors">person</span>
-                        <input id="operatorId" type="text" placeholder="e.g. kamal.g" class="w-full bg-transparent pl-10 pr-4 py-3 text-white font-mono text-sm placeholder-slate-600 focus:outline-none" aria-required="true">
+        <section class="max-w-md space-y-6">
+            <h2 class="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">Platform Telemetry</h2>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between items-center py-2 border-b border-border">
+                    <span class="text-xs font-mono text-slate-400">CORE INFRASTRUCTURE</span>
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="text-xs font-mono text-slate-300">OPERATIONAL</span>
                     </div>
                 </div>
                 
-                <div class="space-y-1.5">
-                    <label for="passphrase" class="block text-[11px] font-mono font-medium tracking-widest text-slate-400 uppercase">Passphrase</label>
-                    <div class="relative input-ring rounded-lg border border-border bg-canvas/80 overflow-hidden group">
-                        <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 group-focus-within:text-brand transition-colors">key</span>
-                        <input id="passphrase" type="password" placeholder="••••••••" class="w-full bg-transparent pl-10 pr-4 py-3 text-white font-mono text-sm placeholder-slate-600 focus:outline-none" aria-required="true">
+                <div class="flex justify-between items-center py-2 border-b border-border">
+                    <span class="text-xs font-mono text-slate-400">DEGRADATION TIER</span>
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                        <span class="text-xs font-mono text-slate-300">STANDBY (SMS FALLBACK)</span>
                     </div>
                 </div>
-                
-                <button type="submit" class="w-full interactive fatigue-btn bg-brand hover:bg-brand-hover text-white font-medium rounded-lg mt-8 flex items-center justify-center gap-2 focus:ring-2 focus:ring-offset-2 focus:ring-offset-canvas focus:ring-brand focus:outline-none shadow-lg shadow-brand/20">
-                    <span class="material-symbols-outlined text-lg">login</span>
-                    Authenticate
-                </button>
-            </form>
+
+                <div class="flex justify-between items-center py-2 border-b border-border">
+                    <span class="text-xs font-mono text-slate-400">NETWORK LATENCY</span>
+                    <span class="text-xs font-mono text-emerald-400">12ms</span>
+                </div>
+            </div>
         </section>
 
-        <!-- Judge/Testing Quick Launch -->
-        <footer class="p-5 border-t border-white/5 bg-canvas/40">
-            <div class="text-[10px] font-mono text-slate-500 tracking-widest uppercase mb-3 text-center">Test Profiles</div>
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button" class="interactive flex items-center justify-center gap-2 p-2 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 focus:ring-1 focus:ring-brand focus:outline-none transition-colors text-xs text-slate-300">
-                    <span class="material-symbols-outlined text-[14px]">storefront</span>
-                    <span>Store Mgr</span>
-                </button>
-                <button type="button" class="interactive flex items-center justify-center gap-2 p-2 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 focus:ring-1 focus:ring-brand focus:outline-none transition-colors text-xs text-slate-300">
-                    <span class="material-symbols-outlined text-[14px]">monitor_heart</span>
-                    <span>Dispatch</span>
-                </button>
-                <button type="button" class="interactive flex items-center justify-center gap-2 p-2 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 focus:ring-1 focus:ring-brand focus:outline-none transition-colors text-xs text-slate-300">
-                    <span class="material-symbols-outlined text-[14px]">warehouse</span>
-                    <span>Loader</span>
-                </button>
-                <button type="button" class="interactive flex items-center justify-center gap-2 p-2 rounded-md border border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 focus:ring-1 focus:ring-brand focus:outline-none transition-colors text-xs text-slate-300">
-                    <span class="material-symbols-outlined text-[14px]">local_shipping</span>
-                    <span>Driver</span>
-                </button>
-            </div>
+        <footer class="text-[10px] font-mono text-slate-600 uppercase tracking-widest">
+            v2.4.0-stable // Waypoint Enterprise Protocol
         </footer>
-        
     </main>
+
+    <!-- Right: Authentication (40%) -->
+    <section class="w-full lg:w-[40%] h-full flex flex-col justify-center items-center p-8 bg-canvas relative">
+        
+        <div class="w-full max-w-sm space-y-8 relative z-10">
+            
+            <div class="lg:hidden flex items-center gap-3 mb-12">
+                <div class="w-6 h-6 bg-brand flex items-center justify-center text-canvas font-bold rounded-sm">
+                    <span class="material-symbols-outlined text-[14px]">adjust</span>
+                </div>
+                <h1 class="text-sm font-semibold tracking-wide text-white uppercase">Waypoint Dispatch</h1>
+            </div>
+
+            <div>
+                <h2 class="text-lg font-semibold text-white tracking-tight mb-1">Authenticate</h2>
+                <p class="text-xs font-mono text-slate-500 uppercase tracking-widest">Operator session required</p>
+            </div>
+            
+            <form class="space-y-5" onsubmit="event.preventDefault();">
+                <div class="space-y-1.5">
+                    <label for="uid" class="block text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">Operator ID</label>
+                    <div class="input-ring bg-surface border border-border rounded-md overflow-hidden flex items-center px-3">
+                        <span class="material-symbols-outlined text-slate-500 text-[18px]">person</span>
+                        <input id="uid" type="text" placeholder="e.g. kamal.g" class="w-full bg-transparent px-3 py-2.5 text-white font-mono text-sm placeholder-slate-600 focus:outline-none" required>
+                    </div>
+                </div>
+                
+                <div class="space-y-1.5">
+                    <label for="pwd" class="block text-[10px] font-mono font-semibold tracking-widest text-slate-400 uppercase">Passphrase</label>
+                    <div class="input-ring bg-surface border border-border rounded-md overflow-hidden flex items-center px-3">
+                        <span class="material-symbols-outlined text-slate-500 text-[18px]">key</span>
+                        <input id="pwd" type="password" placeholder="••••••••" class="w-full bg-transparent px-3 py-2.5 text-white font-mono text-sm placeholder-slate-600 focus:outline-none" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full interactive bg-brand hover:bg-brand-hover text-white text-xs font-bold uppercase tracking-widest py-3 rounded-md mt-6 shadow-sm">
+                    Establish Session
+                </button>
+            </form>
+
+            <!-- Debug Launch Menu -->
+            <div class="pt-8 mt-8 border-t border-border">
+                <div class="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[14px]">bug_report</span> Development Profiles
+                </div>
+                
+                <div class="grid grid-cols-1 gap-2 max-h-[160px] overflow-y-auto pr-2">
+                    <button type="button" class="interactive flex items-center justify-between p-2.5 bg-surface border border-border rounded-md hover:border-brand group">
+                        <div class="text-left">
+                            <div class="text-xs font-semibold text-white">Store Manager</div>
+                            <div class="text-[10px] font-mono text-slate-400 mt-0.5">OUT-007 (Priya)</div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-500 group-hover:text-brand text-[16px]">chevron_right</span>
+                    </button>
+
+                    <button type="button" class="interactive flex items-center justify-between p-2.5 bg-surface border border-border rounded-md hover:border-brand group">
+                        <div class="text-left">
+                            <div class="text-xs font-semibold text-white">Dispatcher</div>
+                            <div class="text-[10px] font-mono text-slate-400 mt-0.5">HUB-PEL (Kamal)</div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-500 group-hover:text-brand text-[16px]">chevron_right</span>
+                    </button>
+
+                    <button type="button" class="interactive flex items-center justify-between p-2.5 bg-surface border border-border rounded-md hover:border-brand group">
+                        <div class="text-left">
+                            <div class="text-xs font-semibold text-white">Dock Loader</div>
+                            <div class="text-[10px] font-mono text-slate-400 mt-0.5">BAY-04 (Nuwan)</div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-500 group-hover:text-brand text-[16px]">chevron_right</span>
+                    </button>
+
+                    <button type="button" class="interactive flex items-center justify-between p-2.5 bg-surface border border-border rounded-md hover:border-brand group">
+                        <div class="text-left">
+                            <div class="text-xs font-semibold text-white">Fleet Driver</div>
+                            <div class="text-[10px] font-mono text-slate-400 mt-0.5">VEH-003 (Saman)</div>
+                        </div>
+                        <span class="material-symbols-outlined text-slate-500 group-hover:text-brand text-[16px]">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
 </body>
 </html>
