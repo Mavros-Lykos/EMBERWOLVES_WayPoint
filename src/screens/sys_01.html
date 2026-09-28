@@ -1,221 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>Waypoint Dispatch - System Telemetry</title>
-  <link href="https://fonts.googleapis.com" rel="preconnect"/>
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYS-01 WORKSPACE | Waypoint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            "canvas-base": "#f8fafc",
-            "surface-dim": "#f1f5f9",
-            "primary-teal": "#0ea5e9",
-            "text-primary": "#0f172a",
-            "text-secondary": "#334155",
-            "text-muted": "#64748b",
-            "status-live": "#10b981",
-            "status-amber": "#f59e0b",
-            "status-error": "#ef4444"
+            brand: '#14b8a6', 
+            surface: '#1e293b', 
+            canvas: '#0f172a', 
+            border: '#334155', 
           },
           fontFamily: {
-            sans: ["Inter", "sans-serif"],
-            mono: ["JetBrains Mono", "monospace"]
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
-    };
-  </script>
-  <link rel="stylesheet" href="./styles.css" />
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.98); }
+    </style>
 </head>
-<body class="bg-canvas-base text-text-primary font-sans antialiased min-h-screen flex flex-col relative overflow-hidden" style="background-image: radial-gradient(circle at top right, rgba(14, 165, 233, 0.08), transparent 40%), radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05), transparent 40%);">
-
-  <!-- Background decorative grid -->
-  <div class="absolute inset-0 z-0 pointer-events-none opacity-30" style="background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px); background-size: 48px 48px;"></div>
-
-  <!-- Header -->
-  <header class="w-full border-b border-black/5 z-10 bg-canvas-base/70 backdrop-blur-md">
-    <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-6">
-        <a href="./auth_01.html" class="flex items-center justify-center w-8 h-8 rounded-lg bg-black/5 hover:bg-black/10 transition-colors border border-black/5 text-text-secondary hover:text-text-primary">
-          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-        </a>
+<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
+    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
         <div class="flex items-center gap-3">
-          <span class="relative flex h-2.5 w-2.5">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-live opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-status-live"></span>
-          </span>
-          <h1 class="text-sm font-semibold tracking-wider uppercase text-text-primary">System Telemetry</h1>
+            <span class="material-symbols-outlined text-brand">explore</span>
+            <h1 class="font-semibold text-sm tracking-tight">SYS-01 WORKSPACE</h1>
         </div>
-      </div>
-      
-      <div class="flex items-center gap-4">
-        <div class="px-3 py-1.5 rounded-md bg-black/5 border border-black/5 font-mono text-[10px] text-text-secondary uppercase tracking-widest flex items-center gap-2">
-          <span class="material-symbols-outlined text-[14px]">public</span> Global Mesh: 99.98% Uptime
+        <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
         </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-[1440px] w-full mx-auto px-8 py-8 flex-1 flex flex-col gap-8 z-10 overflow-y-auto">
-    
-    <!-- Top KPIs -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div class="glass-panel p-6 rounded-2xl">
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-mono text-[11px] text-text-secondary uppercase tracking-widest">Gateway Latency</span>
-          <span class="material-symbols-outlined text-[18px] text-text-muted">speed</span>
-        </div>
-        <div class="flex items-baseline gap-1">
-          <span class="text-4xl font-semibold tracking-tight kpi-value">14</span>
-          <span class="font-mono text-sm text-text-secondary">ms</span>
-        </div>
-      </div>
-      
-      <div class="glass-panel p-6 rounded-2xl">
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-mono text-[11px] text-text-secondary uppercase tracking-widest">Active Vehicles</span>
-          <span class="material-symbols-outlined text-[18px] text-text-muted">local_shipping</span>
-        </div>
-        <div class="flex items-baseline gap-1">
-          <span class="text-4xl font-semibold tracking-tight kpi-value">60</span>
-          <span class="font-mono text-sm text-text-secondary">/ 60</span>
-        </div>
-        <div class="w-full bg-black/5 h-1 mt-4 rounded-full overflow-hidden">
-          <div class="bg-primary-teal h-full w-full"></div>
-        </div>
-      </div>
-
-      <div class="glass-panel p-6 rounded-2xl">
-        <div class="flex justify-between items-start mb-4">
-          <span class="font-mono text-[11px] text-text-secondary uppercase tracking-widest">Local PWA Cache</span>
-          <span class="material-symbols-outlined text-[18px] text-text-muted">memory</span>
-        </div>
-        <div class="flex items-baseline gap-1">
-          <span class="text-4xl font-semibold tracking-tight kpi-value">18.4</span>
-          <span class="font-mono text-sm text-text-secondary">MB</span>
-        </div>
-      </div>
-
-      <div class="glass-panel p-6 rounded-2xl border-l-2 border-l-primary-teal bg-primary-teal/5">
-        <div class="flex justify-between items-start mb-2">
-          <span class="font-mono text-[11px] text-primary-teal uppercase tracking-widest">Connectivity Mode</span>
-          <span class="material-symbols-outlined text-[18px] text-primary-teal">wifi_tethering</span>
-        </div>
-        <div class="mt-3">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-primary-teal/10 text-primary-teal font-mono text-xs border border-primary-teal/20">
-            <span class="w-1.5 h-1.5 rounded-full bg-primary-teal"></span> WebSocket Live
-          </span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Degradation Mesh & Edge Nodes Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- Tri-Tier Degradation Mesh -->
-      <div class="lg:col-span-1 flex flex-col gap-4">
-        <h3 class="font-mono text-[11px] text-text-secondary uppercase tracking-widest px-1">Degradation Tiers</h3>
-        
-        <div class="glass-panel p-4 rounded-xl flex items-center justify-between border-l-2 border-l-status-live bg-black/[0.02]">
-          <div class="flex items-center gap-4">
-            <div class="w-8 h-8 rounded-lg bg-status-live/10 flex items-center justify-center text-status-live">
-              <span class="text-sm font-mono font-bold">T1</span>
+    </header>
+    <main class="flex-1 overflow-auto p-6">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
+                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
+                <div class="font-mono text-sm text-slate-300">
+                    ID: sys_01<br>
+                    READY FOR COMPONENT ASSEMBLY.
+                </div>
             </div>
-            <div>
-              <p class="text-sm font-medium text-text-primary">Primary WebSocket</p>
-              <p class="text-[11px] text-text-muted font-mono mt-0.5">Full Duplex / Real-time</p>
-            </div>
-          </div>
-          <span class="text-status-live text-[10px] font-mono border border-status-live/20 bg-status-live/10 px-2 py-0.5 rounded">ACTIVE</span>
         </div>
-
-        <div class="glass-panel p-4 rounded-xl flex items-center justify-between opacity-70 hover:opacity-100">
-          <div class="flex items-center gap-4">
-            <div class="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-text-secondary">
-              <span class="text-sm font-mono font-bold">T2</span>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-text-primary">HTTP Long-Poll</p>
-              <p class="text-[11px] text-text-muted font-mono mt-0.5">Fall-back Adaptive</p>
-            </div>
-          </div>
-          <span class="text-text-muted text-[10px] font-mono border border-black/10 px-2 py-0.5 rounded">STANDBY</span>
-        </div>
-
-        <div class="glass-panel p-4 rounded-xl flex items-center justify-between opacity-70 hover:opacity-100">
-          <div class="flex items-center gap-4">
-            <div class="w-8 h-8 rounded-lg bg-black/5 flex items-center justify-center text-text-secondary">
-              <span class="text-sm font-mono font-bold">T3</span>
-            </div>
-            <div>
-              <p class="text-sm font-medium text-text-primary">SMS Telemetry</p>
-              <p class="text-[11px] text-text-muted font-mono mt-0.5">Ultra-low Bandwidth</p>
-            </div>
-          </div>
-          <span class="text-text-muted text-[10px] font-mono border border-black/10 px-2 py-0.5 rounded">STANDBY</span>
-        </div>
-      </div>
-
-      <!-- Active Edge Nodes Table -->
-      <div class="lg:col-span-2 flex flex-col gap-4">
-        <h3 class="font-mono text-[11px] text-text-secondary uppercase tracking-widest px-1">Active Edge Nodes</h3>
-        
-        <div class="glass-panel rounded-2xl overflow-hidden h-full flex flex-col">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr class="border-b border-black/5 bg-black/[0.02]">
-                  <th class="py-3 px-6 font-mono text-[10px] text-text-muted uppercase tracking-widest font-normal">Node Identity</th>
-                  <th class="py-3 px-6 font-mono text-[10px] text-text-muted uppercase tracking-widest font-normal">Protocol</th>
-                  <th class="py-3 px-6 font-mono text-[10px] text-text-muted uppercase tracking-widest font-normal">Latency</th>
-                  <th class="py-3 px-6 font-mono text-[10px] text-text-muted uppercase tracking-widest font-normal text-right">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-black/5 text-sm">
-                <tr class="hover:bg-black/[0.03] transition-colors group cursor-default">
-                  <td class="py-3.5 px-6 font-medium text-text-primary group-hover:text-primary-teal transition-colors">Peliyagoda Hub (DC-01)</td>
-                  <td class="py-3.5 px-6 font-mono text-text-secondary text-xs">WSS</td>
-                  <td class="py-3.5 px-6 font-mono text-status-live text-xs">12ms</td>
-                  <td class="py-3.5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-live inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span></td>
-                </tr>
-                <tr class="hover:bg-black/[0.03] transition-colors group cursor-default">
-                  <td class="py-3.5 px-6 font-medium text-text-primary group-hover:text-primary-teal transition-colors">Kandy Hub (DC-02)</td>
-                  <td class="py-3.5 px-6 font-mono text-text-secondary text-xs">WSS</td>
-                  <td class="py-3.5 px-6 font-mono text-status-live text-xs">24ms</td>
-                  <td class="py-3.5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-live inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span></td>
-                </tr>
-                <tr class="hover:bg-black/[0.03] transition-colors group cursor-default">
-                  <td class="py-3.5 px-6 font-medium text-text-primary">VEH-014 (Nuwara Eliya Corridor)</td>
-                  <td class="py-3.5 px-6 font-mono text-text-secondary text-xs">HTTP-Poll</td>
-                  <td class="py-3.5 px-6 font-mono text-status-amber text-xs">184ms</td>
-                  <td class="py-3.5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-amber inline-block"></span></td>
-                </tr>
-                <tr class="hover:bg-black/[0.03] transition-colors group cursor-default">
-                  <td class="py-3.5 px-6 font-medium text-text-primary">VEH-042 (Kadugannawa Pass)</td>
-                  <td class="py-3.5 px-6 font-mono text-text-secondary text-xs">SMS-Fallback</td>
-                  <td class="py-3.5 px-6 font-mono text-text-muted text-xs">8,420ms</td>
-                  <td class="py-3.5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-text-muted inline-block"></span></td>
-                </tr>
-                <tr class="hover:bg-black/[0.03] transition-colors group cursor-default">
-                  <td class="py-3.5 px-6 font-medium text-text-primary">OUT-007 (Mt. Lavinia Store)</td>
-                  <td class="py-3.5 px-6 font-mono text-text-secondary text-xs">WSS</td>
-                  <td class="py-3.5 px-6 font-mono text-status-live text-xs">18ms</td>
-                  <td class="py-3.5 px-6 text-right"><span class="w-2 h-2 rounded-full bg-status-live inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </main>
+    </main>
 </body>
 </html>
