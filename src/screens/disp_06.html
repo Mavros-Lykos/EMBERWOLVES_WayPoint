@@ -1,58 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-06 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vehicle Telemetry Drawer — Waypoint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; justify-content: flex-end; min-height: 100vh; background: rgba(0,0,0,0.5); margin: 0; overflow: hidden; }
+    
+    .drawer-surface { width: 440px; background: var(--md-sys-color-surface-container-lowest); height: 100vh; display: flex; flex-direction: column; box-shadow: -4px 0 16px rgba(0,0,0,0.1); animation: slideIn 0.3s cubic-bezier(0.2, 0, 0, 1); }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    
+    .drawer-header { padding: 24px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: flex-start; justify-content: space-between; background: var(--md-sys-color-surface); }
+    .v-id { font: var(--md-sys-typescale-headline-small); margin-bottom: 4px; }
+    .v-sub { font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-on-surface-variant); display: flex; align-items: center; gap: 6px; }
+    .close-btn { background: none; border: none; cursor: pointer; color: var(--md-sys-color-on-surface-variant); display: flex; align-items: center; padding: 8px; border-radius: var(--md-sys-shape-corner-full); margin: -8px -8px 0 0; }
+    .close-btn:hover { background: var(--md-sys-color-surface-container); }
+    
+    .drawer-body { padding: 24px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 24px; }
+    
+    .section-title { font: var(--md-sys-typescale-title-medium); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Telemetry Cards */
+    .tel-card { background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); padding: 16px; }
+    
+    /* Reefer Sensor */
+    .temp-display { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 16px; }
+    .temp-val { font: var(--md-sys-typescale-display-medium); color: var(--md-sys-color-error); } /* critical state */
+    .temp-target { font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-on-surface-variant); }
+    
+    .graph-mockup { width: 100%; height: 64px; border-bottom: 1px solid var(--md-sys-color-outline-variant); border-left: 1px solid var(--md-sys-color-outline-variant); position: relative; margin-bottom: 8px; }
+    .graph-line { position: absolute; bottom: 10%; left: 0; width: 60%; height: 2px; background: var(--md-sys-color-primary); }
+    .graph-spike { position: absolute; bottom: 10%; left: 60%; width: 40%; height: 2px; background: var(--md-sys-color-error); transform-origin: left; transform: rotate(-30deg); }
+    .graph-threshold { position: absolute; top: 30%; left: 0; right: 0; height: 1px; border-top: 1px dashed var(--md-sys-color-outline); }
+    .graph-labels { display: flex; justify-content: space-between; font: var(--md-sys-typescale-label-small); color: var(--md-sys-color-on-surface-variant); }
+    
+    /* Fuel Quota */
+    .quota-header { display: flex; justify-content: space-between; margin-bottom: 8px; font: var(--md-sys-typescale-label-large); }
+    .quota-bar-wrap { width: 100%; height: 8px; background: var(--md-sys-color-surface-container-highest); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+    .quota-bar-fill { height: 100%; background: var(--md-sys-color-primary); width: 78%; }
+    .quota-text { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+    
+    /* Driver Rest */
+    .rest-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .rest-label { font: var(--md-sys-typescale-body-large); }
+    .rest-val { font: var(--md-sys-typescale-title-medium); }
+    .rest-bar-wrap { width: 100%; height: 4px; background: var(--md-sys-color-surface-container-highest); border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+    .rest-bar-fill { height: 100%; background: var(--md-sys-color-warning); width: 85%; }
+    
+    .drawer-footer { padding: 16px 24px; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; gap: 8px; background: var(--md-sys-color-surface); }
+    .drawer-footer .md-filled-button { flex: 1; }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">DISP-06 WORKSPACE</h1>
+<body>
+  
+  <div class="drawer-surface" role="complementary" aria-label="Vehicle Telemetry">
+    <div class="drawer-header">
+      <div>
+        <div class="v-id">VEH-003</div>
+        <div class="v-sub"><span class="material-symbols-outlined" style="font-size:16px">person</span> Saman K. (Driver)</div>
+      </div>
+      <button class="close-btn" aria-label="Close drawer"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    
+    <div class="drawer-body">
+      
+      <!-- Reefer Sensor -->
+      <div>
+        <div class="section-title"><span class="material-symbols-outlined">thermostat</span> Reefer Sensor</div>
+        <div class="tel-card" style="border-color: var(--md-sys-color-error); background: #FFF5F5;">
+          <div class="temp-display">
+            <span class="temp-val">4.8°C</span>
+            <span class="temp-target">Target: 0°C - 4.0°C</span>
+          </div>
+          <div class="graph-mockup">
+            <div class="graph-threshold"></div>
+            <div class="graph-line"></div>
+            <div class="graph-spike"></div>
+          </div>
+          <div class="graph-labels"><span>05:00</span><span>06:00</span><span>Now</span></div>
+          <div style="color:var(--md-sys-color-error); font:var(--md-sys-typescale-label-medium); margin-top:12px; display:flex; gap:4px; align-items:center;">
+            <span class="material-symbols-outlined" style="font-size:16px">warning</span> Temp breach detected at 07:12 AM
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
+      </div>
+      
+      <!-- Fuel Quota -->
+      <div>
+        <div class="section-title"><span class="material-symbols-outlined">local_gas_station</span> Fuel Quota (Weekly)</div>
+        <div class="tel-card">
+          <div class="quota-header"><span>Allocated: 60L</span><span>46.8L Remaining</span></div>
+          <div class="quota-bar-wrap"><div class="quota-bar-fill"></div></div>
+          <div class="quota-text">Tracking at 102% of expected burn rate. Expected deficit: 1.2L on Saturday.</div>
         </div>
-    </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: disp_06<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
-            </div>
+      </div>
+      
+      <!-- Driver Compliance -->
+      <div>
+        <div class="section-title"><span class="material-symbols-outlined">timer</span> Driver Rest Compliance</div>
+        <div class="tel-card">
+          <div class="rest-row">
+            <span class="rest-label">Continuous driving</span>
+            <span class="rest-val">3h 42m</span>
+          </div>
+          <div class="rest-bar-wrap"><div class="rest-bar-fill"></div></div>
+          <div class="quota-text">Mandatory 30m rest required in <strong style="color:var(--md-sys-color-on-surface)">18 mins</strong>. (Max 4h rule)</div>
         </div>
-    </main>
+      </div>
+      
+    </div>
+    
+    <div class="drawer-footer">
+      <button class="md-outlined-button" style="width:48px;padding:0"><span class="material-symbols-outlined">call</span></button>
+      <button class="md-filled-button">Trigger Emergency Protocol</button>
+    </div>
+  </div>
+  
 </body>
 </html>

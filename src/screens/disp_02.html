@@ -1,58 +1,239 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-02 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Master Allocation Canvas — Waypoint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; min-height: 100vh; overflow: hidden; }
+    .nav-rail { width: 80px; background: var(--md-sys-color-surface-container); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px; border-right: 1px solid var(--md-sys-color-outline-variant); flex-shrink: 0; }
+    .nav-rail .brand-mark { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .nav-rail .brand-mark .material-symbols-outlined { color: var(--md-sys-color-primary); font-size: 28px; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; width: 100%; cursor: pointer; color: var(--md-sys-color-on-surface-variant); border: none; background: none; }
+    .nav-item:hover { color: var(--md-sys-color-on-surface); }
+    .nav-item.active .icon-wrap { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); border-radius: var(--md-sys-shape-corner-full); padding: 4px 20px; }
+    .nav-item .label { font: var(--md-sys-typescale-label-medium); }
+
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    .top-bar { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface); z-index: 10; }
+    .top-bar .page-title { font: var(--md-sys-typescale-title-large); }
+    .top-bar .actions { display: flex; gap: 12px; }
+
+    .split-pane { display: flex; flex: 1; overflow: hidden; }
+    
+    /* Left Pane: Queue */
+    .queue-pane { width: 380px; background: var(--md-sys-color-surface); border-right: 1px solid var(--md-sys-color-outline-variant); display: flex; flex-direction: column; }
+    .queue-header { padding: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; justify-content: space-between; align-items: center; }
+    .queue-title { font: var(--md-sys-typescale-title-medium); }
+    .queue-count { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); padding: 2px 8px; border-radius: 12px; font: var(--md-sys-typescale-label-small); }
+    .queue-filters { padding: 12px 16px; display: flex; gap: 8px; overflow-x: auto; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+    .queue-filters::-webkit-scrollbar { display: none; }
+    .queue-list { flex: 1; overflow-y: auto; padding: 8px; display: flex; flex-direction: column; gap: 8px; }
+    
+    .order-card { background: var(--md-sys-color-surface-container-lowest); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); padding: 12px; cursor: grab; }
+    .order-card:active { cursor: grabbing; box-shadow: var(--md-sys-elevation-2); }
+    .order-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
+    .order-id { font: var(--md-sys-typescale-label-large); font-weight: 600; }
+    .order-meta { display: flex; gap: 12px; font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+    .order-details { font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-on-surface); margin-bottom: 8px; }
+    .order-metrics { display: flex; gap: 8px; }
+    .metric-chip { background: var(--md-sys-color-surface-container); padding: 2px 8px; border-radius: 4px; font: var(--md-sys-typescale-label-small); color: var(--md-sys-color-on-surface-variant); }
+    
+    /* Right Pane: Matrix */
+    .matrix-pane { flex: 1; background: var(--md-sys-color-surface-container-lowest); overflow-y: auto; padding: 24px; }
+    .matrix-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .matrix-title { font: var(--md-sys-typescale-title-large); }
+    
+    .vehicle-grid { display: flex; flex-direction: column; gap: 16px; }
+    .vehicle-row { background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); display: flex; overflow: hidden; }
+    
+    .vehicle-info { width: 220px; padding: 16px; border-right: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface-container-low); display: flex; flex-direction: column; gap: 8px; }
+    .v-id { font: var(--md-sys-typescale-title-medium); }
+    .v-type { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+    
+    .cap-bar-wrap { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+    .cap-label { display: flex; justify-content: space-between; font: var(--md-sys-typescale-label-small); color: var(--md-sys-color-on-surface-variant); }
+    .cap-bar { width: 100%; height: 4px; background: var(--md-sys-color-surface-container-highest); border-radius: 2px; overflow: hidden; }
+    .cap-bar-fill { height: 100%; background: var(--md-sys-color-primary); }
+    .cap-bar-fill.warn { background: var(--md-sys-color-warning); }
+    
+    .trip-area { flex: 1; padding: 16px; display: flex; gap: 16px; align-items: stretch; background: var(--md-sys-color-surface-container-lowest); }
+    .trip-box { flex: 1; border: 2px dashed var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-sm); padding: 12px; display: flex; flex-direction: column; gap: 8px; min-height: 100px; }
+    .trip-box.active { border: 1px solid var(--md-sys-color-outline-variant); background: var(--md-sys-color-surface); }
+    .trip-header { display: flex; justify-content: space-between; font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px; }
+    
+    .trip-order { background: var(--md-sys-color-surface-container-lowest); border: 1px solid var(--md-sys-color-outline-variant); border-radius: 4px; padding: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .trip-order-id { font: var(--md-sys-typescale-label-medium); }
+    .trip-order-loc { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">DISP-02 WORKSPACE</h1>
-        </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
-        </div>
+<body>
+  <nav class="nav-rail">
+    <div class="brand-mark"><span class="material-symbols-outlined">local_shipping</span></div>
+    <button class="nav-item"><span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span><span class="label">Overview</span></button>
+    <button class="nav-item active"><span class="icon-wrap"><span class="material-symbols-outlined">view_kanban</span></span><span class="label">Plan</span></button>
+    <button class="nav-item"><span class="icon-wrap"><span class="material-symbols-outlined">map</span></span><span class="label">Live</span></button>
+  </nav>
+  
+  <div class="main-content">
+    <header class="top-bar">
+      <span class="page-title">Master Allocation</span>
+      <div class="actions">
+        <button class="md-outlined-button">Auto-assign</button>
+        <button class="md-filled-button">Lock Plan (16:30)</button>
+      </div>
     </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: disp_02<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
-            </div>
+    
+    <div class="split-pane">
+      <div class="queue-pane">
+        <div class="queue-header">
+          <span class="queue-title">Unallocated</span>
+          <span class="queue-count">24</span>
         </div>
-    </main>
+        <div class="queue-filters">
+          <button class="md-filter-chip selected">All</button>
+          <button class="md-filter-chip">Chilled</button>
+          <button class="md-filter-chip">Van Only</button>
+          <button class="md-filter-chip">Priority</button>
+        </div>
+        <div class="queue-list">
+          <div class="order-card" draggable="true">
+            <div class="order-header">
+              <span class="order-id">ORD-8902</span>
+              <span class="md-badge warning">Deferred 1x</span>
+            </div>
+            <div class="order-details">OUT-021 · Fresh Panadura</div>
+            <div class="order-meta">
+              <span><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">ac_unit</span> Chilled</span>
+              <span><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">schedule</span> < 08:00 AM</span>
+            </div>
+            <div style="margin-top:8px;" class="order-metrics">
+              <span class="metric-chip">480 kg</span>
+              <span class="metric-chip">1.2 m³</span>
+            </div>
+          </div>
+          
+          <div class="order-card" draggable="true">
+            <div class="order-header">
+              <span class="order-id">ORD-8910</span>
+            </div>
+            <div class="order-details">OUT-044 · Fresh Nuwara Eliya</div>
+            <div class="order-meta">
+              <span><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">ac_unit</span> Chilled</span>
+              <span><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">schedule</span> < 08:00 AM</span>
+            </div>
+            <div style="margin-top:8px;" class="order-metrics">
+              <span class="metric-chip">720 kg</span>
+              <span class="metric-chip">1.8 m³</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="matrix-pane">
+        <div class="matrix-header">
+          <span class="matrix-title">Peliyagoda Fleet (Reefers)</span>
+          <div class="queue-filters" style="border:none; padding:0;">
+            <button class="md-filter-chip selected">Reefers</button>
+            <button class="md-filter-chip">Dry Trucks</button>
+            <button class="md-filter-chip">Vans</button>
+          </div>
+        </div>
+        
+        <div class="vehicle-grid">
+          
+          <div class="vehicle-row">
+            <div class="vehicle-info">
+              <div>
+                <div class="v-id">VEH-003</div>
+                <div class="v-type">Isuzu 4.5T Reefer</div>
+              </div>
+              <div class="cap-bar-wrap">
+                <div class="cap-label"><span>Weight</span><span>1.9T / 4.5T</span></div>
+                <div class="cap-bar"><div class="cap-bar-fill" style="width:42%"></div></div>
+              </div>
+              <div class="cap-bar-wrap">
+                <div class="cap-label"><span>Volume</span><span>6.2m³ / 18m³</span></div>
+                <div class="cap-bar"><div class="cap-bar-fill" style="width:34%"></div></div>
+              </div>
+            </div>
+            <div class="trip-area">
+              <div class="trip-box active">
+                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-order">
+                  <div>
+                    <div class="trip-order-id">ORD-8891</div>
+                    <div class="trip-order-loc">Mt. Lavinia</div>
+                  </div>
+                  <span class="material-symbols-outlined" style="font-size:18px;color:var(--md-sys-color-outline)">drag_indicator</span>
+                </div>
+                <div class="trip-order">
+                  <div>
+                    <div class="trip-order-id">ORD-8894</div>
+                    <div class="trip-order-loc">Moratuwa</div>
+                  </div>
+                  <span class="material-symbols-outlined" style="font-size:18px;color:var(--md-sys-color-outline)">drag_indicator</span>
+                </div>
+              </div>
+              <div class="trip-box">
+                <div class="trip-header"><span>Trip 2 (Empty)</span></div>
+                <div style="color:var(--md-sys-color-outline-variant);text-align:center;margin-top:auto;margin-bottom:auto;">Drop orders here</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vehicle-row">
+            <div class="vehicle-info">
+              <div>
+                <div class="v-id">VEH-006</div>
+                <div class="v-type">Tata 5T Reefer</div>
+              </div>
+              <div class="cap-bar-wrap">
+                <div class="cap-label"><span>Weight</span><span>4.8T / 5.0T</span></div>
+                <div class="cap-bar"><div class="cap-bar-fill warn" style="width:96%"></div></div>
+              </div>
+              <div class="cap-bar-wrap">
+                <div class="cap-label"><span>Volume</span><span>19m³ / 22m³</span></div>
+                <div class="cap-bar"><div class="cap-bar-fill warn" style="width:86%"></div></div>
+              </div>
+            </div>
+            <div class="trip-area">
+              <div class="trip-box active">
+                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-order">
+                  <div>
+                    <div class="trip-order-id">ORD-8812</div>
+                    <div class="trip-order-loc">Negombo</div>
+                  </div>
+                  <span class="material-symbols-outlined" style="font-size:18px;color:var(--md-sys-color-outline)">drag_indicator</span>
+                </div>
+                <div class="trip-order">
+                  <div>
+                    <div class="trip-order-id">ORD-8815</div>
+                    <div class="trip-order-loc">Chilaw</div>
+                  </div>
+                  <span class="material-symbols-outlined" style="font-size:18px;color:var(--md-sys-color-outline)">drag_indicator</span>
+                </div>
+              </div>
+              <div class="trip-box active">
+                <div class="trip-header"><span>Trip 2 · Style</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-order">
+                  <div>
+                    <div class="trip-order-id">ORD-8700</div>
+                    <div class="trip-order-loc">Ja-Ela Mall</div>
+                  </div>
+                  <span class="material-symbols-outlined" style="font-size:18px;color:var(--md-sys-color-outline)">drag_indicator</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

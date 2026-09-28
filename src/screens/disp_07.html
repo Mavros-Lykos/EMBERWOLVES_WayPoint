@@ -1,58 +1,143 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-07 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Reallocation — Waypoint</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; background: var(--md-sys-color-surface); max-width: 900px; margin: 0 auto; }
+    
+    .top-bar { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
+    .page-title { font: var(--md-sys-typescale-title-large); display: flex; align-items: center; gap: 12px; }
+    .close-btn { background: none; border: none; cursor: pointer; color: var(--md-sys-color-on-surface-variant); display: flex; align-items: center; padding: 8px; border-radius: var(--md-sys-shape-corner-full); }
+    
+    .page-body { flex: 1; overflow-y: auto; padding: 32px 24px; display: flex; flex-direction: column; gap: 32px; }
+    
+    /* Stranded Asset */
+    .stranded-card { background: var(--md-sys-color-error-container); color: var(--md-sys-color-on-error-container); border-radius: var(--md-sys-shape-corner-md); padding: 24px; display: flex; gap: 24px; }
+    .alert-icon { width: 48px; height: 48px; border-radius: 24px; background: rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .stranded-info { flex: 1; }
+    .stranded-title { font: var(--md-sys-typescale-headline-small); margin-bottom: 8px; }
+    .stranded-meta { font: var(--md-sys-typescale-body-large); margin-bottom: 16px; opacity: 0.9; }
+    
+    .cargo-pill-strip { display: flex; gap: 12px; flex-wrap: wrap; }
+    .cargo-pill { background: var(--md-sys-color-surface); color: var(--md-sys-color-on-surface); padding: 6px 12px; border-radius: 8px; font: var(--md-sys-typescale-label-medium); display: flex; align-items: center; gap: 6px; box-shadow: var(--md-sys-elevation-1); }
+    
+    /* Rescue Candidates */
+    .section-label { font: var(--md-sys-typescale-label-large); color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+    
+    .candidate-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    
+    .candidate-card { background: var(--md-sys-color-surface-container-lowest); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); padding: 20px; display: flex; flex-direction: column; cursor: pointer; transition: all var(--md-sys-motion-duration-short); }
+    .candidate-card:hover { border-color: var(--md-sys-color-primary); box-shadow: var(--md-sys-elevation-1); }
+    .candidate-card.recommended { border-width: 2px; border-color: var(--md-sys-color-primary); background: var(--md-sys-color-primary-container); }
+    
+    .c-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .c-id { font: var(--md-sys-typescale-title-medium); color: var(--md-sys-color-on-surface); }
+    .c-type { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
+    .c-eta { background: var(--md-sys-color-surface-container-high); padding: 4px 8px; border-radius: 4px; font: var(--md-sys-typescale-label-medium); display: flex; align-items: center; gap: 4px; }
+    .candidate-card.recommended .c-eta { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
+    
+    .c-metrics { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .c-metric-row { display: flex; justify-content: space-between; font: var(--md-sys-typescale-body-medium); }
+    .metric-cap { color: var(--md-sys-color-on-surface-variant); }
+    .metric-val { font-weight: 500; }
+    .metric-val.ok { color: var(--md-sys-color-success); }
+    
+    .action-row { padding: 16px 24px; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; justify-content: flex-end; gap: 12px; }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">DISP-07 WORKSPACE</h1>
+<body>
+  
+  <header class="top-bar">
+    <div class="page-title">
+      <span class="material-symbols-outlined" style="color:var(--md-sys-color-error)">emergency</span>
+      Emergency Handoff Setup
+    </div>
+    <button class="close-btn"><span class="material-symbols-outlined">close</span></button>
+  </header>
+  
+  <div class="page-body">
+    
+    <!-- Stranded Info -->
+    <div class="stranded-card">
+      <div class="alert-icon"><span class="material-symbols-outlined">car_crash</span></div>
+      <div class="stranded-info">
+        <div class="stranded-title">VEH-003 Engine Failure @ Kaduwela</div>
+        <div class="stranded-meta">Reefer compressor offline. Estimated time to spoilage: <strong>45 mins</strong>.</div>
+        <div class="cargo-pill-strip">
+          <div class="cargo-pill"><span class="material-symbols-outlined" style="font-size:16px;color:var(--md-sys-color-primary)">ac_unit</span> Chilled Cargo</div>
+          <div class="cargo-pill"><span class="material-symbols-outlined" style="font-size:16px">weight</span> 1.4T remaining</div>
+          <div class="cargo-pill"><span class="material-symbols-outlined" style="font-size:16px">view_in_ar</span> 4.2m³ remaining</div>
+          <div class="cargo-pill"><span class="material-symbols-outlined" style="font-size:16px">store</span> 3 stops pending</div>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
-        </div>
-    </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: disp_07<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
+      </div>
+    </div>
+    
+    <!-- Candidates -->
+    <div>
+      <div class="section-label">Available Rescue Vehicles</div>
+      <div class="candidate-grid">
+        
+        <!-- Rec 1 -->
+        <div class="candidate-card recommended">
+          <div class="c-head">
+            <div>
+              <div class="c-id">VEH-012 <span style="font-size:12px; font-weight:normal; margin-left:4px;">(Recommended)</span></div>
+              <div class="c-type">Isuzu 4.5T Reefer</div>
             </div>
+            <div class="c-eta"><span class="material-symbols-outlined" style="font-size:14px">timer</span> 14 mins</div>
+          </div>
+          <div class="c-metrics">
+            <div class="c-metric-row">
+              <span class="metric-cap">Available Weight</span>
+              <span class="metric-val ok">2.1T (Needs 1.4T)</span>
+            </div>
+            <div class="c-metric-row">
+              <span class="metric-cap">Available Volume</span>
+              <span class="metric-val ok">6.5m³ (Needs 4.2m³)</span>
+            </div>
+            <div class="c-metric-row">
+              <span class="metric-cap">Current Route</span>
+              <span class="metric-val">Empty, returning to depot</span>
+            </div>
+          </div>
+          <button class="md-filled-button">Select for Rescue</button>
         </div>
-    </main>
+        
+        <!-- Rec 2 -->
+        <div class="candidate-card">
+          <div class="c-head">
+            <div>
+              <div class="c-id">VEH-018</div>
+              <div class="c-type">Tata 5T Reefer</div>
+            </div>
+            <div class="c-eta" style="background:var(--md-sys-color-surface-container);color:var(--md-sys-color-on-surface-variant)"><span class="material-symbols-outlined" style="font-size:14px">timer</span> 28 mins</div>
+          </div>
+          <div class="c-metrics">
+            <div class="c-metric-row">
+              <span class="metric-cap">Available Weight</span>
+              <span class="metric-val ok">1.8T (Needs 1.4T)</span>
+            </div>
+            <div class="c-metric-row">
+              <span class="metric-cap">Available Volume</span>
+              <span class="metric-val ok">4.5m³ (Needs 4.2m³)</span>
+            </div>
+            <div class="c-metric-row">
+              <span class="metric-cap">Current Route</span>
+              <span class="metric-val" style="color:var(--md-sys-color-warning)">Mid-route (2 stops left)</span>
+            </div>
+          </div>
+          <button class="md-outlined-button">Select for Rescue</button>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+  
 </body>
 </html>
