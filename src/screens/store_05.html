@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STORE-05 WORKSPACE | Waypoint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#0ea5e9', 
+            surface: '#ffffff', 
+            canvas: '#f8fafc', 
+            border: '#e2e8f0', 
+            textmain: '#0f172a',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.98); }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
+    <header class="h-16 border-b border-border bg-surface flex items-center justify-between px-8 shrink-0 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-brand">storefront</span>
+            <h1 class="font-semibold tracking-tight">STORE-05 WORKSPACE</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="text-xs font-medium text-slate-500">Mgr: Priya K.</div>
+        </div>
+    </header>
+    <main class="flex-1 overflow-auto p-8">
+        <div class="max-w-5xl mx-auto space-y-6">
+            <div class="p-8 rounded-2xl border border-border bg-surface shadow-sm">
+                <h2 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Module Details</h2>
+                <div class="font-mono text-sm text-slate-700">
+                    ID: store_05<br>
+                    READY FOR COMPONENT ASSEMBLY.
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
