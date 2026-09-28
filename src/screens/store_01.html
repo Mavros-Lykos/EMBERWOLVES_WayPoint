@@ -3,147 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STORE-01 | Waypoint Dispatch</title>
+    <title>STORE-01 WORKSPACE | Waypoint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#0ea5e9', 
+            surface: '#ffffff', 
+            canvas: '#f8fafc', 
+            border: '#e2e8f0', 
+            textmain: '#0f172a',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            background-color: #f8fafc; 
-            color: #000000; 
-            font-family: monospace; 
-            font-size: 14px;
-            padding: 24px;
-        }
-        .header {
-            border-bottom: 2px solid #000000;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-        .header h1 { font-size: 18px; text-transform: uppercase; }
-        .grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-        .panel {
-            border: 1px solid #000000;
-            padding: 16px;
-            background-color: #ffffff;
-        }
-        .panel-header {
-            font-weight: bold;
-            border-bottom: 1px solid #000000;
-            padding-bottom: 8px;
-            margin-bottom: 16px;
-            text-transform: uppercase;
-        }
-        .big-metric {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        .alert {
-            background-color: #000000;
-            color: #ffffff;
-            padding: 8px;
-            display: inline-block;
-            font-weight: bold;
-            margin-bottom: 16px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px dashed #000000;
-        }
-        th { font-weight: bold; text-transform: uppercase; }
-        button {
-            background-color: #000000;
-            color: #ffffff;
-            border: none;
-            padding: 10px 16px;
-            font-family: monospace;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
-        }
-        button:active { background-color: #333333; }
-        .full-btn { width: 100%; margin-top: 16px; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #0f172a; }
+        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.98); }
     </style>
 </head>
-<body>
-    <div class="header">
-        <div>
-            <h1>STORE-01: OUT-007 (MT LAVINIA)</h1>
-            <div>MGR: PRIYA K. | SYS: ONLINE</div>
+<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
+    <header class="h-16 border-b border-border bg-surface flex items-center justify-between px-8 shrink-0 shadow-sm">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-brand">storefront</span>
+            <h1 class="font-semibold tracking-tight">STORE-01 WORKSPACE</h1>
         </div>
-        <div>
-            <strong>CUTOFF COUNTDOWN:</strong> 02H 14M
+        <div class="flex items-center gap-4">
+            <div class="text-xs font-medium text-slate-500">Mgr: Priya K.</div>
         </div>
-    </div>
-    
-    <div class="grid">
-        <div class="panel">
-            <div class="panel-header">TODAY'S DELIVERY STATUS</div>
-            <div class="alert">ETA: 07:15 AM (IN 18 MINS)</div>
-            
-            <table style="margin-bottom: 16px;">
-                <tr><td>DRIVER</td><td>SAMAN K. (VEH-003)</td></tr>
-                <tr><td>STATUS</td><td>STOP 2 OF 4 (IN TRANSIT)</td></tr>
-                <tr><td>SEAL</td><td>PENDING DOCK CHECK</td></tr>
-            </table>
-            
-            <button>TRACK LIVE MAP</button>
-            <button style="margin-left: 8px;">DOCK RECEIVING PREP</button>
+    </header>
+    <main class="flex-1 overflow-auto p-8">
+        <div class="max-w-5xl mx-auto space-y-6">
+            <div class="p-8 rounded-2xl border border-border bg-surface shadow-sm">
+                <h2 class="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">Module Details</h2>
+                <div class="font-mono text-sm text-slate-700">
+                    ID: store_01<br>
+                    READY FOR COMPONENT ASSEMBLY.
+                </div>
+            </div>
         </div>
-        
-        <div class="panel">
-            <div class="panel-header">QUICK REORDER BASKET</div>
-            <div style="margin-bottom: 8px; font-weight: bold;">AMBIENT GROCERY CORE</div>
-            <div>32 SKUS | 420 KG | 1.8 M³</div>
-            <button class="full-btn">1-CLICK REORDER (MON)</button>
-        </div>
-    </div>
-    
-    <div class="panel">
-        <div class="panel-header">ACTIVE ORDERS SUMMARY</div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ORDER ID</th>
-                    <th>TYPE</th>
-                    <th>STATUS</th>
-                    <th>ACTION</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>ORD-8891</td>
-                    <td>CHILLED PERISHABLES</td>
-                    <td>ALLOCATED (VEH-003) - TODAY</td>
-                    <td><button>VIEW</button></td>
-                </tr>
-                <tr>
-                    <td>ORD-8890</td>
-                    <td>DRY GROCERIES</td>
-                    <td>ALLOCATED (VEH-018) - TODAY</td>
-                    <td><button>VIEW</button></td>
-                </tr>
-                <tr>
-                    <td>ORD-8944</td>
-                    <td>TOMORROW RUN</td>
-                    <td>DRAFT (CLOSES 16:00)</td>
-                    <td><button>EDIT</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    </main>
 </body>
 </html>
