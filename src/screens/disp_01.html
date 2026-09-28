@@ -1,184 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-01 | Waypoint Dispatch</title>
+    <title>DISP-01 WORKSPACE | Waypoint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#14b8a6', 
+            surface: '#1e293b', 
+            canvas: '#0f172a', 
+            border: '#334155', 
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { 
-            background-color: #080d1a; 
-            color: #f8fafc; 
-            font-family: monospace; 
-            font-size: 12px;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .header {
-            background-color: #111d38;
-            border-bottom: 1px solid #1e293b;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-title { font-weight: bold; font-size: 14px; }
-        .main-layout {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-        .sidebar {
-            width: 280px;
-            border-right: 1px solid #1e293b;
-            background-color: #080d1a;
-            display: flex;
-            flex-direction: column;
-        }
-        .panel-header {
-            background-color: #111d38;
-            padding: 8px 16px;
-            font-weight: bold;
-            border-bottom: 1px solid #1e293b;
-            border-top: 1px solid #1e293b;
-        }
-        .panel-header:first-child { border-top: none; }
-        .stat-row {
-            padding: 12px 16px;
-            border-bottom: 1px solid #1e293b;
-            display: flex;
-            justify-content: space-between;
-        }
-        .stat-value { font-weight: bold; color: #0ea5e9; }
-        .stat-warning { color: #f59e0b; }
-        .stat-critical { color: #ef4444; }
-        
-        .content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: #080d1a;
-        }
-        .table-container {
-            flex: 1;
-            overflow: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px 16px;
-            text-align: left;
-            border-bottom: 1px solid #1e293b;
-        }
-        th {
-            background-color: #111d38;
-            font-weight: bold;
-            position: sticky;
-            top: 0;
-        }
-        tr:hover { background-color: #111d38; }
-        .btn {
-            background-color: #0ea5e9;
-            color: #ffffff;
-            border: none;
-            padding: 6px 12px;
-            font-family: monospace;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn:hover { background-color: #0284c7; }
-        .tag {
-            padding: 2px 6px;
-            border: 1px solid #334155;
-            background-color: #080d1a;
-            font-size: 10px;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
+        .interactive:active { transform: scale(0.98); }
     </style>
 </head>
-<body>
-    <div class="header">
-        <div class="header-title">DISP-01: FLEET OVERVIEW (PELIYAGODA HUB)</div>
-        <div>OPERATOR: KAMAL | CUTOFF: 16:00 (T-02h 14m)</div>
-    </div>
-    
-    <div class="main-layout">
-        <div class="sidebar">
-            <div class="panel-header">NETWORK STATUS</div>
-            <div class="stat-row">
-                <span>ACTIVE STORES</span>
-                <span class="stat-value">120/120</span>
-            </div>
-            <div class="stat-row">
-                <span>PENDING ORDERS</span>
-                <span class="stat-value">48</span>
-            </div>
-            
-            <div class="panel-header">FLEET CAPACITY</div>
-            <div class="stat-row">
-                <span>REEFER TRUCKS (14m³)</span>
-                <span class="stat-value">10/12</span>
-            </div>
-            <div class="stat-row">
-                <span>DRY TRUCKS (18m³)</span>
-                <span class="stat-value">38/40</span>
-            </div>
-            <div class="stat-row">
-                <span>TOTAL VOL DEMAND</span>
-                <span class="stat-warning">842 m³</span>
-            </div>
-            <div class="stat-row">
-                <span>TOTAL WT DEMAND</span>
-                <span class="stat-critical">48,200 kg</span>
+<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
+    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-brand">explore</span>
+            <h1 class="font-semibold text-sm tracking-tight">DISP-01 WORKSPACE</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
+            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
+        </div>
+    </header>
+    <main class="flex-1 overflow-auto p-6">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
+                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
+                <div class="font-mono text-sm text-slate-300">
+                    ID: disp_01<br>
+                    READY FOR COMPONENT ASSEMBLY.
+                </div>
             </div>
         </div>
-        
-        <div class="content">
-            <div class="panel-header">UNALLOCATED ORDER QUEUE</div>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ORDER ID</th>
-                            <th>STORE</th>
-                            <th>TYPE</th>
-                            <th>VOL (m³)</th>
-                            <th>WT (kg)</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>ORD-8891</td>
-                            <td>OUT-007</td>
-                            <td><span class="tag">CHILLED</span></td>
-                            <td>2.8</td>
-                            <td>1120</td>
-                            <td><button class="btn">ALLOCATE</button></td>
-                        </tr>
-                        <tr>
-                            <td>ORD-8892</td>
-                            <td>OUT-012</td>
-                            <td><span class="tag">AMBIENT</span></td>
-                            <td>12.4</td>
-                            <td>4200</td>
-                            <td><button class="btn">ALLOCATE</button></td>
-                        </tr>
-                        <tr>
-                            <td>ORD-8894</td>
-                            <td>OUT-044</td>
-                            <td><span class="tag">CHILLED</span></td>
-                            <td>4.1</td>
-                            <td>1600</td>
-                            <td><button class="btn">ALLOCATE</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    </main>
 </body>
 </html>
