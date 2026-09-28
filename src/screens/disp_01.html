@@ -1,58 +1,319 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DISP-01 WORKSPACE | Waypoint</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#14b8a6', 
-            surface: '#1e293b', 
-            canvas: '#0f172a', 
-            border: '#334155', 
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleet Overview — Waypoint Dispatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; min-height: 100vh; }
+
+    /* --- Nav Rail --- */
+    .nav-rail {
+      width: 80px;
+      background: var(--md-sys-color-surface-container);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 12px 0; gap: 4px;
+      border-right: 1px solid var(--md-sys-color-outline-variant);
+      flex-shrink: 0;
     }
-    </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0" />
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .interactive { transition: all 0.15s ease-out; cursor: pointer; }
-        .interactive:active { transform: scale(0.98); }
-    </style>
+    .nav-rail .brand-mark { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .nav-rail .brand-mark .material-symbols-outlined { color: var(--md-sys-color-primary); font-size: 28px; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; width: 100%; cursor: pointer; color: var(--md-sys-color-on-surface-variant); text-decoration: none; border: none; background: none; }
+    .nav-item:hover { color: var(--md-sys-color-on-surface); }
+    .nav-item.active .icon-wrap { background: var(--md-sys-color-secondary-container); color: var(--md-sys-color-on-secondary-container); border-radius: var(--md-sys-shape-corner-full); padding: 4px 20px; }
+    .nav-item .label { font: var(--md-sys-typescale-label-medium); }
+
+    /* --- Main --- */
+    .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+    .top-bar {
+      height: 64px; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .top-bar .page-title { font: var(--md-sys-typescale-title-large); }
+    .top-bar .meta { display: flex; align-items: center; gap: 16px; }
+    .cutoff-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px;
+      background: var(--md-sys-color-error-container);
+      color: var(--md-sys-color-on-error-container);
+      border-radius: var(--md-sys-shape-corner-full);
+      font: var(--md-sys-typescale-label-large);
+    }
+
+    .page-body { flex: 1; overflow-y: auto; padding: 24px; }
+
+    /* --- Aggregate Strip --- */
+    .agg-strip {
+      display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .agg-item {
+      flex: 1; min-width: 180px;
+      background: var(--md-sys-color-surface-container-lowest);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-sys-shape-corner-md);
+      padding: 16px;
+    }
+    .agg-item .agg-label {
+      font: var(--md-sys-typescale-label-small);
+      color: var(--md-sys-color-on-surface-variant);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+    .agg-item .agg-value {
+      font: var(--md-sys-typescale-headline-medium);
+      color: var(--md-sys-color-on-surface);
+    }
+    .agg-item .agg-sub {
+      font: var(--md-sys-typescale-body-small);
+      color: var(--md-sys-color-on-surface-variant);
+      margin-top: 2px;
+    }
+
+    /* --- Depot + Fleet Grid --- */
+    .ops-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px;
+    }
+    .ops-card {
+      background: var(--md-sys-color-surface-container-lowest);
+      border: 1px solid var(--md-sys-color-outline-variant);
+      border-radius: var(--md-sys-shape-corner-md);
+      padding: 20px;
+    }
+    .ops-card .card-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .ops-card .card-header .material-symbols-outlined {
+      color: var(--md-sys-color-primary); font-size: 20px;
+    }
+    .ops-card .card-title {
+      font: var(--md-sys-typescale-title-medium);
+    }
+
+    .cap-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .cap-row:last-child { border-bottom: none; }
+    .cap-label {
+      font: var(--md-sys-typescale-body-medium);
+      color: var(--md-sys-color-on-surface);
+    }
+    .cap-bar-wrap {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .cap-bar {
+      width: 100px; height: 6px;
+      background: var(--md-sys-color-surface-container-highest);
+      border-radius: var(--md-sys-shape-corner-full);
+      overflow: hidden;
+    }
+    .cap-bar-fill {
+      height: 100%;
+      border-radius: var(--md-sys-shape-corner-full);
+      transition: width var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+    }
+    .cap-bar-fill.ok { background: var(--md-sys-color-success); }
+    .cap-bar-fill.warn { background: var(--md-sys-color-warning); }
+    .cap-bar-fill.crit { background: var(--md-sys-color-critical); }
+    .cap-pct {
+      font: var(--md-sys-typescale-label-medium);
+      color: var(--md-sys-color-on-surface-variant);
+      min-width: 36px; text-align: right;
+    }
+
+    /* Fleet list */
+    .fleet-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    }
+    .fleet-row:last-child { border-bottom: none; }
+    .fleet-type {
+      font: var(--md-sys-typescale-body-medium);
+      color: var(--md-sys-color-on-surface);
+    }
+    .fleet-count {
+      font: var(--md-sys-typescale-label-large);
+      color: var(--md-sys-color-on-surface-variant);
+    }
+
+    /* --- Actions --- */
+    .action-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased selection:bg-brand selection:text-white">
-    <header class="h-14 border-b border-border bg-surface flex items-center justify-between px-6 shrink-0">
-        <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-brand">explore</span>
-            <h1 class="font-semibold text-sm tracking-tight">DISP-01 WORKSPACE</h1>
+<body>
+
+  <!-- Navigation Rail -->
+  <nav class="nav-rail" aria-label="Dispatch navigation">
+    <div class="brand-mark"><span class="material-symbols-outlined">local_shipping</span></div>
+    <button class="nav-item active" aria-current="page">
+      <span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span>
+      <span class="label">Overview</span>
+    </button>
+    <button class="nav-item">
+      <span class="icon-wrap"><span class="material-symbols-outlined">view_kanban</span></span>
+      <span class="label">Plan</span>
+    </button>
+    <button class="nav-item">
+      <span class="icon-wrap"><span class="material-symbols-outlined">map</span></span>
+      <span class="label">Live</span>
+    </button>
+  </nav>
+
+  <div class="main-content">
+    <header class="top-bar">
+      <span class="page-title">Fleet Overview — Peliyagoda DC & Kandy Hub</span>
+      <div class="meta">
+        <div class="cutoff-chip">
+          <span class="material-symbols-outlined" style="font-size:18px">lock_clock</span>
+          16:00 Cutoff: LOCKED
         </div>
-        <div class="flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>
-            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sys Online</span>
-        </div>
+        <span style="font: var(--md-sys-typescale-label-large); color: var(--md-sys-color-on-surface-variant);">Kamal</span>
+      </div>
     </header>
-    <main class="flex-1 overflow-auto p-6">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <div class="p-6 rounded-xl border border-border bg-surface/50 backdrop-blur-sm shadow-xl shadow-black/20">
-                <h2 class="text-xs font-mono text-slate-400 uppercase tracking-widest mb-4">Module Status</h2>
-                <div class="font-mono text-sm text-slate-300">
-                    ID: disp_01<br>
-                    READY FOR COMPONENT ASSEMBLY.
-                </div>
-            </div>
+
+    <div class="page-body">
+
+      <!-- Aggregate Strip -->
+      <div class="agg-strip">
+        <div class="agg-item">
+          <div class="agg-label">Orders</div>
+          <div class="agg-value">184</div>
+          <div class="agg-sub">Confirmed today</div>
         </div>
-    </main>
+        <div class="agg-item">
+          <div class="agg-label">Weight</div>
+          <div class="agg-value">142.4T</div>
+          <div class="agg-sub">of 190T capacity</div>
+        </div>
+        <div class="agg-item">
+          <div class="agg-label">Volume</div>
+          <div class="agg-value">482 m³</div>
+          <div class="agg-sub">of 620 m³ capacity</div>
+        </div>
+        <div class="agg-item">
+          <div class="agg-label">Vehicles</div>
+          <div class="agg-value">60</div>
+          <div class="agg-sub">58 ready · 2 maintenance</div>
+        </div>
+      </div>
+
+      <!-- Depot + Fleet Grid -->
+      <div class="ops-grid">
+
+        <!-- Peliyagoda -->
+        <div class="ops-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">warehouse</span>
+            <span class="card-title">Peliyagoda DC</span>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Ambient</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill ok" style="width:84%"></div></div>
+              <span class="cap-pct">84%</span>
+            </div>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Chilled</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill crit" style="width:94%"></div></div>
+              <span class="cap-pct">94%</span>
+            </div>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Fuel quota</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill ok" style="width:82%"></div></div>
+              <span class="cap-pct">82%</span>
+            </div>
+          </div>
+          <div style="font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); margin-top: 8px;">138 active orders</div>
+        </div>
+
+        <!-- Kandy -->
+        <div class="ops-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">warehouse</span>
+            <span class="card-title">Kandy Hub</span>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Ambient</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill ok" style="width:72%"></div></div>
+              <span class="cap-pct">72%</span>
+            </div>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Chilled</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill ok" style="width:68%"></div></div>
+              <span class="cap-pct">68%</span>
+            </div>
+          </div>
+          <div class="cap-row">
+            <span class="cap-label">Fuel quota</span>
+            <div class="cap-bar-wrap">
+              <div class="cap-bar"><div class="cap-bar-fill ok" style="width:76%"></div></div>
+              <span class="cap-pct">76%</span>
+            </div>
+          </div>
+          <div style="font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); margin-top: 8px;">46 active orders</div>
+        </div>
+
+        <!-- Fleet Status -->
+        <div class="ops-card">
+          <div class="card-header">
+            <span class="material-symbols-outlined">directions_bus</span>
+            <span class="card-title">Fleet</span>
+          </div>
+          <div class="fleet-row">
+            <span class="fleet-type">Reefer trucks</span>
+            <span class="fleet-count">12 ready</span>
+          </div>
+          <div class="fleet-row">
+            <span class="fleet-type">Dry trucks</span>
+            <span class="fleet-count">38 / 40</span>
+          </div>
+          <div class="fleet-row">
+            <span class="fleet-type">Reefer vans</span>
+            <span class="fleet-count">4 ready</span>
+          </div>
+          <div class="fleet-row">
+            <span class="fleet-type">Dry vans</span>
+            <span class="fleet-count">4 ready</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Action Bar -->
+      <div class="action-bar">
+        <button class="md-filled-button">
+          <span class="material-symbols-outlined" style="font-size:18px">view_kanban</span>
+          Open planning
+        </button>
+        <button class="md-outlined-button">
+          <span class="material-symbols-outlined" style="font-size:18px">history</span>
+          Deferrals
+        </button>
+        <button class="md-outlined-button">
+          <span class="material-symbols-outlined" style="font-size:18px">crisis_alert</span>
+          Simulate crisis
+        </button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
