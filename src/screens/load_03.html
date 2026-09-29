@@ -138,7 +138,7 @@
               <div class="pill"><span class="material-symbols-outlined" style="font-size:16px">ac_unit</span> Chilled</div>
             </div>
             <div class="card-action">
-              <button class="md-filled-button">Confirm Loaded</button>
+              <button class="md-filled-button" onclick="this.closest('.load-step').classList.remove('active'); this.closest('.load-step').classList.add('done');">Confirm Loaded</button>
             </div>
             <div class="card-done-state">
               <span class="material-symbols-outlined" style="font-size:20px">verified</span> Loaded by Nuwan
@@ -152,7 +152,7 @@
   </div>
   
   <div class="action-row">
-    <button class="md-filled-button" style="background:var(--md-sys-color-surface-container-highest); color:var(--md-sys-color-on-surface-variant)">Complete Loading & Seal</button>
+    <button class="md-filled-button" style="background:var(--md-sys-color-surface-container-highest); color:var(--md-sys-color-on-surface-variant)" onclick="location.href='load_05.html'">Complete Loading & Seal</button>
   </div>
 </body>
 </html>
