@@ -41,8 +41,8 @@
   <header class="top-bar" aria-label="Depot loading history">
     <div class="page-title">Peliyagoda History</div>
     <div class="nav-tabs">
-      <div class="nav-tab">Queue</div>
-      <div class="nav-tab active">History</div>
+      <div class="nav-tab" role="button" tabindex="0" onclick="location.href='load_01.html'">Queue</div>
+      <div class="nav-tab active" role="button" tabindex="0">History</div>
     </div>
   <span class="md-badge success" style="margin-left:auto; margin-right: 16px;"><span class="material-symbols-outlined" style="font-size:14px">cloud_done</span> Online</span>
 </header>
@@ -51,9 +51,9 @@
     
     <div class="filter-bar">
       <div class="filter-chips">
-        <button class="md-filter-chip selected">Today</button>
-        <button class="md-filter-chip">Yesterday</button>
-        <button class="md-filter-chip">Last 7 Days</button>
+        <button class="md-filter-chip selected" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Today</button>
+        <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Yesterday</button>
+        <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Last 7 Days</button>
       </div>
       <div class="search-box">
         <span class="material-symbols-outlined" style="color:var(--md-sys-color-on-surface-variant)">search</span>
