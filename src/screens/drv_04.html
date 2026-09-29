@@ -46,38 +46,38 @@
     
     <div class="checklist">
       
-      <div class="check-item checked" onclick="this.classList.toggle('checked')">
-        <div class="check-icon"><span class="material-symbols-outlined">check</span></div>
+      <div class="check-item checked" role="checkbox" aria-checked="true" aria-label="Highland Milk 1L - 24 crates" onclick="this.classList.toggle('checked');this.setAttribute('aria-checked',this.classList.contains('checked'))">
+        <div class="check-icon" aria-hidden="true"><span class="material-symbols-outlined">check</span></div>
         <div class="check-label">
           <div class="sku-name">Highland Milk 1L</div>
           <div class="sku-meta"><span>24 Crates</span><span>Chilled</span></div>
         </div>
       </div>
       
-      <div class="check-item checked" onclick="this.classList.toggle('checked')">
-        <div class="check-icon"><span class="material-symbols-outlined">check</span></div>
+      <div class="check-item checked" role="checkbox" aria-checked="true" aria-label="Fresh Poultry Pack - 16 crates" onclick="this.classList.toggle('checked');this.setAttribute('aria-checked',this.classList.contains('checked'))">
+        <div class="check-icon" aria-hidden="true"><span class="material-symbols-outlined">check</span></div>
         <div class="check-label">
           <div class="sku-name">Fresh Poultry Pack</div>
           <div class="sku-meta"><span>16 Crates</span><span>Chilled</span></div>
         </div>
       </div>
       
-      <div class="check-item" onclick="this.classList.toggle('checked')">
-        <div class="check-icon"><span class="material-symbols-outlined">check</span></div>
+      <div class="check-item" role="checkbox" aria-checked="false" aria-label="Yoghurt 80g - 10 crates" onclick="this.classList.toggle('checked');this.setAttribute('aria-checked',this.classList.contains('checked'))">
+        <div class="check-icon" aria-hidden="true"><span class="material-symbols-outlined">check</span></div>
         <div class="check-label">
           <div class="sku-name">Yoghurt 80g</div>
           <div class="sku-meta"><span>10 Crates</span><span>Chilled</span></div>
         </div>
-        <button class="shortage-btn" onclick="event.stopPropagation()">Report</button>
+        <button class="shortage-btn" aria-label="Report shortage for Yoghurt 80g" onclick="event.stopPropagation()">Report</button>
       </div>
       
-      <div class="check-item" onclick="this.classList.toggle('checked')">
-        <div class="check-icon"><span class="material-symbols-outlined">check</span></div>
+      <div class="check-item" role="checkbox" aria-checked="false" aria-label="Butter 200g - 5 crates" onclick="this.classList.toggle('checked');this.setAttribute('aria-checked',this.classList.contains('checked'))">
+        <div class="check-icon" aria-hidden="true"><span class="material-symbols-outlined">check</span></div>
         <div class="check-label">
           <div class="sku-name">Butter 200g</div>
           <div class="sku-meta"><span>5 Crates</span><span>Chilled</span></div>
         </div>
-        <button class="shortage-btn" onclick="event.stopPropagation()">Report</button>
+        <button class="shortage-btn" aria-label="Report shortage for Butter 200g" onclick="event.stopPropagation()">Report</button>
       </div>
 
     </div>
@@ -85,7 +85,7 @@
   </div>
 
   <div class="bottom-action">
-    <button class="md-filled-button">Complete Handoff</button>
+    <button class="md-filled-button" aria-label="Complete cargo handoff for this stop">Complete Handoff</button>
   </div>
 
 </body>

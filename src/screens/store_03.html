@@ -39,7 +39,13 @@
   </style>
 </head>
 <body>
-  <nav class="nav-rail"><div class="brand-mark"><span class="material-symbols-outlined">local_shipping</span></div></nav>
+  <nav class="nav-rail" aria-label="Main navigation">
+    <div class="brand-mark"><span class="material-symbols-outlined">local_shipping</span></div>
+    <button class="nav-item" aria-label="Dashboard"><span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span><span class="label">Home</span></button>
+    <button class="nav-item" aria-label="New Order"><span class="icon-wrap"><span class="material-symbols-outlined">add_shopping_cart</span></span><span class="label">Order</span></button>
+    <button class="nav-item" aria-label="Order History"><span class="icon-wrap"><span class="material-symbols-outlined">history</span></span><span class="label">History</span></button>
+    <button class="nav-item" aria-label="Dock Receiving"><span class="icon-wrap"><span class="material-symbols-outlined">dock_to_bottom</span></span><span class="label">Receive</span></button>
+  </nav>
   <div class="main-content">
     <header class="top-bar">
       <button class="back-btn" aria-label="Back"><span class="material-symbols-outlined">arrow_back</span></button>

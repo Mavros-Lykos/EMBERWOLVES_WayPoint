@@ -45,7 +45,7 @@
 
   <div class="page-body">
     
-    <button class="sos-button">
+    <button class="sos-button" aria-label="Broadcast SOS emergency to dispatch">
       <span class="material-symbols-outlined">satellite_alt</span>
       <span class="sos-text">BROADCAST</span>
     </button>
@@ -61,20 +61,17 @@
     <div style="width:100%">
       <div style="font:var(--md-sys-typescale-label-medium);color:var(--md-sys-color-on-surface-variant);margin-bottom:12px;text-transform:uppercase;">Select Issue Type</div>
       <div class="type-grid">
-        <div class="type-btn active">
+        <div class="type-btn active" role="radio" aria-checked="true" aria-label="Engine or breakdown issue">
           <span class="material-symbols-outlined">car_crash</span>
           <span class="type-label">Engine / Breakdown</span>
         </div>
-        <div class="type-btn">
-          <span class="material-symbols-outlined">tire_repair</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Flat tire issue"><span class="material-symbols-outlined" aria-hidden="true">tire_repair</span>
           <span class="type-label">Flat Tire</span>
         </div>
-        <div class="type-btn">
-          <span class="material-symbols-outlined">ac_unit</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Refrigeration failure issue"><span class="material-symbols-outlined" aria-hidden="true">ac_unit</span>
           <span class="type-label">Reefer Failure</span>
         </div>
-        <div class="type-btn">
-          <span class="material-symbols-outlined">medical_services</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Medical or accident issue"><span class="material-symbols-outlined" aria-hidden="true">medical_services</span>
           <span class="type-label">Medical / Accident</span>
         </div>
       </div>

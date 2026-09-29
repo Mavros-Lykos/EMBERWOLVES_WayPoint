@@ -39,31 +39,31 @@
 
   <div class="map-bg"><div class="map-pattern"></div></div>
 
-  <div class="nav-header">
-    <span class="material-symbols-outlined turn-icon">turn_right</span>
+  <header class="nav-header" aria-label="Navigation direction">
+    <span class="material-symbols-outlined turn-icon" aria-hidden="true">turn_right</span>
     <div class="turn-info">
-      <div class="dist-val">300 m</div>
+      <div class="dist-val" aria-label="Distance: 300 metres">300 m</div>
       <div class="street-name">Galle Road (A2)</div>
     </div>
-  </div>
+  </header>
 
   <div class="offline-pill">
     <span class="material-symbols-outlined" style="font-size:16px;color:var(--md-sys-color-primary)">cloud_off</span>
     Offline map active
   </div>
 
-  <div class="nav-footer">
+  <main class="nav-footer" aria-label="Trip destination">
     <div class="dest-row">
-      <div class="eta-val">06:40</div>
+      <div class="eta-val" aria-label="ETA 6:40 AM">06:40</div>
       <div class="dest-meta">14 min · 6.2 km</div>
     </div>
     <div class="dest-name">OUT-007 · Mt. Lavinia</div>
     
     <div class="action-row">
-      <button class="md-outlined-button"><span class="material-symbols-outlined">call</span></button>
-      <button class="md-filled-button">Arrived at Store</button>
+      <button class="md-outlined-button" aria-label="Call store manager"><span class="material-symbols-outlined" aria-hidden="true">call</span></button>
+      <button class="md-filled-button" aria-label="Mark as arrived at store">Arrived at Store</button>
     </div>
-  </div>
+  </main>
 
 </body>
 </html>
