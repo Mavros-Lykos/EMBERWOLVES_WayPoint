@@ -21,7 +21,7 @@
     .top-bar .page-title { font: var(--md-sys-typescale-title-large); }
     .page-body { flex: 1; overflow-y: auto; padding: 24px; display: grid; grid-template-columns: 1fr 360px; gap: 24px; }
     .section-label { font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-    .info-card { background: var(--md-sys-color-surface-container-lowest); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); padding: 20px; margin-bottom: 16px; }
+    .info-card { transition: all var(--md-sys-motion-duration-short);  background: var(--md-sys-color-surface-container-lowest); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); padding: 20px; margin-bottom: 16px; }
     .info-card .card-title { font: var(--md-sys-typescale-title-medium); margin-bottom: 16px; }
     .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .info-item { display: flex; flex-direction: column; gap: 2px; }
@@ -36,20 +36,22 @@
     .progress-line { flex: 1; height: 2px; background: var(--md-sys-color-outline-variant); }
     .progress-line.done { background: var(--md-sys-color-primary); }
     @media (max-width: 1024px) { .nav-rail { display: none; } .page-body { grid-template-columns: 1fr; } }
+    .info-card:hover { box-shadow: var(--md-sys-elevation-1); }
   </style>
 </head>
 <body>
   <nav class="nav-rail" aria-label="Main navigation">
     <div class="brand-mark"><span class="material-symbols-outlined">local_shipping</span></div>
-    <button class="nav-item" aria-label="Dashboard"><span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span><span class="label">Home</span></button>
-    <button class="nav-item" aria-label="New Order"><span class="icon-wrap"><span class="material-symbols-outlined">add_shopping_cart</span></span><span class="label">Order</span></button>
-    <button class="nav-item" aria-label="Order History"><span class="icon-wrap"><span class="material-symbols-outlined">history</span></span><span class="label">History</span></button>
-    <button class="nav-item" aria-label="Dock Receiving"><span class="icon-wrap"><span class="material-symbols-outlined">dock_to_bottom</span></span><span class="label">Receive</span></button>
+    <button class="nav-item" aria-label="Dashboard" onclick="location.href='store_01.html'"><span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span><span class="label">Home</span></button>
+    <button class="nav-item" aria-label="New Order" onclick="location.href='store_02.html'"><span class="icon-wrap"><span class="material-symbols-outlined">add_shopping_cart</span></span><span class="label">Order</span></button>
+    <button class="nav-item" aria-label="Order History" onclick="location.href='store_04.html'"><span class="icon-wrap"><span class="material-symbols-outlined">history</span></span><span class="label">History</span></button>
+    <button class="nav-item" aria-label="Dock Receiving" onclick="location.href='store_05.html'"><span class="icon-wrap"><span class="material-symbols-outlined">dock_to_bottom</span></span><span class="label">Receive</span></button>
   </nav>
   <div class="main-content">
     <header class="top-bar">
-      <button class="back-btn" aria-label="Back"><span class="material-symbols-outlined">arrow_back</span></button>
+      <button class="back-btn" aria-label="Back" onclick="history.back()"><span class="material-symbols-outlined">arrow_back</span></button>
       <span class="page-title">ORD-8891 · Chilled Dairy & Poultry</span>
+      <div class="cutoff-chip" style="margin-left:16px"><span class="material-symbols-outlined" style="font-size:18px">schedule</span>Cutoff: 01h 45m</div>
       <span class="md-badge success" style="margin-left:auto"><span class="material-symbols-outlined" style="font-size:14px">check_circle</span> En Route</span>
     </header>
     <div class="page-body">
