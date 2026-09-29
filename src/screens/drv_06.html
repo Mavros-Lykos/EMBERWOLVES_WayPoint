@@ -46,7 +46,7 @@
 
   <div class="page-body">
     
-    <button class="sos-button" aria-label="Broadcast SOS emergency to dispatch">
+    <button class="sos-button" aria-label="Broadcast SOS emergency to dispatch" onclick="alert('EMERGENCY BROADCAST SENT: Peliyagoda Dispatch alerted. Rescue vehicle dispatching.'); location.href='drv_07.html';">
       <span class="material-symbols-outlined">satellite_alt</span>
       <span class="sos-text">BROADCAST</span>
     </button>
@@ -62,17 +62,17 @@
     <div style="width:100%">
       <div style="font:var(--md-sys-typescale-label-medium);color:var(--md-sys-color-on-surface-variant);margin-bottom:12px;text-transform:uppercase;">Select Issue Type</div>
       <div class="type-grid">
-        <div class="type-btn active" role="radio" aria-checked="true" aria-label="Engine or breakdown issue">
+        <div class="type-btn active" role="radio" aria-checked="true" aria-label="Engine or breakdown issue" onclick="document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-checked','false');}); this.classList.add('active'); this.setAttribute('aria-checked','true');">
           <span class="material-symbols-outlined">car_crash</span>
           <span class="type-label">Engine / Breakdown</span>
         </div>
-        <div class="type-btn" role="radio" aria-checked="false" aria-label="Flat tire issue"><span class="material-symbols-outlined" aria-hidden="true">tire_repair</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Flat tire issue" onclick="document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-checked','false');}); this.classList.add('active'); this.setAttribute('aria-checked','true');"><span class="material-symbols-outlined" aria-hidden="true">tire_repair</span>
           <span class="type-label">Flat Tire</span>
         </div>
-        <div class="type-btn" role="radio" aria-checked="false" aria-label="Refrigeration failure issue"><span class="material-symbols-outlined" aria-hidden="true">ac_unit</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Refrigeration failure issue" onclick="document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-checked','false');}); this.classList.add('active'); this.setAttribute('aria-checked','true');"><span class="material-symbols-outlined" aria-hidden="true">ac_unit</span>
           <span class="type-label">Reefer Failure</span>
         </div>
-        <div class="type-btn" role="radio" aria-checked="false" aria-label="Medical or accident issue"><span class="material-symbols-outlined" aria-hidden="true">medical_services</span>
+        <div class="type-btn" role="radio" aria-checked="false" aria-label="Medical or accident issue" onclick="document.querySelectorAll('.type-btn').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-checked','false');}); this.classList.add('active'); this.setAttribute('aria-checked','true');"><span class="material-symbols-outlined" aria-hidden="true">medical_services</span>
           <span class="type-label">Medical / Accident</span>
         </div>
       </div>
