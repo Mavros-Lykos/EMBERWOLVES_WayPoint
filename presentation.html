@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emberwolves - Waypoint Dispatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            navy: '#080d1a',
+                            navyLight: '#111d38',
+                            teal: '#0ea5e9',
+                            light: '#f8fafc',
+                            muted: '#94a3b8'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #080d1a;
+            color: #f8fafc;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: scale(0.95);
+            pointer-events: none;
+            padding: 4rem;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .slide-light {
+            background-color: #f8fafc;
+            color: #080d1a;
+        }
+
+        .slide-dark {
+            background-color: #080d1a;
+            color: #f8fafc;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #0ea5e9;
+            transition: width 0.3s ease;
+            z-index: 50;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 1rem;
+            right: 2rem;
+            z-index: 50;
+            display: flex;
+            gap: 1rem;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .controls:hover {
+            opacity: 1;
+        }
+
+        button {
+            background: rgba(14, 165, 233, 0.2);
+            border: 1px solid rgba(14, 165, 233, 0.5);
+            color: #0ea5e9;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        button:hover {
+            background: rgba(14, 165, 233, 0.4);
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased">
+
+    <!-- Progress Bar -->
+    <div id="progress" class="progress-bar" style="width: 20%;"></div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button onclick="prevSlide()">&#8592;</button>
+        <button onclick="nextSlide()">&#8594;</button>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide slide-dark active" id="slide-1">
+        <div class="max-w-4xl text-center w-full">
+            <div class="font-mono text-brand-teal tracking-widest text-sm mb-6 uppercase">Designathon Submission</div>
+            <h1 class="text-7xl font-bold mb-6 tracking-tight">Waypoint Dispatch</h1>
+            <p class="text-2xl text-brand-muted mb-12 font-light">The Intelligent Enterprise</p>
+            <div class="inline-block border border-white/10 bg-white/5 rounded-full px-8 py-3">
+                <span class="font-mono text-sm text-white/70">Team Emberwolves</span>
+            </div>
+            <div class="text-center p-5">
+                <img src="submission/Emberwolves.png" alt="" class="w-24 h-24 inline-block">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 2: The Core Problem -->
+    <div class="slide slide-light" id="slide-2">
+        <div class="max-w-6xl w-full">
+            <h2 class="text-5xl font-bold mb-16 text-center">From Fragmentation to Unification</h2>
+
+            <div class="grid grid-cols-2 gap-12">
+                <!-- Fragmented -->
+                <div class="bg-gray-100 p-10 rounded-3xl border border-gray-200">
+                    <div class="text-red-500 font-mono text-sm mb-4 uppercase tracking-widest">Today: Fragmented</div>
+                    <h3 class="text-2xl font-bold mb-6">Blind Operations</h3>
+                    <ul class="space-y-4 text-gray-600 text-lg">
+                        <li class="flex items-start gap-3"><span class="text-red-400 mt-1">✗</span> Siloed spreadsheets
+                            & phone calls</li>
+                        <li class="flex items-start gap-3"><span class="text-red-400 mt-1">✗</span> No real-time fleet
+                            visibility</li>
+                        <li class="flex items-start gap-3"><span class="text-red-400 mt-1">✗</span> Silent deferrals &
+                            guessing games</li>
+                        <li class="flex items-start gap-3"><span class="text-red-400 mt-1">✗</span> Prone to capacity &
+                            restriction errors</li>
+                    </ul>
+                </div>
+
+                <!-- Unified -->
+                <div
+                    class="bg-brand-navy text-white p-10 rounded-3xl border border-brand-teal/30 shadow-[0_0_40px_rgba(14,165,233,0.15)]">
+                    <div class="text-brand-teal font-mono text-sm mb-4 uppercase tracking-widest">Our Solution: Unified
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6">The Intelligent Network</h3>
+                    <ul class="space-y-4 text-gray-300 text-lg">
+                        <li class="flex items-start gap-3"><span class="text-brand-teal mt-1">✓</span> Centralized
+                            constraint management</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-teal mt-1">✓</span> Live, cross-role
+                            telemetry & tracking</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-teal mt-1">✓</span> Predictive visual
+                            overload warnings</li>
+                        <li class="flex items-start gap-3"><span class="text-brand-teal mt-1">✓</span> 100%
+                            Offline-capable Driver PWA</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Scope & Prioritization -->
+    <div class="slide slide-dark" id="slide-3">
+        <div class="max-w-5xl w-full text-center">
+            <h2 class="text-5xl font-bold mb-12">Strategic Restraint: The Core Tradeoff</h2>
+
+            <div class="bg-brand-navyLight border border-white/10 rounded-3xl p-12 text-left mb-12">
+                <div class="grid grid-cols-2 gap-16">
+                    <div>
+                        <h3 class="font-mono text-brand-muted text-sm uppercase tracking-widest mb-6">What We Explicitly
+                            Cut</h3>
+                        <ul class="space-y-4 text-white/70 text-lg">
+                            <li class="opacity-50 line-through">In-app messaging/chat</li>
+                            <li class="opacity-50 line-through">HR & Payroll screens</li>
+                            <li class="opacity-50 line-through">Warehouse inventory tracking</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-mono text-brand-teal text-sm uppercase tracking-widest mb-6">What We Prioritized
+                            (30 Screens)</h3>
+                        <div class="flex items-center gap-4 text-lg font-medium">
+                            <span class="bg-brand-teal/20 text-brand-teal px-4 py-2 rounded-lg">Order</span> &#8594;
+                            <span class="bg-brand-teal/20 text-brand-teal px-4 py-2 rounded-lg">Allocate</span> &#8594;
+                            <span class="bg-brand-teal/20 text-brand-teal px-4 py-2 rounded-lg">Load</span> &#8594;
+                            <span class="bg-brand-teal/20 text-brand-teal px-4 py-2 rounded-lg">Deliver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-2xl text-white/90 font-light italic">"A tightly scoped solution with deep operational
+                rigor<br>always beats a sprawling, shallow app."</p>
+        </div>
+    </div>
+
+    <!-- Slide 4: The Personas -->
+    <div class="slide slide-light" id="slide-4">
+        <div class="max-w-6xl w-full">
+            <h2 class="text-5xl font-bold mb-12 text-center">Designing for Operational Reality</h2>
+
+            <div class="grid grid-cols-2 gap-8">
+                <!-- Store Manager -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold mb-2">Priya <span class="text-gray-500 font-normal">| Store
+                            Manager</span></h3>
+                    <p class="text-sm font-mono text-brand-teal mb-4">Needs: Predictability & ETAs</p>
+                    <p class="text-gray-600">UI Focus: Calm, high-level tracking with clear countdowns to the 16:00
+                        cutoff.</p>
+                </div>
+                <!-- Dispatcher -->
+                <div class="bg-brand-navy p-8 rounded-2xl border border-brand-navy shadow-lg text-white">
+                    <h3 class="text-xl font-bold mb-2">Kamal <span class="text-gray-400 font-normal">| Dispatcher</span>
+                    </h3>
+                    <p class="text-sm font-mono text-brand-teal mb-4">Needs: Capacity control & triage</p>
+                    <p class="text-gray-300">UI Focus: High-density, constraint-based dark mode command center.</p>
+                </div>
+                <!-- Loader -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold mb-2">Nuwan <span class="text-gray-500 font-normal">| Loader</span>
+                    </h3>
+                    <p class="text-sm font-mono text-brand-teal mb-4">Needs: Speed & accuracy on the dock</p>
+                    <p class="text-gray-600">UI Focus: Massive 64px touch targets, LIFO reverse-sequenced loading
+                        checklists.</p>
+                </div>
+                <!-- Driver -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                    <h3 class="text-xl font-bold mb-2">Saman <span class="text-gray-500 font-normal">| Driver</span>
+                    </h3>
+                    <p class="text-sm font-mono text-brand-teal mb-4">Needs: Offline capability & safety</p>
+                    <p class="text-gray-600">UI Focus: 100% offline PWA, high contrast, single-hand thumb zone
+                        interactions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Outro -->
+    <div class="slide slide-dark" id="slide-5">
+        <div class="max-w-4xl text-center w-full">
+            <h1 class="text-6xl font-bold mb-8">Built to Scale.<br>Built to Work Offline.</h1>
+
+            <div class="flex justify-center gap-8 mb-16 text-lg text-brand-teal font-mono">
+                <span>✓ Hardware Agnostic</span>
+                <span>✓ Constraint-Aware</span>
+                <span>✓ Resilient</span>
+            </div>
+
+            <p class="text-xl text-white/50 mb-12">Thank you from Team Emberwolves</p>
+
+            
+                <div class="text-center p-5">
+                    <img src="submission/Emberwolves.png" alt="" class="w-24 h-24 inline-block">
+                </div>
+
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 5;
+
+        function updateSlide() {
+            // Hide all
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            // Show current
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+            // Update progress bar
+            document.getElementById('progress').style.width = `${(currentSlide / totalSlides) * 100}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+    </script>
+</body>
+
+</html>
