@@ -151,44 +151,158 @@ spacing:
 ## 3. Screen Directory & Rationales
 
 ### 3.1 Authentication
-* **AUTH-01 (Unified Role-Switch Portal):** Designed as a unified portal with 1-click persona seed injections specifically for the hackathon judges, bypassing tedious credential entry. Reduces cognitive load and instantly drops the user into the operational reality of the specific persona.
+* **AUTH-01 (Unified Role-Switch Portal)**
+  * **Insight:** Hackathon judges and QA testers waste valuable time managing mock credentials to review different user flows, increasing cognitive load.
+  * **Decision:** Implement a unified portal with 1-click persona seed injections, completely bypassing traditional login screens for the demo.
+  * **Outcome:** Judges experience an instant, frictionless entry directly into the operational reality of all four distinct personas.
 
 ### 3.2 System Utilities
-* **SYS-01 (Global Navigation Drawer):** An omnipresent drawer operating entirely client-side, ensuring system health, network connectivity, and offline cache status are one tap away. Empowers instant network debugging without losing contextual view.
+* **SYS-01 (Global Navigation Drawer)**
+  * **Insight:** Field operators and dispatchers often encounter connectivity drops without realizing it, leading to unsynced data and panic.
+  * **Decision:** Anchor an omnipresent drawer operating entirely client-side that surfaces system health, offline cache, and network status instantly.
+  * **Outcome:** Users can perform instant network debugging and trust the system's offline queue without losing their current contextual view.
 
 ### 3.3 Store Manager Experience (Priya)
-* **STORE-01 (Dashboard Hub):** Focuses on immediately actionable data—specifically the real-time ETA of incoming deliveries. This cognitive offloading allows scheduling of dock staff just-in-time, reducing idle labor costs.
-* **STORE-02 (Order Canvas):** An intuitive, high-contrast canvas accommodating ambient and chilled ordering with unmissable visual cues for the 16:00 cutoff. Uses quick-adjust numeric steppers instead of text-heavy forms.
-* **STORE-03 (Active Order Track):** Built with clear, real-time map telemetry and progress bars, offering a serene, low-stress tracking experience. Removes the anxiety of "where is my stock?"
-* **STORE-04 (History Log):** A multi-day audit trail explicitly highlighting deferred orders. Provides transparency on why stock was delayed without cluttering the main hub.
-* **STORE-05 (Live Receiving):** Uses fatigue-resistant 64px tap targets for a busy dock environment. Forces a mandatory physical seal verification, guaranteeing chain of custody.
-* **STORE-06 (Damage Dispute):** Incorporates a direct photo-upload mechanism and quick-tap categorizations to resolve delivery disputes on the spot, backed by evidence.
+* **STORE-01 (Dashboard Hub)**
+  * **Insight:** Store Managers are highly stressed balancing floor staff and incoming deliveries; they don't have time to parse complex logistics tables.
+  * **Decision:** Center the dashboard entirely around actionable data: the real-time ETA countdown of the next incoming delivery.
+  * **Outcome:** Priya can schedule dock receiving staff "just-in-time", drastically reducing idle labor costs and mental anxiety.
+
+* **STORE-02 (Order Canvas)**
+  * **Insight:** The 16:00 dispatch cutoff is a hard mathematical constraint, and text-heavy order forms cause input errors when rushing.
+  * **Decision:** Create a high-contrast canvas with an unmissable visual cutoff countdown and quick-adjust numeric steppers for ambient/chilled units.
+  * **Outcome:** Priya submits accurate orders faster with zero ambiguity about whether she beat the daily deadline.
+
+* **STORE-03 (Active Order Track)**
+  * **Insight:** "Where is my stock?" is the highest-anxiety question for a retail manager, especially during peak seasons.
+  * **Decision:** Build a serene, low-stress tracking experience with clear map telemetry and deterministic progress bars.
+  * **Outcome:** Priya trusts the system's delivery timelines, completely eliminating the need to call Dispatch for updates.
+
+* **STORE-04 (History Log)**
+  * **Insight:** When items are missing from a delivery, Store Managers immediately assume an error rather than a deliberate logistical deferral.
+  * **Decision:** Surface a multi-day audit trail that explicitly highlights deferred items and attaches the exact business reason for the delay.
+  * **Outcome:** Transparency eliminates friction between the store and the warehouse, maintaining systemic trust.
+
+* **STORE-05 (Live Receiving)**
+  * **Insight:** Store receiving docks are loud, chaotic, and require operators to wear gloves, making precise screen taps difficult.
+  * **Decision:** Implement fatigue-resistant 64px tap targets and force a mandatory physical seal verification step.
+  * **Outcome:** Irrefutable chain-of-custody is established instantly without frustrating Priya with small, error-prone touch points.
+
+* **STORE-06 (Damage Dispute)**
+  * **Insight:** Disputing damaged goods over phone/email creates massive delays and paper trails.
+  * **Decision:** Integrate a direct camera upload mechanism and quick-tap categorization directly into the receiving flow.
+  * **Outcome:** Disputes are resolved on the spot with photographic evidence, instantly notifying warehouse inventory and dispatch.
 
 ### 3.4 Central Fleet Dispatcher Experience (Kamal)
-* **DISP-01 (Capacity Overview):** A high-density dashboard aggressively surfacing the 16:00 cutoff timer and fleet availability. Provides a bird's-eye view of capacity versus demand to anticipate bottlenecks.
-* **DISP-02 (Master Allocation):** Features dual-pane capability with live volumetric and weight constraint bars. Translates complex mathematical limits into immediate visual feedback, preventing unviable load assignments.
-* **DISP-03 (Route Sequencer):** A centralized modal explicitly enforcing reverse-LIFO (Last-In, First-Out) route sequencing. Offloads sequence logic to ensure physical unloading at store docks is logically sound.
-* **DISP-04 (Deferral Governance):** A specialized governance view forcing Kamal to select concrete business reasons (e.g., "Capacity") for delaying orders, maintaining trust and equity.
-* **DISP-05 (Live Fleet Tower):** A live control tower with an omnipresent map overlay, rendering fleet movement. Centralizes telemetry to proactively spot deviations.
-* **DISP-06 (Vehicle Telemetry):** A non-intrusive flyout drawer surfacing real-time vehicle telemetry (temperature, fuel) without losing situational awareness of the broader fleet map.
-* **DISP-07 (Emergency Handoff):** Engineered for high-stress scenarios (Scenario 3), enabling swift reallocation of compromised cargo from a broken-down vehicle to a rescue truck.
-* **DISP-08 (Crisis Overload):** A dedicated "Crisis Mode" (Scenario 1) visualizing systemic overload and applying equitable constraint algorithms across all stores during festival peaks.
+* **DISP-01 (Capacity Overview)**
+  * **Insight:** Dispatchers struggle to manually calculate if current fleet capacity can handle the incoming order volume before the 16:00 cutoff.
+  * **Decision:** Aggregate fleet availability and demand into a high-density, bird's-eye view dashboard with aggressive visual indicators.
+  * **Outcome:** Kamal can proactively spot and mitigate bottlenecks before they escalate into logistical failures.
+
+* **DISP-02 (Master Allocation)**
+  * **Insight:** Assigning loads to vehicles requires complex mental math for cubic volume (m³) and weight (kg) limits, leading to dangerous overloads.
+  * **Decision:** Build a dual-pane canvas with live, real-time constraint bars that update with every order assignment.
+  * **Outcome:** The system offloads all math. Kamal receives immediate visual feedback, completely preventing physically unviable load assignments.
+
+* **DISP-03 (Route Sequencer)**
+  * **Insight:** Trucks loaded in the wrong order force drivers to unpack and repack cargo at the first store, wasting hours.
+  * **Decision:** Enforce a strict reverse-LIFO (Last-In, First-Out) route sequencing modal at the dispatch level.
+  * **Outcome:** Physical loading at the dock and physical unloading at the store are guaranteed to be logically flawless.
+
+* **DISP-04 (Deferral Governance)**
+  * **Insight:** Delaying an order without a reason breaks trust with Store Managers and feels arbitrary.
+  * **Decision:** Force Dispatchers to select a concrete business reason (e.g., "Capacity Exceeded", "Vehicle Breakdown") when deferring items.
+  * **Outcome:** Deferrals become auditable, governed actions that maintain equity across the retail network.
+
+* **DISP-05 (Live Fleet Tower)**
+  * **Insight:** Dispatchers need to monitor dozens of moving vehicles simultaneously without losing situational awareness.
+  * **Decision:** Deploy an omnipresent, dark-themed map overlay that renders live fleet telemetry with high-luminance accent colors.
+  * **Outcome:** Kamal can proactively spot route deviations and delays at a single glance without ocular fatigue.
+
+* **DISP-06 (Vehicle Telemetry)**
+  * **Insight:** Deep-diving into a single truck's temperature or fuel data usually forces a page reload, losing the global fleet view.
+  * **Decision:** Surface individual vehicle metrics via a non-intrusive slide-out drawer layered over the map.
+  * **Outcome:** Kamal inspects granular cold-chain data while keeping the rest of the moving fleet in his peripheral vision.
+
+* **DISP-07 (Emergency Handoff)**
+  * **Insight:** Vehicle breakdowns (Scenario 3) create chaos, requiring rapid reallocation of perishable goods before spoilage.
+  * **Decision:** Create a specialized rescue flow that instantly pairs a broken-down vehicle with the nearest available rescue truck.
+  * **Outcome:** Kamal resolves emergencies in seconds, salvaging the cold-chain cargo and getting the route back on track.
+
+* **DISP-08 (Crisis Overload)**
+  * **Insight:** During extreme festival peaks (Scenario 1), volume vastly exceeds capacity, and manual allocation is impossible.
+  * **Decision:** Introduce a dedicated "Crisis Mode" that applies equitable constraint algorithms across all stores to share the shortage fairly.
+  * **Outcome:** The system automatically triages the network, ensuring no single store is entirely starved of inventory.
 
 ### 3.5 Dock Loader Experience (Nuwan)
-* **LOAD-01 (Depot Queue):** A high-contrast, prioritized list of departing trips designed for a dock tablet. Eliminates guesswork by indicating exactly what to prepare next.
-* **LOAD-02 (Trip Inspect):** A mandatory, tap-driven checklist with massive 64px buttons for glove compatibility. Validates vehicle readiness (e.g., pre-chilled temperature) before cargo moves.
-* **LOAD-03 (Active Loading):** Utilizes a step-by-step checklist reinforcing the reverse-LIFO loading sequence. Spatial visualization drastically reduces human error.
-* **LOAD-04 (Load Exception):** A full-screen modal to rapidly report damaged/missing items from the bay. Instantly alerts Dispatch and Store before the truck leaves.
-* **LOAD-05 (Seal Release):** The final critical gate requiring the digital locking of the physical bolt seal number, establishing an irrefutable chain of custody.
-* **LOAD-06 (Alert Revision):** An unavoidable, industrial amber lock-out screen (Scenario 2) that physically halts loading if Dispatch alters the plan mid-process.
+* **LOAD-01 (Depot Queue)**
+  * **Insight:** Dock loaders often waste time figuring out which truck to load next, leading to bay congestion.
+  * **Decision:** Present a high-contrast, aggressively prioritized list of departing trips designed for a rugged dock tablet.
+  * **Outcome:** Nuwan knows exactly what to prepare next, eliminating guesswork and accelerating bay turnaround times.
+
+* **LOAD-02 (Trip Inspect)**
+  * **Insight:** Loading perishable goods into a hot truck destroys inventory, but loaders often skip manual temperature checks if they are tedious.
+  * **Decision:** Enforce a mandatory, tap-driven checklist with massive 64px buttons confirming pre-chilled temperatures before loading begins.
+  * **Outcome:** The cold chain is mathematically guaranteed before cargo ever leaves the warehouse floor.
+
+* **LOAD-03 (Active Loading)**
+  * **Insight:** Misplaced pallets lead to delivery nightmares, but loaders are moving too fast to read dense manifest text.
+  * **Decision:** Utilize a visual, step-by-step checklist that spatially reinforces the reverse-LIFO loading sequence.
+  * **Outcome:** Spatial visualization drastically reduces human error, ensuring the last box loaded is the first box delivered.
+
+* **LOAD-04 (Load Exception)**
+  * **Insight:** Reporting a damaged pallet mid-load usually requires walking back to a computer terminal, breaking workflow momentum.
+  * **Decision:** Build a full-screen, quick-tap modal to rapidly report damaged or missing items directly from the tablet.
+  * **Outcome:** Dispatch and the receiving Store are instantly alerted to the inventory change before the truck even leaves the bay.
+
+* **LOAD-05 (Seal Release)**
+  * **Insight:** Unsecured cargo is a massive liability, and paper seal logs are easily lost or forged.
+  * **Decision:** Establish a final critical software gate that requires the digital logging of the physical bolt seal number.
+  * **Outcome:** An irrefutable, timestamped chain of custody is established between the Loader and the Driver.
+
+* **LOAD-06 (Alert Revision)**
+  * **Insight:** If Dispatch alters a route while a truck is actively being loaded (Scenario 2), the loader might miss the memo and load the wrong pallets.
+  * **Decision:** Trigger an unavoidable, industrial amber lock-out screen that physically halts the tablet UI until the revision is acknowledged.
+  * **Outcome:** Mid-load plan revisions are handled safely without any misloaded cargo.
 
 ### 3.6 Field Delivery Driver Experience (Saman)
-* **DRV-01 (Pre-Trip Inspect):** A 100% offline-first, high-contrast screen forcing physical verification of cold-chain temps and vehicle state before departure.
-* **DRV-02 (Active Route):** An offline-capable itinerary removing visual fluff for massive typography. Guarantees access to stop sequences in zero-connectivity areas.
-* **DRV-03 (Stop Detail):** Built with single-hand thumb zones. Provides precise dock approach notes and instantly logs arrival times.
-* **DRV-04 (Digital POD):** A streamlined digital signature and seal-verification interface with robust 64px touch targets. Seamless offline-to-online background syncing.
-* **DRV-05 (Stop Exception):** A fast exception reporting screen to log blocked docks with a single tap. Removes the frustration of typing explanations.
-* **DRV-06 (Rest Break):** A non-penalized rest timer screen separating mandatory labor breaks from driving time, ensuring performance metrics aren't negatively impacted.
-* **DRV-07 (Breakdown):** An industrial amber alert interface (Scenario 3) providing guided steps during a breakdown. Starts a spoilage timer and establishes an emergency telemetry pulse.
-* **DRV-08 (Trip End):** A clean summary screen handling offline-to-online data reconciliation in the background, ending shift liability cleanly.
+* **DRV-01 (Pre-Trip Inspect)**
+  * **Insight:** Drivers are legally and financially responsible for the cargo, but often rush departures.
+  * **Decision:** Implement a 100% offline-first, high-contrast screen forcing physical verification of cold-chain temps and seal integrity.
+  * **Outcome:** Saman leaves the depot with total confidence in his vehicle and cargo, backed by a digital audit trail.
+
+* **DRV-02 (Active Route)**
+  * **Insight:** Mountain corridors (Kadugannawa) have zero network connectivity, making cloud-based routing apps useless.
+  * **Decision:** Build a true offline-capable PWA itinerary, stripping away visual fluff in favor of massive, readable typography.
+  * **Outcome:** Saman never loses access to his stop sequence or delivery instructions, regardless of cellular dead zones.
+
+* **DRV-03 (Stop Detail)**
+  * **Insight:** Drivers need one hand for the steering wheel/door and only have a thumb free for their device as they approach a dock.
+  * **Decision:** Design the interface entirely around single-hand thumb zones, prioritizing precise dock approach notes.
+  * **Outcome:** Saman safely navigates tricky receiving bays and logs his arrival time with a single tap.
+
+* **DRV-04 (Digital POD)**
+  * **Insight:** Capturing signatures on a tiny screen is frustrating, and offline signature data is often lost.
+  * **Decision:** Create a streamlined Proof of Delivery (POD) interface with robust 64px touch targets and background Service Worker syncing.
+  * **Outcome:** Signatures and seal verifications are captured effortlessly and sync automatically when the truck regains signal.
+
+* **DRV-05 (Stop Exception)**
+  * **Insight:** When a dock is blocked or closed, typing out long explanations on a mobile keyboard is infuriating.
+  * **Decision:** Offer a fast exception reporting screen with pre-populated, single-tap categorical reasons (e.g., "Dock Blocked").
+  * **Outcome:** Saman logs the issue instantly, allowing Dispatch to reroute him without wasting his time.
+
+* **DRV-06 (Rest Break)**
+  * **Insight:** Drivers avoid taking mandatory safety breaks if they fear the system will penalize their delivery performance metrics.
+  * **Decision:** Introduce a dedicated, non-penalized rest timer screen that explicitly separates labor breaks from active driving time.
+  * **Outcome:** Safety compliance increases because Saman knows his performance metrics are protected during rest.
+
+* **DRV-07 (Breakdown)**
+  * **Insight:** A vehicle breakdown (Scenario 3) causes immense panic, especially when transporting perishable chilled goods.
+  * **Decision:** Deploy an industrial amber alert interface that guides the driver through emergency steps, starts a spoilage timer, and establishes an emergency telemetry pulse.
+  * **Outcome:** Panic is replaced with systemic procedure. Dispatch is notified instantly, and the cold-chain cargo is prioritized for rescue.
+
+* **DRV-08 (Trip End)**
+  * **Insight:** Reconciling paper logs at the end of a 12-hour shift is exhausting.
+  * **Decision:** Provide a clean, automated summary screen that handles offline-to-online data reconciliation in the background.
+  * **Outcome:** Saman ends his shift with a clean slate, knowing all liabilities and tasks are officially closed.
 
