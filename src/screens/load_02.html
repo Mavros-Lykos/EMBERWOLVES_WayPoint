@@ -57,9 +57,9 @@
           <div class="check-title">Reefer Temp Pre-cool</div>
           <div class="check-desc">Must be ≤ 4.0°C before loading chilled goods.</div>
         </div>
-        <div class="toggle-group">
-          <button class="toggle-btn fail"><span class="material-symbols-outlined">close</span> Fail</button>
-          <button class="toggle-btn pass active"><span class="material-symbols-outlined">check</span> Pass</button>
+        <div class="toggle-group" role="radiogroup" aria-label="Reefer Temp Pre-cool check">
+          <button type="button" class="toggle-btn fail" role="radio" aria-checked="false"><span class="material-symbols-outlined">close</span> Fail</button>
+          <button type="button" class="toggle-btn pass active" role="radio" aria-checked="true"><span class="material-symbols-outlined">check</span> Pass</button>
         </div>
       </div>
     </div>
@@ -70,9 +70,9 @@
           <div class="check-title">Cargo Box Cleanliness</div>
           <div class="check-desc">No debris, odors, or spills from previous run.</div>
         </div>
-        <div class="toggle-group">
-          <button class="toggle-btn fail"><span class="material-symbols-outlined">close</span> Fail</button>
-          <button class="toggle-btn pass active"><span class="material-symbols-outlined">check</span> Pass</button>
+        <div class="toggle-group" role="radiogroup" aria-label="Cargo Box Cleanliness check">
+          <button type="button" class="toggle-btn fail" role="radio" aria-checked="false"><span class="material-symbols-outlined">close</span> Fail</button>
+          <button type="button" class="toggle-btn pass active" role="radio" aria-checked="true"><span class="material-symbols-outlined">check</span> Pass</button>
         </div>
       </div>
     </div>
@@ -83,9 +83,9 @@
           <div class="check-title">Tires & Mechanical</div>
           <div class="check-desc">Visual inspection of tires, leaks, and lights.</div>
         </div>
-        <div class="toggle-group">
-          <button class="toggle-btn fail"><span class="material-symbols-outlined">close</span> Fail</button>
-          <button class="toggle-btn pass"><span class="material-symbols-outlined">check</span> Pass</button>
+        <div class="toggle-group" role="radiogroup" aria-label="Tires and Mechanical check">
+          <button type="button" class="toggle-btn fail" role="radio" aria-checked="false"><span class="material-symbols-outlined">close</span> Fail</button>
+          <button type="button" class="toggle-btn pass" role="radio" aria-checked="false"><span class="material-symbols-outlined">check</span> Pass</button>
         </div>
       </div>
     </div>
@@ -93,7 +93,7 @@
   </div>
 
   <div class="action-row">
-    <button class="md-filled-button" disabled>Clear for Loading</button>
+    <button class="md-filled-button" disabled onclick="location.href='load_03.html'">Clear for Loading</button>
   </div>
   
   <script>
