@@ -9,13 +9,13 @@ This document maps the complete information architecture and screen navigation f
 ```mermaid
 stateDiagram-v2
     [*] --> AUTH01: Launch PWA
-    AUTH01: AUTH-01 (Unified Login Portal)
-    SYS01: SYS-01 (Global Navigation Drawer)
+state "AUTH-01 (Unified Login Portal)" as AUTH01
+state "SYS-01 (Global Navigation Drawer)" as SYS01
     
-    AUTH01 --> STORE01: 1-Click Persona: Priya (Store)
-    AUTH01 --> DISP01: 1-Click Persona: Kamal (Dispatch)
-    AUTH01 --> LOAD01: 1-Click Persona: Nuwan (Loader)
-    AUTH01 --> DRV01: 1-Click Persona: Saman (Driver)
+    AUTH01 --> STORE01: 1-Click Persona - Priya (Store)
+    AUTH01 --> DISP01: 1-Click Persona - Kamal (Dispatch)
+    AUTH01 --> LOAD01: 1-Click Persona - Nuwan (Loader)
+    AUTH01 --> DRV01: 1-Click Persona - Saman (Driver)
     
     STORE01 --> SYS01: Menu Toggle
     DISP01 --> SYS01: Menu Toggle
@@ -35,12 +35,12 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> STORE01
-    STORE01: STORE-01 (Dashboard Hub)
-    STORE02: STORE-02 (Order Canvas)
-    STORE03: STORE-03 (Active Order Track)
-    STORE04: STORE-04 (History Log)
-    STORE05: STORE-05 (Live Receiving)
-    STORE06: STORE-06 (Damage Dispute)
+state "STORE-01 (Dashboard Hub)" as STORE01
+state "STORE-02 (Order Canvas)" as STORE02
+state "STORE-03 (Active Order Track)" as STORE03
+state "STORE-04 (History Log)" as STORE04
+state "STORE-05 (Live Receiving)" as STORE05
+state "STORE-06 (Damage Dispute)" as STORE06
     
     STORE01 --> STORE02: Place Next-Day Order
     STORE01 --> STORE03: Track Live Delivery
@@ -66,14 +66,14 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> DISP01
-    DISP01: DISP-01 (Capacity Overview)
-    DISP02: DISP-02 (Master Allocation)
-    DISP03: DISP-03 (Route Sequencer)
-    DISP04: DISP-04 (Deferral Governance)
-    DISP05: DISP-05 (Live Fleet Tower)
-    DISP06: DISP-06 (Vehicle Telemetry)
-    DISP07: DISP-07 (Emergency Handoff)
-    DISP08: DISP-08 (Crisis Overload)
+state "DISP-01 (Capacity Overview)" as DISP01
+state "DISP-02 (Master Allocation)" as DISP02
+state "DISP-03 (Route Sequencer)" as DISP03
+state "DISP-04 (Deferral Governance)" as DISP04
+state "DISP-05 (Live Fleet Tower)" as DISP05
+state "DISP-06 (Vehicle Telemetry)" as DISP06
+state "DISP-07 (Emergency Handoff)" as DISP07
+state "DISP-08 (Crisis Overload)" as DISP08
     
     DISP01 --> DISP02: Start Planning Phase
     DISP01 --> DISP08: Simulate Festival Peak (Scenario 1)
@@ -102,12 +102,12 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> LOAD01
-    LOAD01: LOAD-01 (Depot Queue)
-    LOAD02: LOAD-02 (Trip Inspect)
-    LOAD03: LOAD-03 (Active Loading)
-    LOAD04: LOAD-04 (Load Exception)
-    LOAD05: LOAD-05 (Seal Release)
-    LOAD06: LOAD-06 (Alert Revision)
+state "LOAD-01 (Depot Queue)" as LOAD01
+state "LOAD-02 (Trip Inspect)" as LOAD02
+state "LOAD-03 (Active Loading)" as LOAD03
+state "LOAD-04 (Load Exception)" as LOAD04
+state "LOAD-05 (Seal Release)" as LOAD05
+state "LOAD-06 (Alert Revision)" as LOAD06
     
     LOAD01 --> LOAD02: Select Next Truck
     LOAD02 --> LOAD03: Begin Bay Loading
@@ -133,16 +133,16 @@ stateDiagram-v2
 ```mermaid
 stateDiagram-v2
     [*] --> DRV01
-    DRV01: DRV-01 (Pre-Trip Inspect)
-    DRV02: DRV-02 (Active Route)
-    DRV03: DRV-03 (Stop Detail)
-    DRV04: DRV-04 (Digital POD)
-    DRV05: DRV-05 (Stop Exception)
-    DRV06: DRV-06 (Rest Break)
-    DRV07: DRV-07 (Breakdown)
-    DRV08: DRV-08 (Trip End)
+state "DRV-01 (Pre-Trip Inspect)" as DRV01
+state "DRV-02 (Active Route)" as DRV02
+state "DRV-03 (Stop Detail)" as DRV03
+state "DRV-04 (Digital POD)" as DRV04
+state "DRV-05 (Stop Exception)" as DRV05
+state "DRV-06 (Rest Break)" as DRV06
+state "DRV-07 (Breakdown)" as DRV07
+state "DRV-08 (Trip End)" as DRV08
     
-    DRV01 --> DRV02: Start 04:00 AM Trip
+    DRV01 --> DRV02: Start 04 -00 AM Trip
     DRV02 --> DRV03: Arrive at Store
     DRV03 --> DRV04: Handover & Sign
     DRV03 --> DRV05: Dock Blocked / Closed
