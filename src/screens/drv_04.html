@@ -69,7 +69,7 @@
           <div class="sku-name">Yoghurt 80g</div>
           <div class="sku-meta"><span>10 Crates</span><span>Chilled</span></div>
         </div>
-        <button class="shortage-btn" aria-label="Report shortage for Yoghurt 80g" onclick="event.stopPropagation()">Report</button>
+        <button class="shortage-btn" aria-label="Report shortage for Yoghurt 80g" onclick="event.stopPropagation(); (()=>{ const q = prompt('Enter missing quantity (crates):', '1'); if(q) { this.innerText = 'Shortage: ' + q; this.style.borderColor='var(--md-sys-color-warning)'; this.style.color='var(--md-sys-color-warning)'; } })()">Report</button>
       </div>
       
       <div class="check-item" role="checkbox" aria-checked="false" aria-label="Butter 200g - 5 crates" onclick="this.classList.toggle('checked');this.setAttribute('aria-checked',this.classList.contains('checked'))">
@@ -78,7 +78,7 @@
           <div class="sku-name">Butter 200g</div>
           <div class="sku-meta"><span>5 Crates</span><span>Chilled</span></div>
         </div>
-        <button class="shortage-btn" aria-label="Report shortage for Butter 200g" onclick="event.stopPropagation()">Report</button>
+        <button class="shortage-btn" aria-label="Report shortage for Butter 200g" onclick="event.stopPropagation(); (()=>{ const q = prompt('Enter missing quantity (crates):', '1'); if(q) { this.innerText = 'Shortage: ' + q; this.style.borderColor='var(--md-sys-color-warning)'; this.style.color='var(--md-sys-color-warning)'; } })()">Report</button>
       </div>
 
     </div>
