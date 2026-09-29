@@ -51,7 +51,7 @@
   <div class="modal-surface" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <header class="modal-header">
       <h2 id="modal-title" class="modal-title">Sequence: VEH-003 Trip 1</h2>
-      <button class="close-btn" aria-label="Close"><span class="material-symbols-outlined">close</span></button>
+      <button class="close-btn" aria-label="Close" onclick="location.href='disp_02.html'"><span class="material-symbols-outlined">close</span></button>
     </header>
   <main class="modal-body">
       <div class="summary-bar">
@@ -115,12 +115,12 @@
       </div>
     </main>
   <footer class="modal-footer">
-      <button class="md-outlined-button">Re-optimize route</button>
+      <button class="md-outlined-button" onclick="this.innerHTML='<span class=\'material-symbols-outlined\' style=\'font-size:16px\'>check</span> Route Optimized'; this.disabled=true;">Re-optimize route</button>
       <div style="display:flex;gap:8px">
-        <button class="md-text-button">Cancel</button>
-        <button class="md-filled-button">Confirm sequence</button>
+        <button class="md-text-button" onclick="location.href='disp_02.html'">Cancel</button>
+        <button class="md-filled-button" onclick="location.href='disp_02.html'">Confirm sequence</button>
       </div>
-    </div>
+  </footer>
   </div>
   
 </body>
