@@ -83,8 +83,8 @@
       <span class="page-title">Master Allocation</span>
       <div style="font: var(--md-sys-typescale-label-large); padding: 4px 12px; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); border-radius: var(--md-sys-shape-corner-full); display: inline-flex; align-items: center; gap: 4px; margin-left: 16px;"><span class="material-symbols-outlined" style="font-size:16px">schedule</span> Cutoff: 01h 45m</div>
       <div class="actions">
-        <button class="md-outlined-button">Auto-assign</button>
-        <button class="md-filled-button">Lock Plan (16:30)</button>
+        <button class="md-outlined-button" onclick="this.innerHTML='<span class=\'material-symbols-outlined\' style=\'font-size:16px\'>check</span> Optimized (24/24)'; this.style.borderColor='var(--md-sys-color-primary)'; document.querySelector('.queue-count').innerText='0';">Auto-assign</button>
+        <button class="md-filled-button" onclick="location.href='disp_03.html'">Lock Plan (16:30)</button>
       </div>
     </header>
     
@@ -95,10 +95,10 @@
           <span class="queue-count">24</span>
         </div>
         <div class="queue-filters">
-          <button class="md-filter-chip selected">All</button>
-          <button class="md-filter-chip">Chilled</button>
-          <button class="md-filter-chip">Van Only</button>
-          <button class="md-filter-chip">Priority</button>
+          <button class="md-filter-chip selected" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">All</button>
+          <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Chilled</button>
+          <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Van Only</button>
+          <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Priority</button>
         </div>
         <div class="queue-list">
           <div class="order-card" draggable="true">
@@ -138,9 +138,9 @@
         <div class="matrix-header">
           <span class="matrix-title">Peliyagoda Fleet (Reefers)</span>
           <div class="queue-filters" style="border:none; padding:0;">
-            <button class="md-filter-chip selected">Reefers</button>
-            <button class="md-filter-chip">Dry Trucks</button>
-            <button class="md-filter-chip">Vans</button>
+            <button class="md-filter-chip selected" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Reefers</button>
+            <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Dry Trucks</button>
+            <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Vans</button>
           </div>
         </div>
         
@@ -163,7 +163,7 @@
             </div>
             <div class="trip-area">
               <div class="trip-box active">
-                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;" onclick="location.href='disp_04.html'" title="Open Trip Sequence">Seq</button></div>
                 <div class="trip-order">
                   <div>
                     <div class="trip-order-id">ORD-8891</div>
@@ -203,7 +203,7 @@
             </div>
             <div class="trip-area">
               <div class="trip-box active">
-                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-header"><span>Trip 1 · Fresh</span><button class="md-text-button" style="height:24px;padding:0;" onclick="location.href='disp_04.html'" title="Open Trip Sequence">Seq</button></div>
                 <div class="trip-order">
                   <div>
                     <div class="trip-order-id">ORD-8812</div>
@@ -220,7 +220,7 @@
                 </div>
               </div>
               <div class="trip-box active">
-                <div class="trip-header"><span>Trip 2 · Style</span><button class="md-text-button" style="height:24px;padding:0;">Seq</button></div>
+                <div class="trip-header"><span>Trip 2 · Style</span><button class="md-text-button" style="height:24px;padding:0;" onclick="location.href='disp_04.html'" title="Open Trip Sequence">Seq</button></div>
                 <div class="trip-order">
                   <div>
                     <div class="trip-order-id">ORD-8700</div>
