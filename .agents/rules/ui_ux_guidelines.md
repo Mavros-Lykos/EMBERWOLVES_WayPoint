@@ -82,3 +82,9 @@ The competition briefing emphasizes: *"A tightly scoped solution with clear rati
   - Badges/Pills: 1–2 words maximum.
   - Confirmation modals / tooltips: 1 concise line maximum.
 
+---
+
+## Law 9: Human-Crafted Professionalism (Anti-AI Aesthetics)
+- **Avoid "AI-Generated" Tropes:** The UI must feel deliberately engineered by human professionals for a serious enterprise environment. Strictly avoid generic "AI-generated" aesthetics (e.g., excessive or purposeless gradients, random glassmorphism that hinders readability, or overly bubbly and sterile template-like layouts).
+- **Enterprise Authenticity:** Prioritize sharp, deliberate alignment, dense but highly readable typography, and structured layouts that look and behave as if they belong in a real-world command center or rugged warehouse terminal. Ensure all spacing is mathematically intentional and not arbitrary.
+
