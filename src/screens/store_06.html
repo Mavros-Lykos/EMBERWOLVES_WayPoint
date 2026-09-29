@@ -64,14 +64,14 @@
 
     <div>
       <div class="section-label">Photo evidence</div>
-      <div class="photo-upload" role="button" tabindex="0" aria-label="Upload photo">
+      <div class="photo-upload" role="button" tabindex="0" aria-label="Upload photo" onclick="this.innerHTML='<span class=\'material-symbols-outlined\' style=\'color:var(--md-sys-color-success)\'>check_circle</span> Photo attached (crate_shortage_dock.jpg)'; this.style.borderColor='var(--md-sys-color-success)';">
         <span class="material-symbols-outlined">photo_camera</span>
         Take or upload photo
       </div>
     </div>
   </div>
   <div class="bottom-action">
-    <button class="md-filled-button">Submit report</button>
+    <button class="md-filled-button" onclick="location.href='store_01.html'">Submit report</button>
   </div>
 </body>
 </html>
