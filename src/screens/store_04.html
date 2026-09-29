@@ -40,16 +40,16 @@
     <header class="top-bar"><span class="page-title">Order history — OUT-007</span></header>
     <div class="page-body">
       <div class="filter-row">
-        <button class="md-filter-chip selected">All</button>
-        <button class="md-filter-chip">Fulfilled</button>
-        <button class="md-filter-chip">Deferred</button>
-        <button class="md-filter-chip">Partial</button>
+        <button class="md-filter-chip selected" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">All</button>
+        <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Fulfilled</button>
+        <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Deferred</button>
+        <button class="md-filter-chip" onclick="this.parentElement.querySelectorAll('.md-filter-chip').forEach(c=>c.classList.remove('selected'));this.classList.add('selected');">Partial</button>
       </div>
       <table class="orders-table">
         <thead><tr><th>Order</th><th>Date</th><th>Category</th><th>Status</th><th>Resolution</th></tr></thead>
         <tbody>
-          <tr>
-            <td>ORD-8891</td><td>Oct 04, 15:42</td><td>Chilled</td>
+          <tr onclick="location.href='store_03.html'" style="cursor:pointer;" title="View ORD-8891 details">
+            <td><strong>ORD-8891</strong></td><td>Oct 04, 15:42</td><td>Chilled</td>
             <td><span class="md-badge success"><span class="material-symbols-outlined" style="font-size:14px">check_circle</span> En Route</span></td>
             <td>On time (ETA 07:15)</td>
           </tr>
