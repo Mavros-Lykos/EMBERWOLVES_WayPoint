@@ -1,0 +1,68 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/html
+      - ./storage/app/public:/var/www/html/storage/app/public
+    depends_on:
+      pgsql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      APP_ENV: local
+      APP_KEY: ${APP_KEY}
+      DB_CONNECTION: pgsql
+      DB_HOST: pgsql
+      DB_PORT: 5432
+      DB_DATABASE: waypoint
+      DB_USERNAME: waypoint
+      DB_PASSWORD: ${DB_PASSWORD:-secret}
+      REDIS_HOST: redis
+      CACHE_STORE: redis
+      SESSION_DRIVER: redis
+      QUEUE_CONNECTION: redis
+      FILESYSTEM_DISK: public
+
+  pgsql:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: waypoint
+      POSTGRES_USER: waypoint
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - pgsql-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U waypoint"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: npm run dev -- --host
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/var/www/html
+    profiles:
+      - dev
+
+volumes:
+  pgsql-data:
+  redis-data:
