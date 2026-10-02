@@ -10,9 +10,17 @@ return new class extends Migration
         // Execute raw PostgreSQL schema from db_schema.sql + enhancements
         DB::unprepared("
             -- 1. Enums
+            DROP TYPE IF EXISTS order_status CASCADE;
+            DROP TYPE IF EXISTS trip_status CASCADE;
+            DROP TYPE IF EXISTS temp_req CASCADE;
+            DROP TYPE IF EXISTS vehicle_type CASCADE;
+            DROP TYPE IF EXISTS dock_type CASCADE;
+            DROP TYPE IF EXISTS parking_constraint CASCADE;
+            DROP TYPE IF EXISTS deferral_reason_code CASCADE;
+
             CREATE TYPE order_status AS ENUM ('pending', 'allocated', 'deferred', 'loaded', 'in_transit', 'delivered', 'failed');
             CREATE TYPE trip_status AS ENUM ('planned', 'loading', 'dispatched', 'completed');
-            CREATE TYPE temp_req AS ENUM ('ambient', 'chilled');
+            CREATE TYPE temp_req AS ENUM ('ambient', 'chilled', 'reefer');
             CREATE TYPE vehicle_type AS ENUM ('truck', 'van');
             CREATE TYPE dock_type AS ENUM ('rear_dock', 'street', 'mall_bay');
             CREATE TYPE parking_constraint AS ENUM ('normal', 'van_only', 'mall_dock');
