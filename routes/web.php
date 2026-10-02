@@ -24,30 +24,22 @@ Route::middleware('auth')->group(function () {
     
     // Store Manager Routes
     Route::prefix('store')->middleware('role:store_manager')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('store.dashboard');
-        })->name('store.dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'store'])->name('store.dashboard');
     });
 
     // Dispatcher Routes
     Route::prefix('dispatch')->middleware('role:dispatcher')->group(function () {
-        Route::get('/overview', function () {
-            return view('dispatch.overview');
-        })->name('dispatch.overview');
+        Route::get('/overview', [\App\Http\Controllers\DashboardController::class, 'dispatchOverview'])->name('dispatch.overview');
     });
 
     // Loader Routes
     Route::prefix('loader')->middleware('role:loader')->group(function () {
-        Route::get('/queue', function () {
-            return view('loader.queue');
-        })->name('loader.queue');
+        Route::get('/queue', [\App\Http\Controllers\DashboardController::class, 'loaderQueue'])->name('loader.queue');
     });
 
     // Driver Routes
     Route::prefix('driver')->middleware('role:driver')->group(function () {
-        Route::get('/route', function () {
-            return view('driver.route');
-        })->name('driver.route');
+        Route::get('/route', [\App\Http\Controllers\DashboardController::class, 'driverRoute'])->name('driver.route');
     });
 });
 
