@@ -49,5 +49,6 @@ class DatabaseSeeder extends Seeder
         ]);
         
         // CSV seeding will be added later for the S1 scenario
+        $this->call(CsvDataSeeder::class);
     }
 }
