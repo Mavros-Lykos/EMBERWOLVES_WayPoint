@@ -1,38 +1,61 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js');
+const CACHE_NAME = 'waypoint-v1';
+const OFFLINE_URL = '/offline.html';
 
-if (workbox) {
-  console.log(`Yay! Workbox is loaded 🎉`);
+const ASSETS_TO_CACHE = [
+    '/',
+    '/login',
+    '/manifest.json',
+    'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap',
+    'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0',
+    'https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js',
+    '//unpkg.com/alpinejs'
+];
 
-  // Cache JS, CSS, and Images
-  workbox.routing.registerRoute(
-    /\.(?:js|css|png|gif|jpg|svg|ico)$/,
-    new workbox.strategies.StaleWhileRevalidate({
-      cacheName: 'static-resources',
-    })
-  );
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+        caches.open(CACHE_NAME).then((cache) => {
+            return cache.addAll(ASSETS_TO_CACHE);
+        })
+    );
+    self.skipWaiting();
+});
 
-  // Cache external APIs (like OpenStreetMap tiles)
-  workbox.routing.registerRoute(
-    new RegExp('^https://.*\\.tile\\.openstreetmap\\.org/'),
-    new workbox.strategies.CacheFirst({
-      cacheName: 'osm-tiles',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxEntries: 100,
-          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-        }),
-      ],
-    })
-  );
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((name) => {
+                    if (name !== CACHE_NAME) {
+                        return caches.delete(name);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
+});
 
-  // Offline fallback for navigation routes (e.g. driver hitting dead zones)
-  workbox.routing.registerRoute(
-    ({request}) => request.mode === 'navigate',
-    new workbox.strategies.NetworkFirst({
-      cacheName: 'pages',
-    })
-  );
+self.addEventListener('fetch', (event) => {
+    // For API requests, try network first, then fail (Alpine handles offline queueing)
+    if (event.request.method !== 'GET' || event.request.url.includes('/api/')) {
+        return;
+    }
 
-} else {
-  console.log(`Boo! Workbox didn't load 😬`);
-}
+    event.respondWith(
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                return cachedResponse;
+            }
+            return fetch(event.request).then((networkResponse) => {
+                // Optionally cache dynamically fetched assets
+                return networkResponse;
+            }).catch(() => {
+                // If offline and request is for a document, we could return a fallback
+                // But for the hackathon, returning cached assets is enough for PWA
+                if (event.request.headers.get('accept').includes('text/html')) {
+                    return caches.match('/login');
+                }
+            });
+        })
+    );
+});
