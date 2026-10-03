@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Operations & Capacity Report — Waypoint Dispatch</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/material-tokens.css">
+  <style>
+    body { display: flex; flex-direction: column; min-height: 100vh; background: #0b1120; color: #f8fafc; font-family: 'Roboto', sans-serif; margin: 0; }
+    .top-bar { height: 64px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; background: #0f172a; }
+    .page-title { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 10px; color: #f8fafc; }
+    .page-body { flex: 1; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .kpi-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+    .kpi-label { font-size: 0.8rem; text-transform: uppercase; color: #94a3b8; font-weight: 600; letter-spacing: 0.05em; }
+    .kpi-value { font-size: 2rem; font-weight: 800; color: #f8fafc; }
+    .kpi-sub { font-size: 0.85rem; color: #4ade80; display: flex; align-items: center; gap: 4px; }
+    .section-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .section-title { font-size: 1.1rem; font-weight: 700; color: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+    th { padding: 12px 16px; border-bottom: 2px solid #334155; color: #94a3b8; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+    td { padding: 14px 16px; border-bottom: 1px solid #334155; color: #e2e8f0; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+    .badge-success { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .badge-amber { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .badge-red { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .btn-export { background: #38bdf8; color: #0f172a; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="page-title">
+      <span class="material-symbols-outlined" style="color: #38bdf8;">analytics</span>
+      Operations & Capacity Intelligence Report (EOD)
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <span style="font-size: 0.85rem; color: #94a3b8;">Period: Today (2026-10-03)</span>
+      <button class="btn-export" onclick="alert('Exporting PDF/Excel Report...')">
+        <span class="material-symbols-outlined" style="font-size: 18px;">download</span>
+        Export Report
+      </button>
+    </div>
+  </header>
+
+  <div class="page-body">
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Fulfillment Rate</div>
+        <div class="kpi-value">94.2%</div>
+        <div class="kpi-sub"><span class="material-symbols-outlined" style="font-size: 16px;">trending_up</span> +3.1% vs last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Pre-8 AM Fresh Compliance</div>
+        <div class="kpi-value" style="color: #4ade80;">98.8%</div>
+        <div class="kpi-sub">79 of 80 Fresh Outlets on time</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Reefer Fleet Saturation</div>
+        <div class="kpi-value" style="color: #f59e0b;">91.4%</div>
+        <div class="kpi-sub">11 of 12 Reefer Trucks deployed</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Consecutive Deferrals</div>
+        <div class="kpi-value" style="color: #38bdf8;">0</div>
+        <div class="kpi-sub">Service equity policy maintained</div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">
+        <span>Depot Operational Summary</span>
+        <span style="font-size: 0.85rem; color: #94a3b8;">Peliyagoda Central & Kandy Hub</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Depot</th>
+            <th>Planned Trips</th>
+            <th>Delivered Orders</th>
+            <th>Deferred Orders</th>
+            <th>Avg Turnaround</th>
+            <th>Fuel Quota Burn</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 600;">Peliyagoda Central DC</td>
+            <td>28 Trips</td>
+            <td>64 Orders</td>
+            <td>4 Orders</td>
+            <td>38 mins / dock</td>
+            <td>71.4% (856 km)</td>
+            <td><span class="badge badge-success">Optimal</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600;">Kandy Regional Hub</td>
+            <td>7 Trips</td>
+            <td>17 Orders</td>
+            <td>0 Orders</td>
+            <td>44 mins / dock</td>
+            <td>68.2% (340 km)</td>
+            <td><span class="badge badge-success">Optimal</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">
+        <span>Order Deferrals by Reason Taxonomy</span>
+        <span style="font-size: 0.85rem; color: #94a3b8;">Governance & Capacity Bottleneck Breakdown</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Order Ref</th>
+            <th>Outlet</th>
+            <th>Category</th>
+            <th>Reason Code</th>
+            <th>Business Justification</th>
+            <th>Next Run Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family: monospace;">ORD-8914</td>
+            <td>OUT074 Puttalam Style</td>
+            <td>Ambient Dry</td>
+            <td><span class="badge badge-amber">CAPACITY_EXCEEDED</span></td>
+            <td>Bulk apparel volume exceeded remaining dry truck capacity</td>
+            <td><strong style="color: #4ade80;">P1 Priority for Tomorrow</strong></td>
+          </tr>
+          <tr>
+            <td style="font-family: monospace;">ORD-8902</td>
+            <td>OUT042 Kandy Central</td>
+            <td>Chilled Perishable</td>
+            <td><span class="badge badge-red">NO_REEFER_VAN</span></td>
+            <td>Outlet access restricted to small vans; all reefer vans committed to Nuwara Eliya</td>
+            <td><strong style="color: #4ade80;">P1 Priority for Tomorrow</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
