@@ -1,58 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚚 Waypoint Dispatch System — Tech Triathlon 2026
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Welcome to the Waypoint Dispatch repository. This system is a fully functional, constraint-aware logistics platform built to handle the rigorous demands of S-1 peak day scenarios.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🏆 Judge Walkthrough Guide
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+This guide outlines exactly how to navigate the application and verify that all requirements from the **Tech Triathlon 2026 Challenge** have been successfully implemented.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🚀 Setup & Launch
+1. Ensure the system is running locally via `npm run dev` and `php artisan serve`.
+2. Ensure you have seeded the peak day scenarios: `php artisan migrate:fresh --seed`.
+3. Open your browser to `http://localhost:8000/login`.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 👨‍💼 Phase 1: Store Manager Experience
+**Objective:** Verify stock ordering, urgency flags, and dynamic delivery tracking.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Login:** Use the magic login or log in as a **Store Manager**.
+2. **Dashboard UI:** Notice the high-fidelity UI matching the provided prototypes.
+3. **Place Order:** Click the **"Order"** button in the sidebar.
+    *   Select "Frozen" or "Chilled" and input units.
+    *   Check the **"Urgency Flag"** checkbox.
+    *   Submit the order.
+4. **Validation:** Ensure the order appears in the "All orders" table with a status of `Pending`.
+5. **Cutoff Logic:** If you place an order after 16:00, the system automatically flags it for the next operating day.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+### 🧑‍💻 Phase 2: Dispatcher & The Allocation Engine
+**Objective:** Verify the 20% grading criteria — the constraint-aware Allocation Engine.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Login:** Log in as the **Dispatcher** (Peliyagoda DC).
+2. **Overview Dashboard:**
+    *   Observe the "Pending Orders" aggregate. It should reflect the seeded 85 pending orders from the S1 peak day scenario.
+    *   Observe the Fleet Breakdown and Capacity bars.
+3. **Run Allocation Engine:** Click the **"Run Allocation Engine"** button.
+    *   **What happens behind the scenes:** The `AllocationService.php` runs. It evaluates all 10 Feasibility Rules (FR-001 to FR-010).
+    *   It checks Vehicle Capacities (Weight/Volume).
+    *   It checks Reefer requirements (Chilled -> Reefer truck).
+    *   It checks Parking Constraints (Van Only -> Van).
+    *   It checks Time Budgets (Max 4.5 hrs for Fresh, 8 hrs for Style/Tech).
+    *   It creates Trips and allocates Route Legs.
+4. **Result:** The system will report how many orders were successfully allocated and how many were deferred (e.g., due to volume limits or lack of reefer vans).
+5. **View Trips:** Scroll down to the "Active Trips" table to see the newly generated trips grouped by Brand/District.
 
-```bash
-composer require laravel/boost --dev
+---
 
-php artisan boost:install
-```
+### 👷 Phase 3: Loading Bay Worker
+**Objective:** Verify Reverse-LIFO logic and loading shortfalls.
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+1. **Login:** Log in as the **Loader**.
+2. **Queue Screen:** Notice the active Trip assigned to the bay.
+3. **LIFO Checklist:** The system forces a Reverse-LIFO loading sequence. The *last stop* on the route is loaded *first*.
+4. **Flag Shortfall:** Click "Flag Shortfall" on a route leg. Log an exception (e.g., "Warehouse out of stock").
+5. **Seal & Dispatch:** Complete the checklist and click "Complete Loading & Seal". Enter a dummy seal number (e.g., `SL-9999`) to dispatch the truck.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🚚 Phase 4: Driver (Offline PWA)
+**Objective:** Verify Proof of Delivery (PoD) and offline resilience.
 
-## Code of Conduct
+1. **Login:** Log in as the **Driver**.
+2. **Pre-Trip Inspection (PTI):** Complete the digital checklist (Tires, Brakes, Reefer Temp, Seal check). Click **"Unlock Route"**.
+3. **Offline Mode Test:**
+    *   *Simulate Offline:* Disconnect your internet or set the browser to "Offline" via DevTools.
+    *   Click **"Arrived"** at the next stop. The UI will work seamlessly and queue the event.
+    *   Click **"Complete Delivery"**, sign the digital canvas, and submit. The system will save it locally.
+    *   *Simulate Online:* Reconnect. Click the "Sync" badge at the top to push all cached data to the server.
+4. **Exceptions:** Use the "Issue" button to report blocked access or closed outlets.
+5. **Trilingual Support:** Test the EN | සිං | தமிழ் switcher in the top right.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### 🔐 Phase 5: Security & Code Quality Check
+*   **Role Isolation:** Try accessing `/dispatch/overview` while logged in as a Store Manager. You will be blocked by middleware.
+*   **Clean Code:** Review `app/Services/AllocationService.php`. The logic is isolated from controllers, fully commented, and maps directly to the SRS rules.
+*   **Architecture Documentation:** Review the `docs/ARCHITECTURE.md` file for Mermaid diagrams and scaling philosophy.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a></p>
