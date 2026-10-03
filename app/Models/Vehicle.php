@@ -13,6 +13,7 @@ class Vehicle extends Model
     protected $primaryKey = 'vehicle_id';
     protected $keyType = 'string';
     public $incrementing = false;
+    public $timestamps = false;
 
     public function trips()
     {
