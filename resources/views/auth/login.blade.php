@@ -32,6 +32,12 @@
         <!-- Glassmorphism Card -->
         <div class="backdrop-blur-xl bg-surface/70 border border-outline/20 rounded-3xl shadow-2xl p-8 transition-all duration-300">
             
+            <div class="flex justify-end mb-4 gap-3">
+                <a href="{{ route('locale.set', 'en') }}" class="text-xs font-semibold {{ session('locale') == 'en' || !session('locale') ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">EN</a>
+                <a href="{{ route('locale.set', 'si') }}" class="text-xs font-semibold {{ session('locale') == 'si' ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">සිං</a>
+                <a href="{{ route('locale.set', 'ta') }}" class="text-xs font-semibold {{ session('locale') == 'ta' ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">தமிழ்</a>
+            </div>
+
             <div class="text-center mb-8">
                 <div class="w-16 h-16 bg-primary text-on-primary rounded-2xl flex items-center justify-center text-3xl font-bold mx-auto mb-4 shadow-lg shadow-primary/30">
                     W
@@ -44,22 +50,22 @@
                 @csrf
                 <div class="space-y-5">
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-outline mb-2">Email Address</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-outline mb-2">{{ __('Email Address') }}</label>
                         <input type="email" name="email" value="saman@waypoint.lk" required class="w-full bg-surface-container-low border border-outline/30 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-outline mb-2">Password</label>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-outline mb-2">{{ __('Password') }}</label>
                         <input type="password" name="password" value="saman2026" required class="w-full bg-surface-container-low border border-outline/30 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition">
                     </div>
                     
                     @if($errors->any())
                     <div class="bg-error/10 text-error p-3 rounded-lg text-sm font-medium text-center">
-                        Invalid credentials provided.
+                        {{ __('Invalid credentials provided.') }}
                     </div>
                     @endif
 
                     <button type="submit" class="w-full bg-primary text-on-primary font-bold py-3.5 rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
-                        <span x-show="!loading">Sign In</span>
+                        <span x-show="!loading">{{ __('Sign In') }}</span>
                         <span x-show="loading" class="animate-spin">⌛</span>
                     </button>
                 </div>
