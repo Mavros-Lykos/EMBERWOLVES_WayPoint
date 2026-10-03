@@ -54,65 +54,32 @@ class CsvDataSeeder extends Seeder
             fclose($handle);
         }
 
-        // Seed Test Orders and Trips
-        $this->command->info('Seeding Trips & Orders (Test Data)...');
-        if (($handle = fopen($basePath . '/Test Data/task1_test_inputs.csv', 'r')) !== false) {
+        // Seed Pending Orders from Peak Day Scenario for testing Allocation Engine
+        $this->command->info('Seeding Pending Orders (S1 Peak Day Scenario)...');
+        if (($handle = fopen($basePath . '/Test Data/task2b_peak_day_scenarios.csv', 'r')) !== false) {
             $header = fgetcsv($handle);
-            $tripsMap = []; // Keep track of inserted trips
-            $vehicleTripCounts = []; // Track trips per vehicle per day
-
+            $today = now()->toDateString();
+            
             while (($row = fgetcsv($handle)) !== false) {
                 $data = array_combine($header, $row);
-
-                // For the Hackathon we only need a small subset to show the UI working.
-                // Let's seed just the first 100 rows to make it fast
-                static $count = 0;
-                if ($count++ > 100) break;
-
-                $tripKey = $data['route_id'];
-                $tripId = null;
-
-                if (!isset($tripsMap[$tripKey])) {
-                    $tripId = Str::uuid()->toString();
-                    $tripsMap[$tripKey] = $tripId;
-                    
-                    $vKey = $data['vehicle_id'] . '_' . $data['dispatch_date'];
-                    $vehicleTripCounts[$vKey] = isset($vehicleTripCounts[$vKey]) ? $vehicleTripCounts[$vKey] + 1 : 1;
-
-                    DB::table('trips')->insert([
-                        'trip_id' => $tripId,
-                        'vehicle_id' => $data['vehicle_id'],
-                        'trip_number' => $vehicleTripCounts[$vKey],
-                        'operation_date' => $data['dispatch_date'],
-                        'brand' => $data['brand'],
-                        'district' => $data['district'],
-                        'status' => 'dispatched', // Let's set some to dispatched so Dispatcher sees them
-                        'total_weight_kg' => 0,
-                        'total_volume_m3' => 0,
-                    ]);
-                } else {
-                    $tripId = $tripsMap[$tripKey];
-                }
+                
+                // Only seed S1 scenario
+                if ($data['scenario'] !== 'S1') continue;
 
                 DB::table('orders')->insert([
-                    'order_ref' => $data['delivery_id'],
+                    'order_ref' => $data['order_ref'],
                     'outlet_id' => $data['outlet_id'],
-                    'order_date' => $data['order_date'],
+                    'order_date' => $today,
+                    'placed_at' => now()->subHours(rand(1, 12)),
                     'temp_requirement' => strtolower($data['temp_requirement']),
                     'order_units' => (int) $data['order_units'],
                     'order_weight_kg' => (float) $data['order_weight_kg'],
                     'order_volume_m3' => (float) $data['order_volume_m3'],
-                    'status' => 'allocated',
-                    'trip_id' => $tripId,
-                ]);
-
-                DB::table('route_legs')->insert([
-                    'leg_id' => Str::uuid()->toString(),
-                    'trip_id' => $tripId,
-                    'seq' => (int) $data['seq_in_route'],
-                    'from_point' => 'DEPOT', // Simplified
-                    'to_outlet' => $data['outlet_id'],
-                    'planned_arrival_time' => $data['dispatch_date'] . ' ' . $data['planned_arrival_time'],
+                    'status' => 'pending',
+                    'deferred_yesterday' => (bool) $data['deferred_yesterday'],
+                    'days_since_last_served' => (int) $data['days_since_last_served'],
+                    'urgency_flag' => (bool) $data['deferred_yesterday'] || ((int) $data['days_since_last_served'] > 2),
+                    'trip_id' => null,
                 ]);
             }
             fclose($handle);
