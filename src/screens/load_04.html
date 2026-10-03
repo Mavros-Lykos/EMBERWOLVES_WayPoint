@@ -3,96 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Load Revision Alert — Waypoint</title>
+  <title>Pallet Shortfall & Damage Flag — Waypoint Depot</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   <link rel="stylesheet" href="../styles/material-tokens.css">
   <style>
-    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: rgba(0,0,0,0.5); padding: 24px; margin: 0; }
-    
-    .modal-surface { width: 100%; max-width: 600px; background: var(--md-sys-color-surface-container-lowest); border-radius: var(--md-sys-shape-corner-xl); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--md-sys-elevation-3); }
-    
-    .modal-header { padding: 24px 24px 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center; justify-content: space-between; background: var(--md-sys-color-error-container); color: var(--md-sys-color-on-error-container); }
-    .modal-title { font: var(--md-sys-typescale-headline-medium); display: flex; align-items: center; gap: 12px; }
-    
-    .modal-body { padding: 32px 24px; overflow-y: auto; max-height: 70vh; display: flex; flex-direction: column; gap: 24px; }
-    
-    .alert-msg { font: var(--md-sys-typescale-body-large); color: var(--md-sys-color-on-surface); }
-    .alert-msg strong { font-weight: 600; }
-    
-    .delta-card { background: var(--md-sys-color-surface-container-low); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-md); display: flex; flex-direction: column; overflow: hidden; }
-    .delta-header { padding: 12px 16px; background: var(--md-sys-color-surface-container); font: var(--md-sys-typescale-label-medium); color: var(--md-sys-color-on-surface-variant); text-transform: uppercase; letter-spacing: 0.08em; display: flex; justify-content: space-between; }
-    
-    .delta-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
-    .delta-row:last-child { border-bottom: none; }
-    
-    .delta-item { display: flex; flex-direction: column; gap: 4px; }
-    .delta-name { font: var(--md-sys-typescale-title-medium); }
-    .delta-sub { font: var(--md-sys-typescale-body-small); color: var(--md-sys-color-on-surface-variant); }
-    
-    .delta-val { display: flex; align-items: center; gap: 16px; font: var(--md-sys-typescale-body-large); }
-    .old-val { color: var(--md-sys-color-on-surface-variant); text-decoration: line-through; }
-    .new-val { color: var(--md-sys-color-on-surface); font-weight: 600; display: flex; align-items: center; gap: 4px; }
-    .new-val.add { color: var(--md-sys-color-error); } /* More work */
-    .new-val.rem { color: var(--md-sys-color-success); }
-    
-    .modal-footer { padding: 16px 24px 24px; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; justify-content: flex-end; }
-    .modal-footer .md-filled-button { height: 56px; font: var(--md-sys-typescale-title-medium); padding: 0 32px; width: 100%; }
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: rgba(15,23,42,0.8); padding: 24px; margin: 0; font-family: 'Roboto', sans-serif; }
+    .modal-surface { width: 100%; max-width: 640px; background: #1e293b; border: 1px solid #334155; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); color: #f8fafc; }
+    .modal-header { padding: 20px 24px; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; background: #0f172a; }
+    .modal-title { font-size: 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 10px; color: #f59e0b; margin: 0; }
+    .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .info-strip { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label { font-size: 0.875rem; font-weight: 500; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .count-control { display: flex; align-items: center; gap: 16px; }
+    .count-btn { width: 48px; height: 48px; border-radius: 8px; background: #334155; border: 1px solid #475569; color: white; font-size: 1.5rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .count-input { width: 100px; height: 48px; text-align: center; font-size: 1.5rem; font-weight: bold; background: #0f172a; border: 1px solid #475569; border-radius: 8px; color: white; }
+    .reason-select { width: 100%; height: 48px; background: #0f172a; border: 1px solid #475569; border-radius: 8px; color: white; padding: 0 16px; font-size: 1rem; }
+    .photo-drop { border: 2px dashed #475569; border-radius: 8px; padding: 24px; text-align: center; color: #94a3b8; cursor: pointer; background: rgba(15,23,42,0.4); }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid #334155; display: flex; justify-content: flex-end; gap: 12px; background: #0f172a; }
+    .btn-secondary { height: 48px; padding: 0 20px; border-radius: 8px; background: transparent; border: 1px solid #475569; color: #cbd5e1; font-weight: 500; cursor: pointer; }
+    .btn-primary { height: 48px; padding: 0 24px; border-radius: 8px; background: #f59e0b; border: none; color: #000; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
   </style>
 </head>
 <body>
-  
   <div class="modal-surface" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-header">
       <h2 id="modal-title" class="modal-title">
-        <span class="material-symbols-outlined" style="font-size:32px">warning</span>
-        Mid-Load Revision Alert
+        <span class="material-symbols-outlined">report_problem</span>
+        Pallet Shortfall & Damage Flag
       </h2>
-      <span class="md-badge success" style="background:var(--md-sys-color-on-error-container); color:var(--md-sys-color-error-container); display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:100px; font:var(--md-sys-typescale-label-small);">
-        <span class="material-symbols-outlined" style="font-size:14px">cloud_done</span> Online
-      </span>
+      <span style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">LOAD-04</span>
     </div>
     
     <div class="modal-body">
-      
-      <div class="alert-msg">
-        Dispatch has modified the payload for <strong>VEH-003</strong>. Please review and acknowledge the changes before continuing to load.
+      <div class="info-strip">
+        <div style="font-weight: 600; color: #e2e8f0;">Affected Manifest: Pallet #P-104 (OUT007 Fresh Mount Lavinia)</div>
+        <div style="font-size: 0.875rem; color: #94a3b8;">SKU: Highland Whole Milk 1L Packets | Expected: 40 Crates</div>
       </div>
-      
-      <div class="delta-card">
-        <div class="delta-header"><span>Stop</span><span>Change</span></div>
-        
-        <div class="delta-row">
-          <div class="delta-item">
-            <span class="delta-name">OUT-012 · Moratuwa</span>
-            <span class="delta-sub">ORD-8894</span>
-          </div>
-          <div class="delta-val">
-            <span class="old-val">1 Pallet</span>
-            <span class="material-symbols-outlined" style="color:var(--md-sys-color-outline)">arrow_forward</span>
-            <span class="new-val add">2 Pallets <span class="material-symbols-outlined" style="font-size:18px">arrow_upward</span></span>
-          </div>
+
+      <div class="form-group">
+        <label class="form-label" for="actualCount">Actual Quantity Loaded</label>
+        <div class="count-control">
+          <button type="button" class="count-btn" onclick="let el=document.getElementById('actualCount'); el.value = Math.max(0, parseInt(el.value)-1);">-</button>
+          <input id="actualCount" class="count-input" type="number" value="36" min="0" max="40" aria-label="Actual loaded count">
+          <button type="button" class="count-btn" onclick="let el=document.getElementById('actualCount'); el.value = Math.min(40, parseInt(el.value)+1);">+</button>
+          <span style="color: #f87171; font-weight: 500;">4 Crates Missing / Damaged</span>
         </div>
-        
-        <div class="delta-row">
-          <div class="delta-item">
-            <span class="delta-name">OUT-021 · Panadura</span>
-            <span class="delta-sub">ORD-8898</span>
-          </div>
-          <div class="delta-val">
-            <span class="old-val">3 Pallets</span>
-            <span class="material-symbols-outlined" style="color:var(--md-sys-color-outline)">arrow_forward</span>
-            <span class="new-val rem">2 Pallets <span class="material-symbols-outlined" style="font-size:18px">arrow_downward</span></span>
-          </div>
-        </div>
-        
       </div>
-      
+
+      <div class="form-group">
+        <label class="form-label" for="reasonSelect">Discrepancy Reason</label>
+        <select id="reasonSelect" class="reason-select">
+          <option value="forklift_damage">Damaged by Forklift at Bay</option>
+          <option value="stock_depleted">Cold Room Stock Depleted / Short-Docked</option>
+          <option value="packaging_leak">Container Leakage / Spoilage</option>
+          <option value="wrong_item">Incorrect Item Staged on Pallet</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Photo Evidence</label>
+        <div class="photo-drop" onclick="alert('Camera capture simulated')">
+          <span class="material-symbols-outlined" style="font-size: 32px; color: #94a3b8;">photo_camera</span>
+          <div>Tap to capture proof photo of damaged crate</div>
+        </div>
+      </div>
     </div>
-    
-    <footer class="modal-footer">
-      <button class="md-filled-button" onclick="location.href='load_03.html'">Acknowledge & Update Checklist</button>
-    </footer>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-secondary" onclick="window.history.back()">Cancel</button>
+      <button type="button" class="btn-primary" onclick="alert('Shortfall logged. Invoice recalculated and Dispatch notified.'); window.location.href='load_03.html'">
+        <span class="material-symbols-outlined">save</span>
+        Confirm Shortfall & Recalculate
+      </button>
+    </div>
   </div>
 </body>
 </html>
