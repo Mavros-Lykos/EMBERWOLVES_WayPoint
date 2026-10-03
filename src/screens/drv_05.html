@@ -3,65 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Rest Period — Waypoint</title>
+  <title>Dock Blocker & Exception — Waypoint Driver</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
   <link rel="stylesheet" href="../styles/material-tokens.css">
   <style>
-    html { font-size: 16px; }
-    body { display: flex; flex-direction: column; min-height: 100vh; max-width: 420px; margin: 0 auto; background: var(--md-sys-color-surface); }
-    
-    .mobile-top-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid var(--md-sys-color-outline-variant); }
-    .title { font: var(--md-sys-typescale-title-large); }
-    
-    .page-body { flex: 1; overflow-y: auto; padding: 32px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-
-    .timer-circle { width: 240px; height: 240px; border-radius: 120px; border: 8px solid var(--md-sys-color-surface-container-highest); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; margin-bottom: 32px; }
-    /* Fake progress using borders */
-    .timer-circle::after { content: ''; position: absolute; top: -8px; left: -8px; right: -8px; bottom: -8px; border-radius: 120px; border: 8px solid var(--md-sys-color-primary); clip-path: polygon(50% 50%, 50% 0, 100% 0, 100% 100%, 0 100%, 0 50%); }
-    
-    .time-val { font: var(--md-sys-typescale-display-large); font-weight: 700; color: var(--md-sys-color-on-surface); line-height: 1; }
-    .time-label { font: var(--md-sys-typescale-body-large); color: var(--md-sys-color-on-surface-variant); margin-top: 8px; }
-
-    .info-card { background: var(--md-sys-color-surface-container-low); padding: 16px; border-radius: var(--md-sys-shape-corner-md); display: flex; align-items: flex-start; gap: 12px; text-align: left; margin-bottom: 24px; width: 100%; }
-    .info-card .material-symbols-outlined { color: var(--md-sys-color-primary); }
-    .info-text { font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-on-surface); }
-    
-    .penalty-warn { display: flex; align-items: center; gap: 8px; font: var(--md-sys-typescale-body-medium); color: var(--md-sys-color-error); }
-
-    .bottom-action { padding: 16px; border-top: 1px solid var(--md-sys-color-outline-variant); }
-    .bottom-action .md-outlined-button { width: 100%; height: 64px; font: var(--md-sys-typescale-title-medium); color: var(--md-sys-color-error); border-color: var(--md-sys-color-error); }
+    body { display: flex; flex-direction: column; min-height: 100vh; max-width: 420px; margin: 0 auto; background: #0f172a; color: #f8fafc; font-family: 'Roboto', sans-serif; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid #334155; }
+    .page-title { font-size: 1.1rem; font-weight: 700; color: #f59e0b; display: flex; align-items: center; gap: 8px; }
+    .page-body { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 20px; }
+    .field-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .card-label { font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; font-weight: 600; letter-spacing: 0.05em; }
+    .reason-option { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 14px; display: flex; align-items: center; gap: 12px; cursor: pointer; min-height: 56px; font-weight: 500; font-size: 0.95rem; }
+    .reason-option.selected { border-color: #f59e0b; background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .photo-box { border: 2px dashed #475569; border-radius: 12px; padding: 20px; text-align: center; color: #94a3b8; background: #1e293b; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .timer-alert { background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; border-radius: 8px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; color: #fca5a5; font-size: 0.875rem; }
+    .bottom-bar { padding: 16px; border-top: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; }
+    .btn-abort { height: 64px; border-radius: 12px; background: #ef4444; color: #fff; border: none; font-size: 1.05rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-alert { height: 50px; border-radius: 12px; background: #334155; color: #cbd5e1; border: none; font-weight: 600; cursor: pointer; }
   </style>
 </head>
 <body>
-
-  <header class="mobile-top-bar" role="banner" aria-label="Rest period status">
-    <span class="title">Mandatory Rest</span>
-  <span class="md-badge success" style="margin-left:auto; margin-right: 16px;"><span class="material-symbols-outlined" style="font-size:14px">cloud_done</span> Online</span>
-</header>
+  <header class="top-bar">
+    <div class="page-title">
+      <span class="material-symbols-outlined">warning</span>
+      Report Dock Blocker
+    </div>
+    <span style="font-size: 0.75rem; background: #334155; padding: 4px 8px; border-radius: 6px; color: #94a3b8;">DRV-05</span>
+  </header>
 
   <div class="page-body">
-    
-    <div class="timer-circle" role="timer" aria-label="Rest time remaining">
-      <div class="time-val">12:45</div>
-      <div class="time-label">Remaining</div>
-    </div>
-    
-    <div class="info-card">
-      <span class="material-symbols-outlined">shield_moon</span>
-      <div class="info-text">You have reached the 4-hour continuous driving limit. Vehicle tracking is paused.</div>
-    </div>
-    
-    <div class="penalty-warn">
-      <span class="material-symbols-outlined" style="font-size:20px">warning</span>
-      Skipping rest incurs a safety penalty.
+    <div class="field-card">
+      <div class="card-label">Current Stop</div>
+      <div style="font-size: 1rem; font-weight: 600; color: #e2e8f0;">OUT007 Fresh Mount Lavinia</div>
+      <div style="font-size: 0.8rem; color: #94a3b8;">Target Arrival Window: 06:00 - 08:00 AM</div>
     </div>
 
+    <div class="field-card">
+      <div class="card-label">Select Obstacle Reason</div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <label class="reason-option selected">
+          <input type="radio" name="reason" checked style="accent-color: #f59e0b;">
+          Service Alley Blocked by 3rd Party Truck
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="reason" style="accent-color: #f59e0b;">
+          Store Receiving Staff Absent / No Answer
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="reason" style="accent-color: #f59e0b;">
+          Canopy Gate Locked & Security Absent
+        </label>
+        <label class="reason-option">
+          <input type="radio" name="reason" style="accent-color: #f59e0b;">
+          Store Power Outage / Cold Room Full
+        </label>
+      </div>
+    </div>
+
+    <div class="photo-box" onclick="alert('Camera triggered: photo proof attached')">
+      <span class="material-symbols-outlined" style="font-size: 36px; color: #f59e0b;">camera_alt</span>
+      <div style="font-weight: 600; color: #e2e8f0;">Take Photo Proof of Blocker</div>
+      <div style="font-size: 0.75rem;">Required to waive driver detention penalties</div>
+    </div>
+
+    <div class="timer-alert">
+      <span class="material-symbols-outlined">timer</span>
+      <div>15-Minute Wait Allowance running. Dispatch will be automatically notified.</div>
+    </div>
   </div>
 
-  <div class="bottom-action">
-    <button class="md-outlined-button" aria-label="End rest early - safety penalty applies" onclick="if(confirm('Warning: Ending rest before 30 mins incurs an HRMS safety penalty flag. Continue?')) { location.href='drv_02.html'; }">End Rest Early (Penalty)</button>
+  <div class="bottom-bar">
+    <button type="button" class="btn-abort" onclick="alert('Stop aborted due to blocker. Proceeding to Stop 2: OUT012 Moratuwa.'); window.location.href='drv_02.html'">
+      <span class="material-symbols-outlined">cancel</span>
+      ABORT STOP & LOG EXCEPTION (64px)
+    </button>
+    <button type="button" class="btn-alert" onclick="alert('Dispatcher Kamal notified with GPS stamp.')">
+      Broadcast Alert to Dispatcher
+    </button>
   </div>
-
 </body>
 </html>
