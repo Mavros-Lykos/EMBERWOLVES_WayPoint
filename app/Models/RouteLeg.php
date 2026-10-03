@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class RouteLeg extends Model
 {
-    /** @use HasFactory<\Database\Factories\RouteLegFactory> */
     use HasFactory;
+
+    protected $primaryKey = 'leg_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
 }
