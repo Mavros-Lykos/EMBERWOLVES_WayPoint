@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Outlet extends Model
 {
-    /** @use HasFactory<\Database\Factories\OutletFactory> */
     use HasFactory;
+
+    protected $primaryKey = 'outlet_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+    public $timestamps = false;
 }
