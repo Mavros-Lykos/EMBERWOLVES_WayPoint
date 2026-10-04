@@ -32,5 +32,5 @@ RUN npm install && npm run build
 # Expose port 8000 for Artisan serve
 EXPOSE 8000
 
-# Start Artisan serve (Uses PORT env var provided by Railway, defaults to 8000)
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Start Artisan serve (Runs migrations and seeds first, uses PORT env var)
+CMD sh -c "php artisan migrate:fresh --seed --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
