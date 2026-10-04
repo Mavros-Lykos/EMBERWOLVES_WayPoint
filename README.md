@@ -6,9 +6,9 @@ Welcome to the Waypoint Dispatch repository. This system is a fully functional, 
 
 ## 📝 Hackathon Submission Details
 
-*   **Repository Link:** [TeamName_SolutionName](https://github.com/Mavros-Lykos/EMBERWOLVES_WayPoint) *(Please replace with actual link)*
-*   **Deployed System URL:** [https://your-deployed-url.com](https://your-deployed-url.com) *(Please replace with actual link)*
-*   **Demo Video:** [YouTube/Vimeo Link](https://youtube.com/...) *(Please replace with actual link)*
+*   **Repository Link:** [EMBERWOLVES_WayPoint](https://github.com/Mavros-Lykos/EMBERWOLVES_WayPoint) 
+*   **Deployed System URL:** [emberwolveswaypoint-production.up.railway.app](emberwolveswaypoint-production.up.railway.app) 
+*   **Demo Video:** [YouTube/Vimeo Link](https://youtube.com/...) 
 *   **Design Changes from Day 5:** No significant changes from Day 5 design. *(Update if there are any)*
 
 ### 🔑 Seeded Accounts Credentials
