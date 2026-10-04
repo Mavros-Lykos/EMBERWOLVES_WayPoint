@@ -23,8 +23,8 @@ WORKDIR /var/www/html
 # Copy all application files into the container
 COPY . .
 
-# Install PHP dependencies (using production mode)
-RUN composer install --optimize-autoloader --no-dev
+# Install PHP dependencies (including dev for seeders in the demo environment)
+RUN composer install --optimize-autoloader
 
 # Install Node dependencies and build frontend assets
 RUN npm install && npm run build
