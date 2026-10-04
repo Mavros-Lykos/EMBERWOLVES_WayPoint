@@ -20,8 +20,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
+# Copy all application files into the container
+COPY . .
+
+# Install PHP dependencies (using production mode)
+RUN composer install --optimize-autoloader --no-dev
+
+# Install Node dependencies and build frontend assets
+RUN npm install && npm run build
+
 # Expose port 8000 for Artisan serve
 EXPOSE 8000
 
-# Start Artisan serve
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Start Artisan serve (Uses PORT env var provided by Railway, defaults to 8000)
+CMD sh -c "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"

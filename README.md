@@ -4,13 +4,37 @@ Welcome to the Waypoint Dispatch repository. This system is a fully functional, 
 
 ---
 
+## 📝 Hackathon Submission Details
+
+*   **Repository Link:** [TeamName_SolutionName](https://github.com/Mavros-Lykos/EMBERWOLVES_WayPoint) *(Please replace with actual link)*
+*   **Deployed System URL:** [https://your-deployed-url.com](https://your-deployed-url.com) *(Please replace with actual link)*
+*   **Demo Video:** [YouTube/Vimeo Link](https://youtube.com/...) *(Please replace with actual link)*
+*   **Design Changes from Day 5:** No significant changes from Day 5 design. *(Update if there are any)*
+
+### 🔑 Seeded Accounts Credentials
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| Store Manager | `priya@waypoint.lk` | `priya2026` |
+| Dispatcher | `kamal@waypoint.lk` | `kamal2026` |
+| Loader | `nuwan@waypoint.lk` | `nuwan2026` |
+| Driver | `saman@waypoint.lk` | `saman2026` |
+
+---
+
 ## 🏆 Judge Walkthrough Guide
 
 This guide outlines exactly how to navigate the application and verify that all requirements from the **Tech Triathlon 2026 Challenge** have been successfully implemented.
 
 ### 🚀 Setup & Launch
-1. Ensure the system is running locally via `npm run dev` and `php artisan serve`.
-2. Ensure you have seeded the peak day scenarios: `php artisan migrate:fresh --seed`.
+1. Ensure the system is running via Docker Compose:
+   ```bash
+   docker compose up -d
+   ```
+2. Run database migrations and seed the peak day scenarios:
+   ```bash
+   docker compose exec app php artisan migrate:fresh --seed
+   ```
 3. Open your browser to `http://localhost:8000/login`.
 
 ---

@@ -24,7 +24,19 @@
             color: var(--on-surf);
             margin: 0;
             padding: 0;
+            display: flex;
+            min-height: 100vh;
         }
+
+        /* Nav Rail */
+        .nav-rail { width: 80px; background: var(--surf-c); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px; border-right: 1px solid var(--outline); flex-shrink: 0; }
+        .brand-mark { width: 48px; height: 48px; background: var(--primary); color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; margin-bottom: 20px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; width: 100%; cursor: pointer; color: #94a3b8; text-decoration: none; border: none; background: none; font-size: 11px; }
+        .nav-item:hover { color: var(--on-surf); }
+        .nav-item.active .icon-wrap { background: rgba(59,130,246,0.2); color: var(--primary); border-radius: 999px; padding: 4px 20px; }
+        .icon-wrap { display: flex; align-items: center; justify-content: center; padding: 4px 20px; }
+        
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
         .top-bar {
             background: var(--surf-c);
@@ -38,7 +50,8 @@
         .container {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            height: calc(100vh - 65px);
+            flex: 1;
+            overflow: hidden;
         }
 
         /* Map Area */
@@ -132,17 +145,30 @@
         }
 
         .btn {
-            background: var(--outline);
+            background: rgba(148,163,184,0.1);
             color: var(--on-surf);
-            border: none;
+            border: 1px solid rgba(148,163,184,0.3);
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             margin-top: 12px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .btn:hover { background: #475569; }
+        .btn:hover { background: rgba(148,163,184,0.2); box-shadow: 0 4px 8px rgba(0,0,0,0.2); transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+
+        /* Leaflet placeholder */
+        .map-area {
+            background: #cbd5e1;
+            position: relative;
+            background-image: url('https://a.tile.openstreetmap.org/13/5766/4106.png');
+            background-size: cover;
+            border-right: 1px solid var(--outline);
+            overflow: hidden;
+        }
 
         .nav-links {
             display: flex;
@@ -161,19 +187,47 @@
 </head>
 <body>
 
-    <header class="top-bar">
-        <div style="font-size:18px; font-weight:700; letter-spacing:1px">WAYPOINT CONTROL TOWER</div>
-        <div class="nav-links">
-            <a href="{{ route('dispatch.overview') }}">{{ __('Overview') }}</a>
-            <a href="{{ route('dispatch.plan') }}">{{ __('Planning Canvas') }}</a>
-            <a href="{{ route('dispatch.live') }}" class="active">{{ __('Live Fleet') }}</a>
-            <a href="{{ route('dispatch.crisis') }}">{{ __('Crisis Mitigate') }}</a>
-        </div>
-        <form action="{{ route('logout') }}" method="POST">
+    <!-- Nav Rail -->
+    <nav class="nav-rail" aria-label="Dispatch navigation">
+        <div class="brand-mark">W</div>
+        <a href="{{ route('dispatch.overview') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span>
+            <span>Overview</span>
+        </a>
+        <a href="{{ route('dispatch.plan') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">view_kanban</span></span>
+            <span>Plan</span>
+        </a>
+        <a href="{{ route('dispatch.live') }}" class="nav-item active" aria-current="page">
+            <span class="icon-wrap"><span class="material-symbols-outlined">satellite_alt</span></span>
+            <span>Live Map</span>
+        </a>
+        <a href="{{ route('dispatch.crisis') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">warning</span></span>
+            <span>Crisis</span>
+        </a>
+        <a href="{{ route('dispatch.reports') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">analytics</span></span>
+            <span>Reports</span>
+        </a>
+        <form action="{{ route('logout') }}" method="POST" style="width:100%">
             @csrf
-            <button type="submit" style="background:none; border:none; color:#94a3b8; cursor:pointer; font-weight:600">Exit</button>
+            <button type="submit" class="nav-item">
+                <span class="icon-wrap"><span class="material-symbols-outlined">logout</span></span>
+                <span>Exit</span>
+            </button>
         </form>
-    </header>
+    </nav>
+
+    <div class="main-content">
+        <header class="top-bar">
+            <div style="font-size:18px; font-weight:700; letter-spacing:1px">WAYPOINT CONTROL TOWER</div>
+            <div class="nav-links" style="display:flex; align-items:center; gap:8px;">
+                @include('partials.notifications')
+                @include('partials.settings')
+                <a href="{{ route('dispatch.live') }}" class="active" style="margin-left: 8px;">{{ __('Live Fleet') }}</a>
+            </div>
+        </header>
 
     <div class="container">
         <div class="map-area">
@@ -199,9 +253,9 @@
             @endforeach
             
             @if($activeTrips->count() === 0)
-            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#64748b; text-align:center;">
-                <span class="material-symbols-outlined" style="font-size:64px; opacity:0.5">satellite_alt</span>
-                <p>No active vehicles in transit</p>
+            <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); color:#94a3b8; text-align:center; background:rgba(30, 41, 59, 0.9); padding:40px 60px; border-radius:16px; border:1px solid var(--outline); box-shadow: 0 8px 32px rgba(0,0,0,0.4); backdrop-filter: blur(8px);">
+                <span class="material-symbols-outlined" style="font-size:64px; opacity:0.5; margin-bottom:16px;">satellite_alt</span>
+                <p style="font-size:16px; font-weight:500;">No active vehicles in transit</p>
             </div>
             @endif
 
@@ -236,6 +290,11 @@
                     <span style="font-size:12px; color:#94a3b8">Trip {{ $trip->trip_number }}</span>
                 </div>
                 <div style="font-size:13px; color:#cbd5e1; margin-bottom:4px;">On track. ETA next stop: 07:12 AM</div>
+                <div>
+                    <button class="btn" onclick="alert('Rerouting vehicle...')">Reroute</button>
+                    <button class="btn" onclick="alert('Calling driver...')">Call Driver</button>
+                    <button class="btn" onclick="alert('Alerting store...')">Alert Store</button>
+                </div>
             </div>
             @endforeach
             

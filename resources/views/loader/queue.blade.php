@@ -105,11 +105,9 @@
             </div>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
-            <!-- Language Switcher -->
-            <div style="display:flex; gap: 8px;">
-                <a href="{{ route('locale.set', 'en') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'en' || !session('locale') ? '#1565C0; font-weight: bold;' : '#74777F;' }}">EN</a>
-                <a href="{{ route('locale.set', 'si') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'si' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">සිං</a>
-                <a href="{{ route('locale.set', 'ta') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'ta' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">தமிழ்</a>
+            <div style="display:flex; align-items:center; gap: 8px;">
+                @include('partials.notifications')
+                @include('partials.settings')
             </div>
             <span class="badge badge-success">
                 <span class="material-symbols-outlined" style="font-size:14px">cloud_done</span>
@@ -122,24 +120,7 @@
         </div>
     </header>
 
-    @if(session('success'))
-    <div style="background:rgba(34,197,94,0.1); border-left:4px solid var(--success); padding:12px 24px; font-size:14px; color:#86efac; display:flex; gap:8px;">
-        <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
-        {{ session('success') }}
-    </div>
-    @endif
-    @if(session('warning'))
-    <div style="background:rgba(245,158,11,0.1); border-left:4px solid var(--warn); padding:12px 24px; font-size:14px; color:#fcd34d; display:flex; gap:8px;">
-        <span class="material-symbols-outlined" style="font-size:18px">warning</span>
-        {{ session('warning') }}
-    </div>
-    @endif
-    @if(session('error'))
-    <div style="background:rgba(239,68,68,0.1); border-left:4px solid var(--crit); padding:12px 24px; font-size:14px; color:#fca5a5; display:flex; gap:8px;">
-        <span class="material-symbols-outlined" style="font-size:18px">error</span>
-        {{ session('error') }}
-    </div>
-    @endif
+
 
     <div class="page-body">
 
@@ -216,7 +197,7 @@
 
         @else
         <!-- No Active Trip -->
-        <div style="text-align:center; padding:60px 20px;">
+        <div style="text-align:center; padding:60px 20px; background:var(--surf-c); border:1px solid var(--outline); border-radius:16px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
             <span class="material-symbols-outlined" style="font-size:64px; color:#94a3b8; display:block; margin-bottom:16px">local_shipping</span>
             <p style="font-size:18px; font-weight:500; margin-bottom:8px">{{ __('No Active Trip') }}</p>
             <p style="font-size:14px; color:#94a3b8">{{ __('Waiting for dispatcher to finalize allocation and push loading list.') }}</p>

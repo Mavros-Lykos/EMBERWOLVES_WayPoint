@@ -8,7 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Order;
 use App\Models\Trip;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SystemNotification;
 
 class DashboardController extends Controller
 {
@@ -117,6 +120,15 @@ class DashboardController extends Controller
             $msg = $isAfterCutoff 
                 ? "Order placed for tomorrow ({$orderDate}) due to 16:00 cutoff: {$units} units ({$request->temp_requirement})."
                 : "Order placed successfully: {$units} units ({$request->temp_requirement}). You will be notified when allocated.";
+
+            // Notify Dispatchers
+            $dispatchers = User::where('role', 'dispatcher')->get();
+            Notification::send($dispatchers, new SystemNotification(
+                "New Order Received",
+                "{$units} units ({$request->temp_requirement}) from {$request->outlet_id}",
+                "info",
+                route('dispatch.overview')
+            ));
 
             return back()->with('success', $msg);
         } catch (\Exception $e) {
@@ -442,6 +454,15 @@ class DashboardController extends Controller
                 'total_volume_m3' => $totalVolume,
             ]);
         }
+        
+        // Notify Loaders
+        $loaders = User::where('role', 'loader')->get();
+        Notification::send($loaders, new SystemNotification(
+            "New Load Plan Locked",
+            "{$tripCount} new trips have been sent to the loading queue.",
+            "success",
+            route('loader.queue')
+        ));
 
         return response()->json([
             'success' => true,
@@ -459,8 +480,9 @@ class DashboardController extends Controller
         $currentTrip = Trip::with(['orders' => function($q) {
                 $q->orderBy('order_units', 'desc'); // simplified ordering
             }])
-            ->where('status', 'loading')
+            ->whereIn('status', ['loading', 'planned'])
             ->where('operation_date', $today)
+            ->orderByRaw("FIELD(status, 'loading', 'planned')")
             ->first();
 
         // Upcoming planned trips
@@ -508,6 +530,18 @@ class DashboardController extends Controller
             DB::table('route_legs')
                 ->where('trip_id', $request->trip_id)
                 ->update(['reefer_temp_celsius' => null]); // placeholder for seal
+
+            // Notify Driver
+            $trip = Trip::where('trip_id', $request->trip_id)->first();
+            if ($trip) {
+                $driver = User::where('role', 'driver')->where('vehicle_id', $trip->vehicle_id)->get();
+                Notification::send($driver, new SystemNotification(
+                    "Vehicle Sealed & Dispatched",
+                    "Trip {$trip->trip_number} is sealed (Seal: {$request->seal_number}). Proceed to route.",
+                    "success",
+                    route('driver.route')
+                ));
+            }
 
             return back()->with('success', "Trip dispatched. Seal {$request->seal_number} recorded.");
         } catch (\Exception $e) {
@@ -571,8 +605,15 @@ class DashboardController extends Controller
         // Find driver's active trip
         $trip = Trip::where('operation_date', $today)
             ->whereHas('vehicle', fn($q) => $q->where('vehicle_id', $user->vehicle_id))
-            ->whereIn('status', ['dispatched', 'planned'])
+            ->whereIn('status', ['dispatched', 'planned', 'loading'])
             ->first();
+
+        // Fallback for simulation/testing if driver has no trip
+        if (!$trip) {
+            $trip = Trip::where('operation_date', $today)
+                ->whereIn('status', ['dispatched', 'planned', 'loading'])
+                ->first();
+        }
 
         $routeLegs = collect();
         $completedLegs = collect();
@@ -587,7 +628,7 @@ class DashboardController extends Controller
             $routeLegs     = $allLegs->filter(fn($l) => is_null($l->actual_arrival_time))->values();
         }
 
-        $vehicle = DB::table('vehicles')->where('vehicle_id', $user->vehicle_id)->first();
+        $vehicle = $trip ? DB::table('vehicles')->where('vehicle_id', $trip->vehicle_id)->first() : DB::table('vehicles')->where('vehicle_id', $user->vehicle_id)->first();
 
         return view('driver.route', compact('trip', 'routeLegs', 'completedLegs', 'user', 'vehicle'));
     }
@@ -629,6 +670,18 @@ class DashboardController extends Controller
         // Update order status
         if ($request->order_ref) {
             Order::where('order_ref', $request->order_ref)->update(['status' => 'delivered']);
+            
+            $order = Order::where('order_ref', $request->order_ref)->first();
+            if ($order) {
+                // Notify Store Manager
+                $storeManager = User::where('role', 'store_manager')->where('outlet_id', $order->outlet_id)->get();
+                Notification::send($storeManager, new SystemNotification(
+                    "Delivery Completed",
+                    "Order {$order->order_ref} has been successfully delivered.",
+                    "success",
+                    route('store.dashboard')
+                ));
+            }
         }
 
         return response()->json(['success' => true]);

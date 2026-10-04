@@ -118,8 +118,8 @@
             cursor: pointer;
         }
 
-        .btn-resume { background: var(--success); }
-        .btn-resume:active { background: #059669; }
+        .btn-resume { background: var(--success); box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4); transition: all 0.2s; }
+        .btn-resume:active { background: #059669; transform: scale(0.98); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5); }
 
         .btn-secondary { background: var(--surf-c); border: 1px solid var(--outline); }
         .btn-secondary:active { background: #334155; }

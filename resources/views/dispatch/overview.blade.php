@@ -60,10 +60,12 @@
         .fleet-count { font-size: 14px; color: #94a3b8; font-family: 'Roboto Mono', monospace; }
         /* Action Bar */
         .action-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; }
-        .btn-filled:hover { opacity: 0.9; }
-        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--primary); border: 1px solid rgba(59,130,246,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
-        .btn-outlined:hover { background: rgba(59,130,246,0.1); }
+        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .btn-filled:hover { box-shadow: 0 6px 16px rgba(59,130,246,0.4); transform: translateY(-1px); }
+        .btn-filled:active { box-shadow: 0 2px 4px rgba(59,130,246,0.3); transform: translateY(0); }
+        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--primary); border: 1px solid rgba(59,130,246,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-outlined:hover { background: rgba(59,130,246,0.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); transform: translateY(-1px); }
+        .btn-outlined:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         /* Alerts section */
         .alerts-section { margin-bottom: 24px; }
         .alert-card { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 12px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; }
@@ -105,6 +107,10 @@
             <span class="icon-wrap"><span class="material-symbols-outlined">warning</span></span>
             <span>Crisis</span>
         </a>
+        <a href="{{ route('dispatch.reports') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">analytics</span></span>
+            <span>Reports</span>
+        </a>
         <form action="{{ route('logout') }}" method="POST" style="width:100%">
             @csrf
             <button type="submit" class="nav-item">
@@ -122,13 +128,11 @@
                     <span class="material-symbols-outlined" style="font-size:18px">lock_clock</span>
                     16:00 {{ __('Cutoff') }}
                 </div>
-                <!-- Language Switcher -->
-                <div style="display:flex; gap: 8px;">
-                    <a href="{{ route('locale.set', 'en') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'en' || !session('locale') ? '#1565C0; font-weight: bold;' : '#74777F;' }}">EN</a>
-                    <a href="{{ route('locale.set', 'si') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'si' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">සිං</a>
-                    <a href="{{ route('locale.set', 'ta') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'ta' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">தமிழ்</a>
+                <div style="display:flex; align-items:center; gap: 8px;">
+                    @include('partials.notifications')
+                    @include('partials.settings')
                 </div>
-                <span style="font-size:13px; color:#94a3b8">Kamal</span>
+                <span style="font-size:13px; color:#94a3b8">{{ auth()->user()->name ?? 'Kamal' }}</span>
             </div>
         </header>
 
@@ -148,7 +152,7 @@
                     <div>
                         <strong style="color: #fcd34d;">Degradation Alert: Reefer Overflow</strong><br>
                         {{ $reeferOverflowCount }} chilled orders were deferred due to max reefer vehicle capacity.
-                        <button class="btn-outlined" style="margin-top: 8px; border-color: rgba(245,158,11,0.4); color: #f59e0b; padding: 4px 12px; font-size: 12px;">Review 3P Reefer Options</button>
+                        <a href="{{ route('dispatch.crisis') }}" class="btn-outlined" style="margin-top: 8px; border-color: rgba(245,158,11,0.4); color: #f59e0b; padding: 4px 12px; font-size: 12px; text-decoration: none;">Review 3P Reefer Options</a>
                     </div>
                 </div>
             </div>
@@ -200,14 +204,18 @@
                     <span class="material-symbols-outlined" style="font-size:18px">auto_awesome</span>
                     <span x-text="allocating ? '{{ __('Running…') }}' : '{{ __('Run Allocation Engine') }}'"></span>
                 </button>
-                <a href="{{ route('dispatch.plan') }}" class="btn-outlined">
+                <a href="{{ route('dispatch.plan') }}" class="btn-outlined" style="text-decoration: none;">
                     <span class="material-symbols-outlined" style="font-size:18px">view_kanban</span>
                     {{ __('Open Planning Canvas') }}
                 </a>
-                <button class="btn-outlined" style="border-color: rgba(245,158,11,0.4); color:#f59e0b">
+                <a href="{{ route('dispatch.reports') }}" class="btn-outlined" style="border-color: rgba(245,158,11,0.4); color:#f59e0b; text-decoration: none;">
                     <span class="material-symbols-outlined" style="font-size:18px">history</span>
                     {{ __('Deferrals') }} ({{ $deferralCount }})
-                </button>
+                </a>
+                <a href="{{ route('dispatch.crisis') }}" class="btn-outlined" style="border-color: rgba(239,68,68,0.4); color:#ef4444; text-decoration: none;">
+                    <span class="material-symbols-outlined" style="font-size:18px">local_shipping</span>
+                    {{ __('Review 3P Reefer Options') }}
+                </a>
             </div>
 
             <!-- Depot + Fleet Grid -->

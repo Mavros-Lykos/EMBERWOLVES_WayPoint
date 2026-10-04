@@ -85,10 +85,12 @@
             border: none;
             color: #fff;
             background: var(--success);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
             cursor: pointer;
             margin-top: auto;
+            transition: all 0.2s;
         }
-        .btn-large:active { background: #059669; transform: scale(0.98); }
+        .btn-large:active { background: #059669; transform: scale(0.98); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.5); }
         .btn-large:disabled { background: var(--outline); color: #94a3b8; cursor: not-allowed; transform: none; }
 
         .checkbox-row {
@@ -161,7 +163,7 @@
         </form>
         
         @else
-        <div class="hero" style="margin-top:40px;">
+        <div class="hero" style="margin-top:40px; background:var(--surf-c); border:1px solid var(--outline); border-radius:16px; padding:40px 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
             <span class="material-symbols-outlined" style="font-size:64px; color:#334155; margin-bottom:16px;">verified</span>
             <h2>{{ __('No Active Trip') }}</h2>
             <p style="color:#94a3b8;">{{ __('You have no active trips running.') }}</p>

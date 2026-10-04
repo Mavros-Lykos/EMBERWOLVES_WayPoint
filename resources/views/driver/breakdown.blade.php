@@ -74,8 +74,8 @@
             color: #fff;
         }
 
-        .btn-call { background: var(--primary); }
-        .btn-call:active { background: #dc2626; transform: scale(0.98); }
+        .btn-call { background: var(--primary); box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4); transition: all 0.2s; }
+        .btn-call:active { background: #dc2626; transform: scale(0.98); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.5); }
 
         .btn-secondary { background: var(--surf-c); border: 2px solid var(--outline); color: var(--on-surf); }
         .btn-secondary:active { background: #334155; }

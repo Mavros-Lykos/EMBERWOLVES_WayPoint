@@ -57,10 +57,12 @@
         .metric-big { font-size: 45px; font-weight: 400; color: #1B1B1F; line-height: 1; }
         .metric-sub { font-size: 12px; color: #74777F; margin-top: 4px; }
         /* Buttons */
-        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: #1565C0; color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: box-shadow 0.2s; }
-        .btn-filled:hover { box-shadow: 0 2px 8px rgba(21,101,192,0.4); }
-        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #1565C0; border: 1px solid rgba(21,101,192,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
-        .btn-outlined:hover { background: rgba(21,101,192,0.08); }
+        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: #1565C0; color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(21,101,192,0.3); }
+        .btn-filled:hover { box-shadow: 0 6px 16px rgba(21,101,192,0.4); transform: translateY(-1px); }
+        .btn-filled:active { box-shadow: 0 2px 4px rgba(21,101,192,0.3); transform: translateY(0); }
+        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: #1565C0; border: 1px solid rgba(21,101,192,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .btn-outlined:hover { background: rgba(21,101,192,0.08); box-shadow: 0 4px 8px rgba(0,0,0,0.1); transform: translateY(-1px); }
+        .btn-outlined:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         /* Alert Banner */
         .alert { padding: 12px 16px; border-radius: 8px; font-size: 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
         .alert-success { background: #C8E6C9; color: #1B5E20; }
@@ -120,7 +122,7 @@
         </a>
         <button class="nav-item" @click="showOrderModal = true">
             <span class="icon-wrap"><span class="material-symbols-outlined">add_shopping_cart</span></span>
-            <span>Order</span>
+            <span>{{ __('New Order') }}</span>
         </button>
         <a href="{{ route('store.history') }}" class="nav-item">
             <span class="icon-wrap"><span class="material-symbols-outlined">history</span></span>
@@ -138,7 +140,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <header class="top-bar">
-            <span class="page-title">{{ $user->outlet_id }} · {{ __('Waypoint Fresh') }}</span>
+            <span class="page-title">{{ $user->outlet_id }} · {{ __('Store Manager Portal') }}</span>
             <div class="meta">
                 <div class="cutoff-chip {{ $cutoffPassed ? 'urgent' : '' }}">
                     <span class="material-symbols-outlined" style="font-size:18px">schedule</span>
@@ -148,11 +150,9 @@
                         {{ __('Cutoff:') }} {{ floor($minutesToCutoff/60) }}h {{ $minutesToCutoff % 60 }}m
                     @endif
                 </div>
-                <!-- Language Switcher -->
-                <div style="display:flex; gap: 8px;">
-                    <a href="{{ route('locale.set', 'en') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'en' || !session('locale') ? '#1565C0; font-weight: bold;' : '#74777F;' }}">EN</a>
-                    <a href="{{ route('locale.set', 'si') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'si' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">සිං</a>
-                    <a href="{{ route('locale.set', 'ta') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'ta' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">தமிழ்</a>
+                <div style="display:flex; gap: 8px; align-items:center;">
+                    @include('partials.notifications')
+                    @include('partials.settings')
                 </div>
                 <span style="font-size:14px; color:#74777F">{{ $user->name }}</span>
             </div>
@@ -162,24 +162,7 @@
             <!-- Left Column -->
             <div>
 
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if(session('warning'))
-                    <div class="alert alert-warning">
-                        <span class="material-symbols-outlined" style="font-size:18px">warning</span>
-                        {{ session('warning') }}
-                    </div>
-                @endif
-                @if(session('error'))
-                    <div class="alert alert-error">
-                        <span class="material-symbols-outlined" style="font-size:18px">error</span>
-                        {{ session('error') }}
-                    </div>
-                @endif
+
 
                 <!-- Deferral Notice -->
                 @if($deferrals->count() > 0)
@@ -193,7 +176,7 @@
                 @endif
 
                 <!-- Active Delivery Card -->
-                <div class="section-label">{{ __("Today's delivery") }}</div>
+                <div class="section-label">{{ __("Today's Operations") }}</div>
                 @if($activeOrder)
                 <div class="delivery-card">
                     <div class="eta-row">

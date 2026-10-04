@@ -10,5 +10,17 @@
     "Place New Order": "නව ඇණවුමක් ලබා දෙන්න",
     "Submit Order": "ඇණවුම යොමු කරන්න",
     "Units Needed": "අවශ්‍ය ඒකක",
-    "Temperature Requirement": "උෂ්ණත්ව අවශ්‍යතාවය"
+    "Temperature Requirement": "උෂ්ණත්ව අවශ්‍යතාවය",
+    "Fleet Overview": "නාවික දළ විශ්ලේෂණය",
+    "Cutoff": "කඩයිම",
+    "Loading Bay": "පැටවීමේ අංගනය",
+    "Route Manifest": "මාර්ග ප්‍රකාශනය",
+    "Waypoint Fresh": "වේපොයින්ට් ෆ්‍රෙෂ්",
+    "Exit": "පිටවීම",
+    "History": "ඉතිහාසය",
+    "Home": "මුල් පිටුව",
+    "Theme": "තේමාව",
+    "Language": "භාෂාව",
+    "Light": "ආලෝකය",
+    "Dark": "අඳුරු"
 }

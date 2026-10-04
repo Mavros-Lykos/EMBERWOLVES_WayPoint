@@ -11,8 +11,12 @@
         :root { --surf: #0f172a; --surf-c: #1e293b; --on-surf: #e2e8f0; --outline: rgba(148,163,184,0.2); --primary: #3b82f6; }
         body { font-family: 'Roboto', sans-serif; background: var(--surf); color: var(--on-surf); margin: 0; padding: 24px; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--outline); padding-bottom: 16px; }
-        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--primary); border: 1px solid rgba(59,130,246,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; text-decoration: none; cursor: pointer; }
-        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .btn-outlined { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--primary); border: 1px solid rgba(59,130,246,0.4); border-radius: 999px; padding: 10px 24px; font-size: 14px; text-decoration: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-outlined:hover { background: rgba(59,130,246,0.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); transform: translateY(-1px); }
+        .btn-outlined:active { transform: translateY(0); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn-filled { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #fff; border: none; border-radius: 999px; padding: 10px 24px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(59,130,246,0.3); }
+        .btn-filled:hover { box-shadow: 0 6px 16px rgba(59,130,246,0.4); transform: translateY(-1px); }
+        .btn-filled:active { box-shadow: 0 2px 4px rgba(59,130,246,0.3); transform: translateY(0); }
         .board { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; align-items: flex-start; }
         .col { min-width: 300px; background: var(--surf-c); border: 1px solid var(--outline); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; }
         .order-card { background: var(--surf); border: 1px solid var(--outline); padding: 12px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; cursor: grab; }
@@ -25,7 +29,9 @@
 <body>
     <div class="top-bar">
         <h2>Drag & Drop Planning Canvas</h2>
-        <div style="display:flex; gap:12px;">
+        <div style="display:flex; gap:12px; align-items:center;">
+            @include('partials.notifications')
+            @include('partials.settings')
             <button class="btn-filled" onclick="savePlan()" id="lock-btn">
                 <span class="material-symbols-outlined">lock</span> Lock Plan & Dispatch
             </button>

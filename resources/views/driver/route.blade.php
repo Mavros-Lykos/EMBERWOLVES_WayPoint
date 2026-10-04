@@ -49,7 +49,7 @@
         
         /* Action buttons */
         .stop-actions { display:flex; gap:8px; }
-        .nav-btn { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; height:56px; background:rgba(59,130,246,0.1); color:var(--primary); border:1px solid rgba(59,130,246,0.3); border-radius:12px; text-decoration:none; font-size:15px; font-weight:500; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s; }
+        .nav-btn { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; height:56px; background:var(--surf-c); color:var(--on-surf); border:1px solid var(--outline); border-radius:12px; text-decoration:none; font-size:15px; font-weight:600; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: all 0.2s; }
         .nav-btn:active { background:rgba(59,130,246,0.2); transform: scale(0.97); }
         .issue-btn { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; height:56px; background:rgba(239,68,68,0.1); color:#fca5a5; border:1px solid rgba(239,68,68,0.3); border-radius:12px; font-size:15px; font-weight:500; cursor:pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s; }
         .issue-btn:active { transform: scale(0.97); background:rgba(239,68,68,0.2); }
@@ -68,7 +68,7 @@
         .badge-primary { background:rgba(59,130,246,0.15); color:#93c5fd; box-shadow: 0 2px 4px rgba(59,130,246,0.2); }
         
         /* No trip state */
-        .empty-state { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:40px 20px; text-align:center; }
+        .empty-state { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:40px 20px; text-align:center; background:#1e293b; border:1px solid #475569; border-radius:16px; margin-top:20px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); }
         
         /* PoD Modal */
         .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:50; flex-direction:column; backdrop-filter: blur(4px); }
@@ -109,11 +109,9 @@
                 <span class="material-symbols-outlined" style="font-size:14px" x-text="isOnline ? 'cloud_done' : 'cloud_off'"></span>
                 <span x-text="isOnline ? '{{ __('Synced') }}' : (pendingSync + ' {{ __('pending') }}')"></span>
             </span>
-            <!-- Language Switcher -->
-            <div style="display:flex; gap: 8px; margin-right: 12px;">
-                <a href="{{ route('locale.set', 'en') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'en' || !session('locale') ? '#1565C0; font-weight: bold;' : '#74777F;' }}">EN</a>
-                <a href="{{ route('locale.set', 'si') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'si' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">සිං</a>
-                <a href="{{ route('locale.set', 'ta') }}" style="font-size: 12px; text-decoration: none; color: {{ session('locale') == 'ta' ? '#1565C0; font-weight: bold;' : '#74777F;' }}">தமிழ்</a>
+            <div style="display:flex; gap: 8px; margin-right: 12px; align-items: center;">
+                @include('partials.notifications')
+                @include('partials.settings')
             </div>
             <form action="{{ route('logout') }}" method="POST" style="margin:0">
                 @csrf
@@ -123,18 +121,7 @@
     </header>
 
     <main>
-        @if(session('success'))
-        <div style="background:rgba(34,197,94,0.1); border-left:4px solid var(--success); padding:12px 16px; font-size:14px; color:#86efac; display:flex; gap:8px; margin-bottom:16px; border-radius:4px;">
-            <span class="material-symbols-outlined" style="font-size:18px">check_circle</span>
-            {{ session('success') }}
-        </div>
-        @endif
-        @if(session('warning'))
-        <div style="background:rgba(245,158,11,0.1); border-left:4px solid var(--warn); padding:12px 16px; font-size:14px; color:#fcd34d; display:flex; gap:8px; margin-bottom:16px; border-radius:4px;">
-            <span class="material-symbols-outlined" style="font-size:18px">warning</span>
-            {{ session('warning') }}
-        </div>
-        @endif
+
 
         @if($trip && $routeLegs->count() > 0)
         @php $nextLeg = $routeLegs->first(); @endphp
@@ -239,15 +226,15 @@
         @endif
 
         <!-- Utility Action Bar (Break, Breakdown, Trip End) -->
-        <div style="display:flex; gap:8px; margin-top:24px;">
-            <a href="{{ route('driver.break') }}" class="nav-btn" style="height:48px; font-size:13px;">
-                <span class="material-symbols-outlined" style="font-size:18px">local_cafe</span> {{ __('Break') }}
+        <div style="display:flex; gap:12px; margin-top:auto; padding-top:24px;">
+            <a href="{{ route('driver.break') }}" class="nav-btn" style="height:56px; font-size:14px; border:none; background:#3b82f6; color:#fff; box-shadow:0 4px 12px rgba(59,130,246,0.4);">
+                <span class="material-symbols-outlined" style="font-size:20px; color:#fff">local_cafe</span> {{ __('Break') }}
             </a>
-            <a href="{{ route('driver.breakdown') }}" class="nav-btn" style="height:48px; font-size:13px; color:#fca5a5; border-color:rgba(239,68,68,0.3); background:rgba(239,68,68,0.1);">
-                <span class="material-symbols-outlined" style="font-size:18px">car_crash</span> {{ __('SOS') }}
+            <a href="{{ route('driver.breakdown') }}" class="nav-btn" style="height:56px; font-size:14px; border:none; background:#ef4444; color:#fff; box-shadow:0 4px 12px rgba(239,68,68,0.4);">
+                <span class="material-symbols-outlined" style="font-size:20px; color:#fff">car_crash</span> {{ __('SOS') }}
             </a>
-            <a href="{{ route('driver.tripEnd') }}" class="nav-btn" style="height:48px; font-size:13px; color:#86efac; border-color:rgba(34,197,94,0.3); background:rgba(34,197,94,0.1);">
-                <span class="material-symbols-outlined" style="font-size:18px">power_settings_new</span> {{ __('End') }}
+            <a href="{{ route('driver.tripEnd') }}" class="nav-btn" style="height:56px; font-size:14px; border:none; background:#22c55e; color:#000; font-weight:700; box-shadow:0 4px 12px rgba(34,197,94,0.4);">
+                <span class="material-symbols-outlined" style="font-size:20px; color:#000">power_settings_new</span> {{ __('End') }}
             </a>
         </div>
 

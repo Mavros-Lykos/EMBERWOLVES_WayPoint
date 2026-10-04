@@ -25,7 +25,19 @@
             margin: 0;
             padding: 0;
             line-height: 1.5;
+            display: flex;
+            min-height: 100vh;
         }
+
+        /* Nav Rail */
+        .nav-rail { width: 80px; background: var(--surf-c); display: flex; flex-direction: column; align-items: center; padding: 12px 0; gap: 4px; border-right: 1px solid var(--outline); flex-shrink: 0; }
+        .brand-mark { width: 48px; height: 48px; background: var(--primary); color: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; margin-bottom: 20px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 4px 0; width: 100%; cursor: pointer; color: #94a3b8; text-decoration: none; border: none; background: none; font-size: 11px; }
+        .nav-item:hover { color: var(--on-surf); }
+        .nav-item.active .icon-wrap { background: rgba(239,68,68,0.2); color: var(--primary); border-radius: 999px; padding: 4px 20px; }
+        .icon-wrap { display: flex; align-items: center; justify-content: center; padding: 4px 20px; }
+        
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; overflow-y: auto; }
 
         .top-bar {
             background: #450a0a;
@@ -40,6 +52,7 @@
             max-width: 1000px;
             margin: 48px auto;
             padding: 0 24px;
+            flex: 1;
         }
 
         .alert-banner {
@@ -138,40 +151,79 @@
 </head>
 <body>
 
-    <header class="top-bar">
-        <div style="font-size:18px; font-weight:700; letter-spacing:1px; color:#f87171">SYSTEM OVERLOAD DETECTED</div>
-        <div class="nav-links">
-            <a href="{{ route('dispatch.overview') }}">{{ __('Overview') }}</a>
-            <a href="{{ route('dispatch.plan') }}">{{ __('Planning Canvas') }}</a>
-            <a href="{{ route('dispatch.live') }}">{{ __('Live Fleet') }}</a>
-            <a href="{{ route('dispatch.crisis') }}" class="active">{{ __('Crisis Mitigate') }}</a>
-        </div>
-        <form action="{{ route('logout') }}" method="POST">
+    <!-- Nav Rail -->
+    <nav class="nav-rail" aria-label="Dispatch navigation">
+        <div class="brand-mark">W</div>
+        <a href="{{ route('dispatch.overview') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">dashboard</span></span>
+            <span>Overview</span>
+        </a>
+        <a href="{{ route('dispatch.plan') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">view_kanban</span></span>
+            <span>Plan</span>
+        </a>
+        <a href="{{ route('dispatch.live') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">satellite_alt</span></span>
+            <span>Live Map</span>
+        </a>
+        <a href="{{ route('dispatch.crisis') }}" class="nav-item active" aria-current="page">
+            <span class="icon-wrap"><span class="material-symbols-outlined">warning</span></span>
+            <span>Crisis</span>
+        </a>
+        <a href="{{ route('dispatch.reports') }}" class="nav-item">
+            <span class="icon-wrap"><span class="material-symbols-outlined">analytics</span></span>
+            <span>Reports</span>
+        </a>
+        <form action="{{ route('logout') }}" method="POST" style="width:100%">
             @csrf
-            <button type="submit" style="background:none; border:none; color:#fca5a5; cursor:pointer; font-weight:600">Exit</button>
+            <button type="submit" class="nav-item">
+                <span class="icon-wrap"><span class="material-symbols-outlined">logout</span></span>
+                <span>Exit</span>
+            </button>
         </form>
-    </header>
+    </nav>
 
-    <div class="container">
-        
-        <div class="alert-banner">
-            <div class="alert-icon">
-                <span class="material-symbols-outlined" style="font-size:28px">warning</span>
+    <div class="main-content">
+        <header class="top-bar">
+            <div style="font-size:18px; font-weight:700; letter-spacing:1px; color:#f87171">SYSTEM OVERLOAD DETECTED</div>
+            <div class="nav-links">
+                <a href="{{ route('dispatch.crisis') }}" class="active">{{ __('Crisis Mitigate') }}</a>
             </div>
-            <div>
-                <h2 style="margin:0 0 8px 0; color:#f87171; font-size:20px;">D1 Degradation: Reefer Capacity Overflow</h2>
-                <p style="margin:0; color:#cbd5e1; font-size:15px; max-width:800px;">
-                    The total volume of pending Chilled/Fresh orders currently exceeds the absolute theoretical maximum volume of our refrigerated fleet (assuming 2 trips per vehicle per day). Standard auto-allocation will fail. You must apply crisis mitigation policies before locking the plan.
-                </p>
-            </div>
-        </div>
+        </header>
 
-        <div class="metric-grid">
+        <div class="container">
             
-            <!-- Chilled Capacity (CRISIS) -->
             @php
                 $chilledPct = $chilledCap > 0 ? ($chilledDemand / $chilledCap) * 100 : 0;
             @endphp
+
+            @if($chilledPct > 100)
+            <div class="alert-banner">
+                <div class="alert-icon">
+                    <span class="material-symbols-outlined" style="font-size:28px">warning</span>
+                </div>
+                <div>
+                    <h2 style="margin:0 0 8px 0; color:#f87171; font-size:20px;">D1 Degradation: Reefer Capacity Overflow</h2>
+                    <p style="margin:0; color:#cbd5e1; font-size:15px; max-width:800px;">
+                        The total volume of pending Chilled/Fresh orders currently exceeds the absolute theoretical maximum volume of our refrigerated fleet (assuming 2 trips per vehicle per day). Standard auto-allocation will fail. You must apply crisis mitigation policies before locking the plan.
+                    </p>
+                </div>
+            </div>
+            @else
+            <div class="alert-banner" style="background: rgba(34,197,94,0.1); border-color: var(--success); box-shadow: 0 0 32px rgba(34,197,94,0.1);">
+                <div class="alert-icon" style="background: var(--success); box-shadow: 0 0 16px var(--success);">
+                    <span class="material-symbols-outlined" style="font-size:28px">check_circle</span>
+                </div>
+                <div>
+                    <h2 style="margin:0 0 8px 0; color:#4ade80; font-size:20px;">System Nominal</h2>
+                    <p style="margin:0; color:#cbd5e1; font-size:15px; max-width:800px;">
+                        Current chilled and ambient volume demand is well within the active fleet's theoretical maximum capacity. Standard auto-allocation can proceed normally without requiring mitigation policies.
+                    </p>
+                </div>
+            </div>
+            @endif
+
+            <div class="metric-grid">
             <div class="metric-card danger">
                 <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
                     <span style="font-weight:600; color:#f87171">Chilled & Perishables (Reefer Fleet)</span>
@@ -215,14 +267,14 @@
             <h3 style="margin:0 0 16px 0; color:var(--on-surf)">Crisis Mitigation Protocols</h3>
             
             <div style="display:flex; gap:16px; flex-wrap:wrap;">
-                <button class="btn-action primary">
+                <button class="btn-action primary" onclick="alert('Executing ML Fair-Share Deferral. Analysing orders...')">
                     <span class="material-symbols-outlined" style="vertical-align:middle; font-size:18px; margin-right:6px;">gavel</span>
                     Execute ML Fair-Share Deferral
                 </button>
-                <button class="btn-action">
+                <button class="btn-action" onclick="alert('Converting 3 dry trucks into ice-box mode...')">
                     Convert 3 Dry Trucks to Ice-Box Mode
                 </button>
-                <button class="btn-action">
+                <button class="btn-action" onclick="alert('Requesting 3PL Fleet... Quotes pending.')">
                     Request 3rd-Party 3PL Fleet
                 </button>
             </div>
@@ -232,6 +284,7 @@
             </p>
         </div>
 
+        </div>
     </div>
 
 </body>

@@ -23,6 +23,9 @@ Route::get('/magic-login/{role}', [AuthController::class, 'magicLogin'])->name('
 // Protected Routes
 Route::middleware('auth')->group(function () {
 
+    Route::get('/api/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/api/notifications/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+
     // ── STORE MANAGER (STORE-01 to STORE-06) ─────────────────────────────
     Route::prefix('store')->middleware('role:store_manager')->group(function () {
         Route::get('/dashboard',              [DashboardController::class, 'store'])->name('store.dashboard');
@@ -56,38 +59,38 @@ Route::middleware('auth')->group(function () {
 
     // ── DOCK LOADER (LOAD-01 to LOAD-06) ─────────────────────────────────
     $loaderRoutes = function () {
-        Route::get('/queue',                           [DashboardController::class, 'loaderQueue'])->name('loader.queue');
-        Route::get('/inspect/{trip_id}',               [DashboardController::class, 'loaderInspectView'])->name('loader.inspect.view');
-        Route::get('/load/{trip_id}',                  [DashboardController::class, 'loaderLoadView'])->name('loader.load.view');
-        Route::get('/load/{trip_id}/exception',        [DashboardController::class, 'loaderExceptionView'])->name('loader.exception.view');
-        Route::get('/release/{trip_id}',               [DashboardController::class, 'loaderReleaseView'])->name('loader.release.view');
-        Route::get('/load/{trip_id}/alert-revision',   [DashboardController::class, 'loaderRevisionView'])->name('loader.revision.view');
+        Route::get('/queue',                           [DashboardController::class, 'loaderQueue'])->name('queue');
+        Route::get('/inspect/{trip_id}',               [DashboardController::class, 'loaderInspectView'])->name('inspect.view');
+        Route::get('/load/{trip_id}',                  [DashboardController::class, 'loaderLoadView'])->name('load.view');
+        Route::get('/load/{trip_id}/exception',        [DashboardController::class, 'loaderExceptionView'])->name('exception.view');
+        Route::get('/release/{trip_id}',               [DashboardController::class, 'loaderReleaseView'])->name('release.view');
+        Route::get('/load/{trip_id}/alert-revision',   [DashboardController::class, 'loaderRevisionView'])->name('revision.view');
         Route::get('/load/{trip_id}/revision',         [DashboardController::class, 'loaderRevisionView']);
-        Route::post('/dispatch',                       [DashboardController::class, 'loaderDispatch'])->name('loader.dispatch');
-        Route::post('/exception',                      [DashboardController::class, 'loaderException'])->name('loader.exception');
-        Route::post('/confirm-item',                   [DashboardController::class, 'loaderConfirmItem'])->name('loader.confirm');
+        Route::post('/dispatch',                       [DashboardController::class, 'loaderDispatch'])->name('dispatch');
+        Route::post('/exception',                      [DashboardController::class, 'loaderException'])->name('exception');
+        Route::post('/confirm-item',                   [DashboardController::class, 'loaderConfirmItem'])->name('confirm');
     };
-    Route::prefix('loader')->middleware('role:loader')->group($loaderRoutes);
-    Route::prefix('depot')->middleware('role:loader')->group($loaderRoutes);
+    Route::prefix('loader')->name('loader.')->middleware('role:loader')->group($loaderRoutes);
+    Route::prefix('depot')->name('depot.')->middleware('role:loader')->group($loaderRoutes);
 
     // ── FIELD DRIVER (DRV-01 to DRV-08) ──────────────────────────────────
     $driverRoutes = function () {
-        Route::get('/pti',                     [DashboardController::class, 'driverPTI'])->name('driver.pti');
-        Route::get('/route',                   [DashboardController::class, 'driverRoute'])->name('driver.route');
-        Route::get('/stop/{leg_id}',           [DashboardController::class, 'driverStopView'])->name('driver.stop.view');
-        Route::get('/stop/{leg_id}/pod',       [DashboardController::class, 'driverPodView'])->name('driver.pod.view');
-        Route::get('/stop/{leg_id}/exception', [DashboardController::class, 'driverStopExceptionView'])->name('driver.stop.exception');
-        Route::get('/break',                   [DashboardController::class, 'driverBreak'])->name('driver.break');
-        Route::get('/emergency/breakdown',     [DashboardController::class, 'driverBreakdown'])->name('driver.breakdown');
-        Route::get('/breakdown',               [DashboardController::class, 'driverBreakdown'])->name('driver.breakdown.alt');
-        Route::get('/trip-end',                [DashboardController::class, 'driverTripEnd'])->name('driver.tripEnd');
-        Route::post('/trip-end',               [DashboardController::class, 'driverTripEnd'])->name('driver.tripEnd.post');
-        Route::post('/arrival',                [DashboardController::class, 'driverMarkArrival'])->name('driver.arrival');
-        Route::post('/confirm-delivery',       [DashboardController::class, 'driverConfirmDelivery'])->name('driver.confirm');
-        Route::post('/exception',              [DashboardController::class, 'driverException'])->name('driver.exception');
+        Route::get('/pti',                     [DashboardController::class, 'driverPTI'])->name('pti');
+        Route::get('/route',                   [DashboardController::class, 'driverRoute'])->name('route');
+        Route::get('/stop/{leg_id}',           [DashboardController::class, 'driverStopView'])->name('stop.view');
+        Route::get('/stop/{leg_id}/pod',       [DashboardController::class, 'driverPodView'])->name('pod.view');
+        Route::get('/stop/{leg_id}/exception', [DashboardController::class, 'driverStopExceptionView'])->name('stop.exception');
+        Route::get('/break',                   [DashboardController::class, 'driverBreak'])->name('break');
+        Route::get('/emergency/breakdown',     [DashboardController::class, 'driverBreakdown'])->name('breakdown');
+        Route::get('/breakdown',               [DashboardController::class, 'driverBreakdown'])->name('breakdown.alt');
+        Route::get('/trip-end',                [DashboardController::class, 'driverTripEnd'])->name('tripEnd');
+        Route::post('/trip-end',               [DashboardController::class, 'driverTripEnd'])->name('tripEnd.post');
+        Route::post('/arrival',                [DashboardController::class, 'driverMarkArrival'])->name('arrival');
+        Route::post('/confirm-delivery',       [DashboardController::class, 'driverConfirmDelivery'])->name('confirm');
+        Route::post('/exception',              [DashboardController::class, 'driverException'])->name('exception');
     };
-    Route::prefix('driver')->middleware('role:driver')->group($driverRoutes);
-    Route::prefix('field')->middleware('role:driver')->group($driverRoutes);
+    Route::prefix('driver')->name('driver.')->middleware('role:driver')->group($driverRoutes);
+    Route::prefix('field')->name('field.')->middleware('role:driver')->group($driverRoutes);
 });
 
 Route::get('/', fn() => redirect()->route('login'));
