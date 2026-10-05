@@ -126,4 +126,258 @@ Waypoint Dispatch is built with modern, enterprise-grade technologies optimized 
 
 ---
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a></p>
+## 📁 Project Structure
+
+```
+EMBERWOLVES_WayPoint/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.php          # Login, logout, magic-link auth
+│   │   │   ├── DashboardController.php     # All role-based page controllers (main hub)
+│   │   │   └── NotificationController.php  # Real-time notification API
+│   │   └── Middleware/
+│   │       ├── RoleMiddleware.php          # Guards routes by user role
+│   │       └── SetLocale.php               # Per-request locale injection from session
+│   ├── Models/                             # 16 Eloquent models mapping domain tables
+│   │   ├── Order.php | Trip.php | Vehicle.php | Outlet.php
+│   │   ├── RouteLeg.php | DeliveryConfirmation.php | DeferralLog.php
+│   │   └── SyncMutation.php | LoadingException.php | ...
+│   ├── Services/
+│   │   ├── AllocationService.php           # ⭐ Core constraint-aware greedy bin-packer
+│   │   └── RoutingService.php              # Route leg sequencing and distance calc
+│   ├── Events/ & Listeners/                # Laravel event system for notifications
+│   └── Notifications/                      # Broadcast notification payloads
+│
+├── database/
+│   ├── migrations/
+│   │   ├── ..._create_users_table.php
+│   │   ├── ..._create_domain_schema.php    # ⭐ Full PostgreSQL schema with ENUMs & triggers
+│   │   └── ..._create_notifications_table.php
+│   └── seeders/
+│       └── DatabaseSeeder.php              # S-1 peak day dataset (85 orders, 10 vehicles)
+│
+├── resources/
+│   ├── views/
+│   │   ├── auth/login.blade.php            # Glassmorphism login with magic-links
+│   │   ├── store/dashboard.blade.php       # Store Manager portal
+│   │   ├── dispatch/
+│   │   │   ├── overview.blade.php          # Fleet command centre
+│   │   │   ├── live.blade.php              # Live trip tracking
+│   │   │   └── plan.blade.php              # Day planning & deferral management
+│   │   ├── driver/
+│   │   │   ├── route.blade.php             # Offline-capable PWA route manifest
+│   │   │   └── trip-end.blade.php          # End-of-day summary
+│   │   ├── loader/queue.blade.php          # Loading bay LIFO queue
+│   │   └── partials/
+│   │       ├── settings.blade.php          # Reusable theme & language switcher
+│   │       └── notifications.blade.php     # Real-time notification bell
+│   └── css/ & js/                          # Vite-compiled assets
+│
+├── routes/web.php                          # All 30+ routes, role-prefixed and grouped
+├── lang/
+│   ├── en.json | si.json | ta.json         # Trilingual translations
+├── public/
+│   ├── sw.js                               # Service Worker for offline PWA
+│   └── manifest.json                       # PWA web app manifest
+├── Dockerfile                              # Alpine-based production container
+├── docker-compose.yml                      # Local dev with PostgreSQL service
+└── docs/ARCHITECTURE.md                    # Mermaid diagrams & scaling philosophy
+```
+
+---
+
+## 🗄️ Database Schema
+
+The schema is defined in a **single migration** using raw PostgreSQL DDL for maximum fidelity with the SRS specification.
+
+### Custom PostgreSQL ENUMs
+
+| ENUM Type | Values |
+| :--- | :--- |
+| `order_status` | `pending`, `allocated`, `deferred`, `loaded`, `in_transit`, `delivered`, `failed` |
+| `trip_status` | `planned`, `loading`, `dispatched`, `completed` |
+| `temp_req` | `ambient`, `chilled`, `reefer` |
+| `vehicle_type` | `truck`, `van` |
+| `parking_constraint` | `normal`, `van_only`, `mall_dock` |
+| `deferral_reason_code` | `NO_REEFER_VAN`, `CAPACITY_EXCEEDED`, `TIME_BUDGET`, `VOLUME_OVER_ANY_VEHICLE`, `NO_REEFER_CAPACITY`, `EQUITY_CHOICE`, ... |
+
+### Core Tables
+
+| Table | Purpose |
+| :--- | :--- |
+| `users` | Extended with `role`, `depot`, `vehicle_id`, `outlet_id` columns |
+| `outlets` | Retail outlet reference data with dock type and delivery windows |
+| `vehicles` | Fleet data with capacity, reefer capability, depot, and fuel quota |
+| `orders` | Customer orders with urgency flag, deferred state, and trip linkage |
+| `trips` | Daily dispatch trips grouped by brand + district (max 2/vehicle/day) |
+| `route_legs` | Individual stop records with planned/actual timestamps and reefer temp |
+| `delivery_confirmations` | PoD records — signature data, photo path, unit count |
+| `sync_mutations` | Offline JSONB mutation queue for field sync |
+| `loading_exceptions` | Shortfall and exception records logged by loaders |
+| `deferral_log` | Auditable deferral history with reason codes |
+
+### Database Integrity — PostgreSQL Triggers
+
+Two database-level triggers enforce business rules that go beyond application-layer validation:
+
+1. **`enforce_trip_grouping`** — Prevents any order from being attached to a trip with a mismatched `brand` or `district`. This is a hard DB-level guard for `FR-001`.
+2. **`enforce_reefer_requirement`** — Prevents a `chilled` order from ever being allocated to a non-reefer vehicle, even via direct SQL. Hard guard for `FR-002`.
+
+---
+
+## ⚙️ Allocation Engine — Feasibility Rules
+
+The `AllocationService.php` implements a **constraint-aware greedy bin-packing algorithm** that evaluates all 10 SRS feasibility rules.
+
+| Rule | Code | Description |
+| :--- | :--- | :--- |
+| FR-001 | `BRAND_DISTRICT` | Orders are grouped by Brand + District before allocation |
+| FR-002 | `NO_REEFER_CAPACITY` | Chilled/reefer orders must use a temperature-controlled vehicle |
+| FR-003 | `NO_VAN` | Outlets with `van_only` parking constraint require a van-type vehicle |
+| FR-004 | `DEPOT_MISMATCH` | Vehicle and outlet must share the same depot hub |
+| FR-005 | `WEIGHT_EXCEEDED` | Cumulative order weight cannot exceed vehicle `weight_cap_kg` |
+| FR-006 | `VOLUME_OVER_ANY_VEHICLE` | Single order volume cannot exceed the largest available vehicle |
+| FR-007 | — | Maximum 2 trips per vehicle per operating day |
+| FR-008 | `TIME_BUDGET` | Fresh brand trips capped at 4.5 hours (270 min) |
+| FR-009 | `TIME_BUDGET` | Style/Tech brand trips capped at 8 hours (480 min) |
+| FR-010 | `EQUITY_CHOICE` | Urgency-flagged and long-waiting orders are prioritised first |
+
+**Priority Queue**: Orders are sorted `urgency_flag DESC`, `days_since_last_served DESC` before processing, ensuring equity for chronically under-served outlets.
+
+---
+
+## 🔐 Security & Middleware
+
+```
+Route /store/*       → auth + role:store_manager
+Route /dispatch/*    → auth + role:dispatcher
+Route /loader/*      → auth + role:loader
+Route /driver/*      → auth + role:driver
+```
+
+-   **`RoleMiddleware`**: Compares `auth()->user()->role` against the required role. Returns `403 Forbidden` on mismatch, preventing any horizontal privilege escalation.
+-   **`SetLocale`**: Reads `session('locale')` on every request and calls `App::setLocale()`, ensuring all `__()` translation calls render in the correct language.
+-   **CSRF Protection**: All `POST`/`PUT`/`DELETE` routes use Laravel's built-in `@csrf` token verification.
+
+---
+
+## 🌐 API Endpoints Overview
+
+All routes are defined in [`routes/web.php`](routes/web.php) and protected by authentication middleware.
+
+| Method | URI | Role | Action |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/login` | Public | Authenticate user |
+| `GET` | `/magic-login/{role}` | Public | One-click hackathon demo login |
+| `GET` | `/store/dashboard` | Store Manager | Main dashboard |
+| `POST` | `/store/order` | Store Manager | Place a new supply order |
+| `POST` | `/store/accept` | Store Manager | Confirm delivery receipt |
+| `GET` | `/dispatch/overview` | Dispatcher | Fleet command centre |
+| `POST` | `/dispatch/allocate` | Dispatcher | **Run allocation engine** |
+| `GET` | `/dispatch/live` | Dispatcher | Real-time trip tracking |
+| `GET` | `/loader/queue` | Loader | Loading bay queue |
+| `POST` | `/loader/dispatch` | Loader | Seal & dispatch truck |
+| `POST` | `/loader/exception` | Loader | Log a loading shortfall |
+| `GET` | `/driver/route` | Driver | Offline PWA route manifest |
+| `POST` | `/driver/arrival` | Driver | Mark arrived at stop (offline-queued) |
+| `POST` | `/driver/confirm-delivery` | Driver | Submit PoD with signature + GPS |
+| `GET` | `/api/notifications` | All | Fetch unread notifications |
+| `GET` | `/lang/{locale}` | All | Switch language (en/si/ta) |
+
+---
+
+## 🚀 Local Development Setup
+
+### Prerequisites
+
+| Requirement | Version |
+| :--- | :--- |
+| PHP | ≥ 8.2 |
+| Composer | ≥ 2.x |
+| Node.js | ≥ 18.x |
+| PostgreSQL | ≥ 14 OR Docker |
+
+### Option A — Docker (Recommended)
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Mavros-Lykos/EMBERWOLVES_WayPoint.git
+cd EMBERWOLVES_WayPoint
+
+# 2. Copy environment file
+cp .env.example .env
+
+# 3. Start the containers (app + postgres)
+docker compose up -d
+
+# 4. Install dependencies and seed the S-1 dataset
+docker compose exec app composer install
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate:fresh --seed
+
+# 5. Open in browser
+open http://localhost:8000/login
+```
+
+### Option B — Bare Metal
+
+```bash
+git clone https://github.com/Mavros-Lykos/EMBERWOLVES_WayPoint.git
+cd EMBERWOLVES_WayPoint
+
+cp .env.example .env
+# Edit .env — set DB_CONNECTION=pgsql and DB_* credentials
+
+composer install
+php artisan key:generate
+npm install && npm run build
+
+php artisan migrate:fresh --seed
+php artisan serve
+```
+
+---
+
+## 🌍 Localization (Trilingual Support)
+
+The application ships with full translations for **English**, **Sinhala**, and **Tamil**, accessible via the settings gear icon on every page.
+
+| Language | File | Code |
+| :--- | :--- | :--- |
+| English | `lang/en.json` | `en` |
+| Sinhala | `lang/si.json` | `si` |
+| Tamil | `lang/ta.json` | `ta` |
+
+Language preference is persisted in the PHP session. All UI strings use `{{ __('key') }}` helpers which resolve to the active locale's JSON file.
+
+---
+
+## 🧱 Key Engineering Decisions
+
+| Decision | Rationale |
+| :--- | :--- |
+| **Service Layer Pattern** | `AllocationService` and `RoutingService` are decoupled from controllers, keeping the HTTP layer thin and the business logic independently testable. |
+| **PostgreSQL ENUMs + Triggers** | Business invariants (reefer requirements, brand grouping) are enforced at the database level — not just the application layer — making them impossible to bypass. |
+| **Alpine.js over a full SPA** | Avoids build complexity and JavaScript framework overhead while still achieving rich UI reactivity for modals, state, and offline sync queues. |
+| **Service Worker + localStorage** | The driver PWA remains functional with zero connectivity. Mutations are stored as a JSON queue and flushed on reconnection. |
+| **LIFO Loading Order** | The loader queue enforces Reverse-LIFO (last stop loaded first) to ensure the first-stop's goods are accessible at the truck's front — a real-world cold-chain best practice. |
+| **Greedy + Priority Queuing** | The allocation engine processes urgency-flagged orders first, then longest-unserved outlets, satisfying equity constraints alongside hard feasibility rules. |
+
+---
+
+## 👥 Team
+
+**Team EMBERWOLVES** — Tech Triathlon 2026
+
+Built under pressure in a competitive hackathon environment, this system demonstrates production-grade engineering discipline from schema design to DevOps.
+
+---
+
+<p align="center">
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo">
+  </a>
+</p>
+
+<p align="center"><sub>Built with ❤️ by Team EMBERWOLVES · Tech Triathlon 2026</sub></p>
