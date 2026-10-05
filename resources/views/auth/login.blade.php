@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Waypoint Dispatch</title>
     <meta name="theme-color" content="#1565C0">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Custom Keyframes for floating background elements */
@@ -33,9 +34,7 @@
         <div class="backdrop-blur-xl bg-surface/70 border border-outline/20 rounded-3xl shadow-2xl p-8 transition-all duration-300">
             
             <div class="flex justify-end mb-4 gap-3">
-                <a href="{{ route('locale.set', 'en') }}" class="text-xs font-semibold {{ session('locale') == 'en' || !session('locale') ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">EN</a>
-                <a href="{{ route('locale.set', 'si') }}" class="text-xs font-semibold {{ session('locale') == 'si' ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">සිං</a>
-                <a href="{{ route('locale.set', 'ta') }}" class="text-xs font-semibold {{ session('locale') == 'ta' ? 'text-primary border-b-2 border-primary' : 'text-outline' }}">தமிழ்</a>
+                @include('partials.settings')
             </div>
 
             <div class="text-center mb-8">

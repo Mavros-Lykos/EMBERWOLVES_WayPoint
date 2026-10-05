@@ -105,4 +105,25 @@ This guide outlines exactly how to navigate the application and verify that all 
 
 ---
 
+## 🛠️ Tech Stack & Architecture
+
+Waypoint Dispatch is built with modern, enterprise-grade technologies optimized for high performance, rapid deployment, and offline resilience in logistics environments.
+
+### Core Technologies
+*   **Backend Framework:** [Laravel 11](https://laravel.com/) (PHP 8.2+) — providing robust routing, ORM (Eloquent), and the heavy-lifting logic for the Allocation Engine.
+*   **Database:** [PostgreSQL](https://www.postgresql.org/) — ensuring ACID compliance for critical transactional data and robust relational mapping for complex logistics constraints.
+*   **Frontend UI:** Laravel Blade templating combined with semantic HTML5 and scoped vanilla CSS. The UI heavily utilizes CSS grid/flexbox, CSS variables for theming, and modern glassmorphism aesthetics to meet strict design fidelity standards.
+*   **Reactivity:** [Alpine.js](https://alpinejs.dev/) — providing lightweight, declarative reactivity for the frontend without the overhead of heavy SPA frameworks. Used for modal states, dropdowns, and offline synchronization queues.
+
+### Specialized Integrations
+*   **Offline Support (PWA):** Custom Service Workers (`sw.js`) and `localStorage` caching ensure the Driver app remains 100% operational in dead zones.
+*   **Proof of Delivery (PoD):** Integration with `signature_pad.js` for digital sign-offs and native HTML5 Geolocation API for automatic coordinate stamping upon delivery completion.
+*   **Localization:** Built-in Laravel localization (`__('')` helpers) providing a fully trilingual interface (English, Sinhala, Tamil) accessible instantly via UI toggles.
+
+### Deployment & DevOps
+*   **Containerization:** Multi-stage `Dockerfile` and `docker-compose.yml` for guaranteed environment parity across local development and production.
+*   **Hosting:** Seamlessly deployed on [Railway](https://railway.app/) using automated CI/CD directly from the GitHub repository main branch.
+
+---
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="200" alt="Laravel Logo"></a></p>
